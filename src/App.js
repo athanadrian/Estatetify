@@ -1,9 +1,21 @@
-function App() {
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Profile, Home, Offers, SignIn, SignUp, ForgotPassword } from './pages';
+
+const App = () => {
   return (
-    <div className='App'>
-      <div className='bg-black w-32 h-32'></div>
-    </div>
+    <>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/offers' element={<Offers />} />
+          <Route path='/sign-in' element={<SignIn />} />
+          <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+        </Routes>
+      </Router>
+    </>
   );
-}
+};
 
 export default App;
