@@ -13,6 +13,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   updateProfile,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 
 // Your web app's Firebase configuration
@@ -27,15 +28,18 @@ const firebaseConfig = {
 
 // Initialize Firebase
 initializeApp(firebaseConfig);
-export const db = getFirestore();
-
-export const auth = getAuth();
-export const googleProvider = new GoogleAuthProvider();
+const db = getFirestore();
+const auth = getAuth();
+const googleProvider = new GoogleAuthProvider();
 export {
+  auth,
+  googleProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   updateProfile,
+  db,
   serverTimestamp,
   setDoc,
   doc,

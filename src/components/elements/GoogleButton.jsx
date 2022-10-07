@@ -35,11 +35,10 @@ const GoogleButton = () => {
         return toast.success(`User signed-up successfully!`);
       }
       toast.success(`${user.displayName} logged in successfully!`);
+      navigate('/home');
     } catch (error) {
       console.log('error', error);
       return toast.error(getFirebaseErrorMessage(error.message));
-    } finally {
-      navigate('/home');
     }
   };
 

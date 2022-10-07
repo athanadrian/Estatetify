@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 
 import { AppIcon, AuthButton, FormInput, GoogleButton } from 'components';
 import defaultStyles from 'common';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { getFirebaseErrorMessage } from 'common/helpers';
+import { auth, signInWithEmailAndPassword } from 'firebase.config';
 
 const initialState = {
   email: '',
@@ -13,6 +16,7 @@ const singImage =
   'https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80';
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
   const [isHidden, setHidden] = useState(true);
 
@@ -25,8 +29,26 @@ const SignIn = () => {
     setHidden((preState) => !preState);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const { email, password } = values;
     e.preventDefault();
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      if (userCredential.user)
+        toast.success(
+          `${userCredential.user.displayName} successfully logged in!`
+        );
+      navigate('/home');
+    } catch (error) {
+      console.log('error', error.message);
+      return toast.error(getFirebaseErrorMessage(error.message));
+    }
   };
 
   return (
