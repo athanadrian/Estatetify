@@ -1,9 +1,16 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, serverTimestamp, setDoc, doc } from 'firebase/firestore';
+import {
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   GoogleAuthProvider,
   updateProfile,
 } from 'firebase/auth';
@@ -23,12 +30,14 @@ initializeApp(firebaseConfig);
 export const db = getFirestore();
 
 export const auth = getAuth();
+export const googleProvider = new GoogleAuthProvider();
 export {
   signInWithEmailAndPassword,
+  signInWithPopup,
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
   updateProfile,
   serverTimestamp,
   setDoc,
   doc,
+  getDoc,
 };
