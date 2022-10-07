@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
+import {
+  db,
+  auth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  serverTimestamp,
+  setDoc,
+  doc,
+} from 'firebase.config';
 import { AppIcon, AuthButton, FormInput, GoogleButton } from 'components';
 import defaultStyles from 'common';
-import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { getFirebaseErrorMessage } from 'common/helpers';
 
 const initialState = {
   fullName: '',
@@ -14,6 +25,7 @@ const singImage =
   'https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80';
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
   const [isHidden, setHidden] = useState(true);
 
@@ -26,17 +38,41 @@ const SignUp = () => {
     setHidden((preState) => !preState);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { fullName, email, password } = values;
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(auth.currentUser, { displayName: fullName });
+      const user = userCredential.user;
+      const userData = { ...values };
+      delete userData.password;
+      userData.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, 'users', user.uid), userData);
+      toast.success('Sign up was successful!');
+      navigate('/home');
+    } catch (error) {
+      console.log('error', error);
+      toast.error(getFirebaseErrorMessage(error.message));
+    }
+  };
+
   return (
     <section>
       <h1 className='text-3xl text-darker tracking-wider text-center font-bold mt-6'>
-        Sign In
+        Sign Up
       </h1>
       <div className='flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto'>
         <div className='md:w-[67%] lg:w-[50%] mb-12 md:mb-6'>
           <img src={singImage} alt='key' className='w-full rounded-2xl' />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form className='flex flex-col space-y-5'>
+          <form className='flex flex-col space-y-5' onSubmit={handleSubmit}>
             <FormInput
               name='fullName'
               type='text'

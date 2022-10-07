@@ -25,6 +25,10 @@ const SignIn = () => {
     setHidden((preState) => !preState);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <section>
       <h1 className='text-3xl text-darker tracking-wider text-center font-bold mt-6'>
@@ -35,7 +39,7 @@ const SignIn = () => {
           <img src={singImage} alt='key' className='w-full rounded-2xl' />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form className='flex flex-col space-y-5'>
+          <form className='flex flex-col space-y-5' onSubmit={handleSubmit}>
             <FormInput
               name='email'
               type='email'

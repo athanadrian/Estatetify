@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { AppIcon, AuthButton, FormInput, GoogleButton } from 'components';
-import defaultStyles from 'common';
+import { AuthButton, FormInput, GoogleButton } from 'components';
 import { Link } from 'react-router-dom';
 
 const singImage =
@@ -9,27 +8,26 @@ const singImage =
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [isHidden, setHidden] = useState(true);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleTogglePassword = () => {
-    setHidden((preState) => !preState);
+  const handleSubmit = (e) => {
+    e.preventDefault();
   };
 
   return (
     <section>
       <h1 className='text-3xl text-darker tracking-wider text-center font-bold mt-6'>
-        Sign In
+        Forgot Password
       </h1>
       <div className='flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto'>
         <div className='md:w-[67%] lg:w-[50%] mb-12 md:mb-6'>
           <img src={singImage} alt='key' className='w-full rounded-2xl' />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form className='flex flex-col space-y-5'>
+          <form className='flex flex-col space-y-5' onSubmit={handleSubmit}>
             <FormInput
               name='email'
               type='email'
