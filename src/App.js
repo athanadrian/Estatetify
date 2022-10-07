@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
+import { Header } from './components';
 import { Profile, Home, Offers, SignIn, SignUp, ForgotPassword } from './pages';
 
 const App = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import logo from '../images/estatetify-app.svg';
+import logo from 'images/estatetify-app.svg';
 
 const Links = [
   { name: 'home', link: '/home' },
@@ -23,7 +23,7 @@ const Header = () => {
         </div>
         <ul
           className={
-            'flex items-center mobile:text-sm tablet:text-sm laptop:text-base'
+            'flex items-center mobile:text-sm tablet:text-sm laptop:text-base space-x-10'
           }
         >
           {Links.map((link) => (
