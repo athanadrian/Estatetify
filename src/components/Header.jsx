@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from 'images/estatetify-app.svg';
-
-const Links = [
-  { name: 'home', link: '/home' },
-  { name: 'offers', link: '/offers' },
-  { name: 'profile', link: '/profile' },
-  { name: 'Sign', link: '/sign-in' },
-];
+import { onAuthStateChanged, auth } from 'firebase.config';
 
 const Header = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) setAuthenticated(true);
+      else setAuthenticated(false);
+    });
+  }, []);
+
+  const Links = [
+    { name: 'home', link: '/home' },
+    { name: 'offers', link: '/offers' },
+    {
+      name: `${isAuthenticated ? 'profile' : 'sign'}`,
+      link: `${isAuthenticated ? '/profile' : '/sign-in'}`,
+    },
+  ];
+  console.log('links', Links);
   return (
     <div className='bg-white border-b shadow-sm sticky top-0 z-40'>
       <header className='flex justify-between items-center px-3 max-w-6xl mx-auto p-3'>
@@ -32,7 +44,7 @@ const Header = () => {
                 to={link.link}
                 className={({ isActive }) =>
                   `capitalize cursor-pointer py-4 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                    isActive ? 'text-black border-b-darker' : ''
+                    isActive && 'text-black border-b-darker'
                   }`
                 }
               >

@@ -14,6 +14,7 @@ import {
   GoogleAuthProvider,
   updateProfile,
   sendPasswordResetEmail,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 // Your web app's Firebase configuration
@@ -39,6 +40,7 @@ export {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updateProfile,
+  onAuthStateChanged,
   db,
   serverTimestamp,
   setDoc,
