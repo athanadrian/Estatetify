@@ -1,3 +1,4 @@
+import UserRoute from 'components/UserRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Header } from './components';
@@ -10,7 +11,9 @@ const App = () => {
         <Header />
         <Routes>
           <Route path='/home' element={<Home />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route to='profile' element={<UserRoute />}>
+            <Route path='/profile' element={<Profile />} />
+          </Route>
           <Route path='/offers' element={<Offers />} />
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />

@@ -1,4 +1,9 @@
-import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
+import {
+  AiFillEyeInvisible,
+  AiFillEye,
+  AiOutlineEdit,
+  AiOutlineSave,
+} from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { RiImageEditFill } from 'react-icons/ri';
 
@@ -9,6 +14,8 @@ const icons = {
   showPassword: AiFillEye,
   hidePassword: AiFillEyeInvisible,
   google: FcGoogle,
+  edit: AiOutlineEdit,
+  save: AiOutlineSave,
   image_edit: RiImageEditFill,
 };
 

@@ -46,8 +46,8 @@ const SignIn = () => {
         );
       navigate('/home');
     } catch (error) {
-      console.log('error', error.message);
-      return toast.error(getFirebaseErrorMessage(error.message));
+      console.log('😱 Error Sign-in: ', error.message);
+      return toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
   };
 

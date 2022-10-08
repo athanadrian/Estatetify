@@ -57,8 +57,8 @@ const SignUp = () => {
       toast.success('Sign up was successful!');
       navigate('/home');
     } catch (error) {
-      console.log('error', error.message);
-      toast.error(getFirebaseErrorMessage(error.message));
+      console.log('😱 Error Sign-up: ', error.message);
+      toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
   };
 

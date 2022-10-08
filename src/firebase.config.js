@@ -2,9 +2,10 @@ import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
   serverTimestamp,
-  setDoc,
   doc,
+  setDoc,
   getDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -43,7 +44,8 @@ export {
   onAuthStateChanged,
   db,
   serverTimestamp,
-  setDoc,
   doc,
+  setDoc,
   getDoc,
+  updateDoc,
 };

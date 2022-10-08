@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 import logo from 'images/estatetify-app.svg';
 import { AppIcon, FormInput } from 'components';
 import defaultStyles from 'common';
 import { useAuth } from 'hooks/useAuth';
+import { updateProfile, doc, db, updateDoc } from 'firebase.config';
+
+const initialValues = {
+  fullName: '',
+  email: '',
+};
 
 const Profile = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
-  console.log('user', user);
-  const initialValues = {
-    fullName: '',
-    email: '',
-  };
+
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
-
+  console.log('user', user);
   useEffect(() => {
     if (user)
       setValues((preValues) => ({
         ...preValues,
         fullName: user?.displayName,
         email: user?.email,
+        avatar: user?.photoURL,
       }));
   }, [user]);
 
@@ -31,8 +35,31 @@ const Profile = () => {
     setValues((preValues) => ({ ...preValues, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      if (
+        user?.displayName !== values.fullName ||
+        user?.photoURL !== values.avatar
+      ) {
+        // update data firebase/auth
+        await updateProfile(user, {
+          displayName: values.fullName,
+          photoURL: values.avatar,
+        });
+        // update data in firestore
+
+        const userDoc = doc(db, 'users', user.uid);
+        await updateDoc(userDoc, {
+          displayName: values.fullName,
+          photoURL: values.avatar,
+        });
+        toast.success('Profile updated successfully!');
+      }
+    } catch (error) {
+      console.log('😱 Error Profile: ', error.message);
+      toast.error('😱 Error: ', error.message);
+    }
   };
 
   const handleEditInfo = () => {
@@ -53,8 +80,11 @@ const Profile = () => {
             src={logo}
             className='relative w-48 h-48 rounded-full mb-6 mx-auto'
           >
-            <img src={user?.photoURL || logo} alt='' />
-            <button className='flex justify-center items-center absolute px-3 py-0.5 bottom-0 -right-2 w-max rounded-xl bg-teal-500 hover:bg-teal-700 transition duration-150 ease-in-out active:bg-teal-800 text-white'>
+            <img src={values.avatar || logo} alt='' />
+            <button
+              type='button'
+              className='flex justify-center items-center absolute px-3 py-0.5 bottom-0 -right-2 w-max rounded-xl bg-teal-500 hover:bg-teal-700 transition duration-150 ease-in-out active:bg-teal-800 text-white'
+            >
               <AppIcon Icon={defaultStyles.icons.image_edit} />
               <span className='ml-1'>change</span>
             </button>
@@ -82,14 +112,32 @@ const Profile = () => {
           >
             Update profile
           </button>
-          <div className='flex flex-row justify-between w-full mt-3'>
-            <p className='text-md text-primary'>
+          <div className='flex flex-row justify-between w-full mt-3 whitespace-nowrap'>
+            <p className='flex justify-center items-center text-md text-primary'>
               Update your info?
               <span
-                className='text-teal-500 hover:text-teal-700 hover:underline cursor-pointer ml-1 transition duration-150 ease-in-out'
-                onClick={handleEditInfo}
+                className='flex justify-center items-center text-teal-500 hover:text-teal-700 hover:underline cursor-pointer ml-1 transition duration-150 ease-in-out'
+                onClick={(e) => {
+                  isEditable && handleSubmit(e);
+                  handleEditInfo();
+                }}
               >
-                {isEditable ? 'Cancel' : 'Edit'}
+                {isEditable ? 'Save' : 'Edit'}
+                {isEditable ? (
+                  <AppIcon
+                    Icon={defaultStyles.icons.save}
+                    link
+                    nav
+                    className='ml-1'
+                  />
+                ) : (
+                  <AppIcon
+                    Icon={defaultStyles.icons.edit}
+                    link
+                    nav
+                    className='ml-1'
+                  />
+                )}
               </span>
             </p>
             <p

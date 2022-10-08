@@ -22,8 +22,8 @@ const ForgotPassword = () => {
       await sendPasswordResetEmail(auth, email);
       toast.success('Email was sent');
     } catch (error) {
-      console.log('error', error.message);
-      return toast.error(getFirebaseErrorMessage(error.message));
+      console.log('😱 Error Forgot-Password: ', error.message);
+      return toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
   };
 

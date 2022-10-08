@@ -37,8 +37,8 @@ const GoogleButton = () => {
       toast.success(`${user.displayName} logged in successfully!`);
       navigate('/home');
     } catch (error) {
-      console.log('error', error);
-      return toast.error(getFirebaseErrorMessage(error.message));
+      console.log('😱 Error Google Auth: ', error);
+      return toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
   };
 
