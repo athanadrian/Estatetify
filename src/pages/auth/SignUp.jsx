@@ -10,7 +10,13 @@ import {
   setDoc,
   doc,
 } from 'firebase.config';
-import { AppIcon, AuthButton, FormInput, GoogleButton } from 'components';
+import {
+  AppIcon,
+  AuthButton,
+  FormInput,
+  GoogleButton,
+  PageHeader,
+} from 'components';
 import defaultStyles from 'common';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage } from 'common/helpers';
@@ -64,9 +70,7 @@ const SignUp = () => {
 
   return (
     <section>
-      <h1 className='text-3xl text-darker tracking-wider text-center font-bold mt-6'>
-        Sign Up
-      </h1>
+      <PageHeader text='Sign up' />
       <div className='flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto'>
         <div className='md:w-[67%] lg:w-[50%] mb-12 md:mb-6'>
           <img src={singImage} alt='key' className='w-full rounded-2xl' />

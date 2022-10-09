@@ -1,7 +1,12 @@
+import { PageHeader } from 'components';
 import React from 'react';
 
 const Offers = () => {
-  return <div>Offers</div>;
+  return (
+    <>
+      <PageHeader text='Offers' />
+    </>
+  );
 };
 
 export default Offers;

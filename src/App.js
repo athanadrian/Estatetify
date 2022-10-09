@@ -2,7 +2,15 @@ import UserRoute from 'components/UserRoute';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Header } from './components';
-import { Profile, Home, Offers, SignIn, SignUp, ForgotPassword } from './pages';
+import {
+  Profile,
+  Home,
+  Offers,
+  SignIn,
+  SignUp,
+  ForgotPassword,
+  AddListing,
+} from './pages';
 
 const App = () => {
   return (
@@ -11,8 +19,9 @@ const App = () => {
         <Header />
         <Routes>
           <Route path='/home' element={<Home />} />
-          <Route to='profile' element={<UserRoute />}>
+          <Route element={<UserRoute />}>
             <Route path='/profile' element={<Profile />} />
+            <Route path='/listings/add' element={<AddListing />} />
           </Route>
           <Route path='/offers' element={<Offers />} />
           <Route path='/sign-in' element={<SignIn />} />

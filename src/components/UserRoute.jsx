@@ -6,7 +6,7 @@ import Loader from './Loader';
 
 const UserRoute = () => {
   const { loggedIn, isLoading } = useAuth();
-  if (true) return <Loader />;
+  if (isLoading) return <Loader />;
   return <>{loggedIn ? <Outlet /> : <SignIn />}</>;
 };
 

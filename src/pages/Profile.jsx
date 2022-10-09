@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import logo from 'images/estatetify-app.svg';
-import { AppIcon, FormInput } from 'components';
+import { AppIcon, FormInput, Label, PageHeader } from 'components';
 import defaultStyles from 'common';
 import { useAuth } from 'hooks/useAuth';
 import { updateProfile, doc, db, updateDoc } from 'firebase.config';
@@ -73,7 +74,7 @@ const Profile = () => {
 
   return (
     <section className='max-w-6xl flex flex-col justify-center items-center mx-auto'>
-      <h1 className='text-3xl font-bold text-center mt-6'>Profile</h1>
+      <PageHeader text='Profile' />
       <div className='flex flex-col justify-center items-center gap-5 w-full md:w-[50%] mx-auto px-3 mt-6'>
         <form onSubmit={handleSubmit}>
           <div
@@ -89,6 +90,7 @@ const Profile = () => {
               <span className='ml-1'>change</span>
             </button>
           </div>
+          {isEditable && <Label text='Full Name' />}
           <FormInput
             type='text'
             name='fullName'
@@ -106,12 +108,17 @@ const Profile = () => {
             className='mt-6'
             disabled
           />
-          <button
-            type='submit'
-            className='block bg-blue-500 px-4 py-2 text-lg mt-6 text-center text-white rounded w-full shadow-md font-medium uppercase hover:bg-blue-700 transition duration-1000 ease-in-out hover:shadow-lg active:bg-blue-800'
+          <Link
+            to='/listings/add'
+            className='flex justify-center items-center bg-blue-500 px-4 py-2 text-md mt-6 text-center text-light rounded w-full shadow-md font-medium capitalize hover:bg-blue-700 transition duration-1000 ease-in-out hover:shadow-lg active:bg-blue-800'
           >
-            Update profile
-          </button>
+            <AppIcon
+              Icon={defaultStyles.icons.add_property}
+              //size={28}
+              className='text-light border-light border rounded-full p-1 text-xl'
+            />
+            <span className='ml-1'> Sell & rent a property</span>
+          </Link>
           <div className='flex flex-row justify-between w-full mt-3 whitespace-nowrap'>
             <p className='flex justify-center items-center text-md text-primary'>
               Update your info?
