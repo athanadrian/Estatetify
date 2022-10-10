@@ -1,7 +1,9 @@
 export { default as Header } from './Header';
 export { default as Loader } from './Loader';
 export { default as PageHeader } from './PageHeader';
+export { default as UserRoute } from './UserRoute';
 export { default as FormInput } from './elements/FormInput';
+export { default as FormSelect } from './elements/FormSelect';
 export { default as AppIcon } from './elements/AppIcon';
 export { default as GoogleButton } from './elements/GoogleButton';
 export { default as AuthButton } from './elements/AuthButton';

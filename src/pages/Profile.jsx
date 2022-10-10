@@ -19,7 +19,7 @@ const Profile = () => {
 
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
-  console.log('user', user);
+
   useEffect(() => {
     if (user)
       setValues((preValues) => ({

@@ -1,7 +1,7 @@
-import UserRoute from 'components/UserRoute';
+import Listings from 'pages/listing/Listings';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { Header } from './components';
+import { Header, UserRoute } from './components';
 import {
   Profile,
   Home,
@@ -23,6 +23,7 @@ const App = () => {
             <Route path='/profile' element={<Profile />} />
             <Route path='/listings/add' element={<AddListing />} />
           </Route>
+          <Route path='/listings/:type/:listingId' element={<Listings />} />
           <Route path='/offers' element={<Offers />} />
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />

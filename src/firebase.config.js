@@ -3,9 +3,11 @@ import {
   getFirestore,
   serverTimestamp,
   doc,
+  addDoc,
   setDoc,
   getDoc,
   updateDoc,
+  collection,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -17,6 +19,12 @@ import {
   sendPasswordResetEmail,
   onAuthStateChanged,
 } from 'firebase/auth';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -32,6 +40,7 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 const auth = getAuth();
+const storage = getStorage();
 const googleProvider = new GoogleAuthProvider();
 export {
   auth,
@@ -45,7 +54,13 @@ export {
   db,
   serverTimestamp,
   doc,
+  addDoc,
   setDoc,
   getDoc,
   updateDoc,
+  collection,
+  storage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
 };
