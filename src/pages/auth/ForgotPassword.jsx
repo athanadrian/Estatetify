@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
 import { AuthButton, FormInput, GoogleButton, PageHeader } from 'components';
-import { sendPasswordResetEmail, auth } from 'firebase.config';
-import { getFirebaseErrorMessage } from 'common/helpers';
+import { useAuthContext } from 'store/contexts';
 
 const singImage =
   'https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80';
 
 const ForgotPassword = () => {
+  const { resetPassword } = useAuthContext();
   const [email, setEmail] = useState('');
 
   const handleChange = (e) => {
@@ -18,13 +17,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await sendPasswordResetEmail(auth, email);
-      toast.success('Email was sent');
-    } catch (error) {
-      console.log('😱 Error Forgot-Password: ', error.message);
-      return toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
-    }
+    await resetPassword(email);
   };
 
   return (
@@ -45,12 +38,11 @@ const ForgotPassword = () => {
             />
             <div className='flex justify-between items-center w-full mt-5 whitespace-nowrap'>
               <p className='text-sm text-primary'>
-                Don't have an account yet?{' '}
+                Don't have an account yet?
                 <Link
                   to='/sign-up'
                   className='text-sm text-red-500 hover:text-red-600 hover:underline transition duration-200 ease-in-out'
                 >
-                  {' '}
                   Sign up
                 </Link>
               </p>

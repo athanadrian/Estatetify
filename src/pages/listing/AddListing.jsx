@@ -1,21 +1,10 @@
 import { FormInput, FormSelect, Label, Loader, PageHeader } from 'components';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { v4 as uuidv4 } from 'uuid';
 
-import {
-  db,
-  addDoc,
-  collection,
-  serverTimestamp,
-  storage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase.config';
-import { useAuth } from 'hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { categories } from 'common/lookup-data';
+import { useListingContext } from 'store/contexts';
 
 const initialValues = {
   type: 'rent',
@@ -38,7 +27,7 @@ const initialValues = {
 };
 
 const AddListing = () => {
-  const { user } = useAuth();
+  const { handleUploadImageToStorage, createListing } = useListingContext();
   const navigate = useNavigate();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [isLoading, setLoading] = useState(false);
@@ -67,7 +56,6 @@ const AddListing = () => {
     let boolean = null;
 
     const { name, value } = e.target;
-    console.log(value);
     if (value === 'true') {
       boolean = true;
     }
@@ -84,7 +72,7 @@ const AddListing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('submitted values', values);
+
     setLoading(true);
     if (+offerPrice >= +regularPrice) {
       setLoading(false);
@@ -96,7 +84,6 @@ const AddListing = () => {
       toast.error('Maximum 6 images are allowed to upload!');
       return;
     }
-    console.log('continue....');
     let geolocation = {};
     let location;
     if (geolocationEnabled) {
@@ -104,7 +91,6 @@ const AddListing = () => {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
       );
       const data = await response.json();
-      console.log('geo data', data);
       geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
       geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
       geolocation.address = data.results[0]?.formatted_address ?? '';
@@ -123,49 +109,11 @@ const AddListing = () => {
       geolocation.address = address;
     }
 
-    const handleUploadImageToStore = async (image) => {
-      return new Promise((resolve, reject) => {
-        const fileName = `${user?.uid}-${image.name}-${uuidv4()}`;
-        const storageRef = ref(storage, fileName);
-        const uploadTask = uploadBytesResumable(storageRef, image);
-
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            // Observe state change events such as progress, pause, and resume
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-              case 'paused':
-                console.log('Upload is paused');
-                break;
-              case 'running':
-                console.log('Upload is running');
-                break;
-              // default:
-              //   return console.log('Upload is successful');
-            }
-          },
-          (error) => {
-            reject(error);
-          },
-          () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              resolve(downloadURL);
-            });
-          }
-        );
-      });
-    };
     const imgUrls = await Promise.all(
-      [...images].map((image) => handleUploadImageToStore(image))
+      [...images].map((image) => handleUploadImageToStorage(image))
     ).catch((error) => {
       setLoading(false);
-      console.log('Error Add Listing imgUrls: ', error);
+      console.log('😱 Error Add Listing imgUrls: ', error);
       toast.error('Images not uploaded!');
     });
 
@@ -173,15 +121,13 @@ const AddListing = () => {
       ...values,
       imgUrls,
       geolocation,
-      timestamp: serverTimestamp(),
-      userRef: user.uid,
     };
     delete listingData.images;
     delete listingData.latitude;
     delete listingData.longitude;
     !listingData.offer && delete listingData.offerPrice;
-    console.log('listingData', listingData);
-    const listingDoc = await addDoc(collection(db, 'listings'), listingData);
+    const listingDoc = await createListing(listingData);
+
     setLoading(false);
     toast.success('Listing created successfully!');
     navigate(`/listings/${type}/${listingDoc.id}`);

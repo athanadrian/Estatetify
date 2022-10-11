@@ -6,8 +6,12 @@ import {
   addDoc,
   setDoc,
   getDoc,
+  getDocs,
   updateDoc,
   collection,
+  query,
+  where,
+  orderBy,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -28,7 +32,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyBw8nwvPdtmypL_iG3Sp33guTtFY7f_rH0',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'estatetify-db.firebaseapp.com',
   projectId: 'estatetify-db',
   storageBucket: 'estatetify-db.appspot.com',
@@ -57,8 +61,12 @@ export {
   addDoc,
   setDoc,
   getDoc,
+  getDocs,
   updateDoc,
   collection,
+  query,
+  where,
+  orderBy,
   storage,
   ref,
   uploadBytesResumable,

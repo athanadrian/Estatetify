@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ListingProvider } from 'store/contexts/listingsContext';
+import { ProfileProvider } from 'store/contexts/profileContext';
+import { AuthProvider } from 'store/contexts/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <ProfileProvider>
+        <ListingProvider>
+          <App />
+        </ListingProvider>
+      </ProfileProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

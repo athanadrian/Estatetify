@@ -1,15 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import {
-  db,
-  auth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  serverTimestamp,
-  setDoc,
-  doc,
-} from 'firebase.config';
 import {
   AppIcon,
   AuthButton,
@@ -18,8 +9,8 @@ import {
   PageHeader,
 } from 'components';
 import defaultStyles from 'common';
-import { toast } from 'react-toastify';
-import { getFirebaseErrorMessage } from 'common/helpers';
+import { useAuthContext } from 'store/contexts';
+import { useAuth } from 'hooks/useAuth';
 
 const initialState = {
   fullName: '',
@@ -32,6 +23,8 @@ const singImage =
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { signUpUser } = useAuthContext();
   const [values, setValues] = useState(initialState);
   const [isHidden, setHidden] = useState(true);
 
@@ -46,27 +39,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { fullName, email, password } = values;
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await updateProfile(auth.currentUser, { displayName: fullName });
-      const user = userCredential.user;
-      const userData = { ...values };
-      delete userData.password;
-      userData.timestamp = serverTimestamp();
-
-      await setDoc(doc(db, 'users', user.uid), userData);
-      toast.success('Sign up was successful!');
-      navigate('/home');
-    } catch (error) {
-      console.log('😱 Error Sign-up: ', error.message);
-      toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
-    }
+    await signUpUser(values);
   };
+
+  useEffect(() => {
+    if (user) navigate('/home');
+  }, [user, navigate]);
 
   return (
     <section>
