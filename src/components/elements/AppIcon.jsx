@@ -1,6 +1,6 @@
 import React from 'react';
 
-import defaultStyles from 'common';
+import defaultStyles from 'common/config';
 
 const AppIcon = ({
   Icon = defaultStyles.icons.default,

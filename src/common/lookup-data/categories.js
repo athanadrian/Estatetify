@@ -1,4 +1,4 @@
-import defaultStyles from 'common';
+import defaultStyles from 'common/config';
 
 const categories = [
   {

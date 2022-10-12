@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useNavigate } from 'react-router';
-import { categories } from 'common/lookup-data';
+import { categories, floors } from 'common/lookup-data';
 import { useListingContext } from 'store/contexts';
 
 const initialValues = {
@@ -11,6 +11,7 @@ const initialValues = {
   title: '',
   category: null,
   squareFeet: 20,
+  floor: '',
   rooms: 1,
   beds: 1,
   bathrooms: 1,
@@ -27,8 +28,8 @@ const initialValues = {
 };
 
 const AddListing = () => {
-  const { handleUploadImageToStorage, createListing } = useListingContext();
   const navigate = useNavigate();
+  const { handleUploadImageToStorage, createListing } = useListingContext();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [isLoading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
@@ -37,6 +38,7 @@ const AddListing = () => {
     title,
     category,
     squareFeet,
+    floor,
     rooms,
     beds,
     bathrooms,
@@ -51,6 +53,11 @@ const AddListing = () => {
     offerPrice,
     images,
   } = values;
+
+  const showFloor =
+    values.category === 'condo' ||
+    values.category === 'office' ||
+    values.category === 'apartment';
 
   const handleChange = (e) => {
     let boolean = null;
@@ -186,7 +193,7 @@ const AddListing = () => {
             />
           </div>
           <div className='flex flex-col space-y-0.5 w-full'>
-            <Label text='squareFeet' />
+            <Label text='square Feet' />
             <FormInput
               name='squareFeet'
               value={squareFeet}
@@ -194,8 +201,19 @@ const AddListing = () => {
               max='500'
               type='number'
               onChange={handleChange}
-              placeholder='squareFeet'
+              placeholder='sq feet'
               required
+            />
+          </div>
+          <div className='flex flex-col space-y-0.5 w-full'>
+            <Label text='Floor' />
+            <FormSelect
+              value={floor}
+              name={'floor'}
+              className='capitalize'
+              onChange={handleChange}
+              required={showFloor}
+              listData={floors}
             />
           </div>
         </div>

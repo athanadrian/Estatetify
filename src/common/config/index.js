@@ -1,4 +1,4 @@
-import icons from './config/icons';
+import icons from './icons';
 
 const styles = {
   icons,

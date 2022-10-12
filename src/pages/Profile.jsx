@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import logo from 'images/estatetify-app.svg';
 import { AppIcon, FormInput, Label, PageHeader, ListingItem } from 'components';
-import defaultStyles from 'common';
+import defaultStyles from 'common/config';
 import { useAuth } from 'hooks/useAuth';
 import { useListingContext, useProfileContext } from 'store/contexts';
 
@@ -55,14 +55,6 @@ const Profile = () => {
     logOut();
     navigate('/home');
   };
-
-  const getUserListings = async () => {
-    //
-  };
-
-  useEffect(() => {
-    getUserListings();
-  }, []);
 
   return (
     <>

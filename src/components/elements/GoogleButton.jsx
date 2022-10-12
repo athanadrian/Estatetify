@@ -10,7 +10,7 @@ import {
   googleProvider,
 } from 'firebase.config';
 import AppIcon from './AppIcon';
-import defaultStyles from 'common';
+import defaultStyles from 'common/config';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage } from 'common/helpers';
 import { useNavigate } from 'react-router';

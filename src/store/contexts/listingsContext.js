@@ -16,7 +16,7 @@ import {
 } from 'firebase.config';
 
 import { useContext, createContext, useReducer } from 'react';
-
+import logo from 'images/estatetify-app.svg';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
@@ -137,6 +137,7 @@ const ListingProvider = ({ children }) => {
     const listingData = {
       ...listing,
       timestamp: serverTimestamp(),
+      userPhoto: user.photoUrl ?? logo,
       userRef: user.uid,
     };
     console.log('ctx listingData', listingData);

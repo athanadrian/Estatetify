@@ -8,7 +8,7 @@ import {
   GoogleButton,
   PageHeader,
 } from 'components';
-import defaultStyles from 'common';
+import defaultStyles from 'common/config';
 import { useAuth } from 'hooks/useAuth';
 import { useAuthContext } from 'store/contexts';
 
