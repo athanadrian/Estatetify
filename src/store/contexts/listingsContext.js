@@ -42,6 +42,7 @@ const initialState = {
   showAlert: false,
   alertText: '',
   alertType: '',
+  logo: 'https://firebasestorage.googleapis.com/v0/b/estatetify-db.appspot.com/o/logo512.png?alt=media&token=008a2f5b-86b5-4334-95c4-bf48071260b8',
   listing: {},
   listings: [],
 };
@@ -137,10 +138,9 @@ const ListingProvider = ({ children }) => {
     const listingData = {
       ...listing,
       timestamp: serverTimestamp(),
-      userPhoto: user.photoUrl ?? logo,
+      userPhoto: user.photoURL ?? logo,
       userRef: user.uid,
     };
-    console.log('ctx listingData', listingData);
     return await addDoc(collection(db, 'listings'), listingData);
   };
 

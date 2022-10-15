@@ -1,9 +1,4 @@
-import {
-  AiFillEyeInvisible,
-  AiFillEye,
-  AiOutlineEdit,
-  AiOutlineSave,
-} from 'react-icons/ai';
+import { AiFillEyeInvisible, AiFillEye, AiOutlineSave } from 'react-icons/ai';
 
 import { FcGoogle } from 'react-icons/fc';
 import { BsDashSquareDotted } from 'react-icons/bs';
@@ -18,13 +13,15 @@ import {
   FaBath,
   FaTrash,
   FaSignal,
+  FaInfoCircle,
 } from 'react-icons/fa';
-import { RiNumber1, RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
+import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
   MdOutlineAddBusiness,
   MdBedroomParent,
   MdLocationOn,
   MdEdit,
+  MdEmail,
 } from 'react-icons/md';
 
 import { LogoIcon } from './svgIcons';
@@ -54,9 +51,8 @@ const icons = {
   location: MdLocationOn,
   floors: FaSignal,
   squareFeet: BsDashSquareDotted,
-
-  //Floors
-  first: RiNumber1,
+  email: MdEmail,
+  info: FaInfoCircle,
 };
 
 export default icons;

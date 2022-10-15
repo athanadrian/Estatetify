@@ -63,10 +63,14 @@ const Profile = () => {
         <div className='flex flex-col justify-center items-center gap-5 w-full md:w-[50%] mx-auto px-3 mt-6'>
           <form onSubmit={handleSubmit}>
             <div
-              src={logo}
+              //src={logo}
               className='relative w-48 h-48 rounded-full mb-6 mx-auto'
             >
-              <img src={values.avatar || logo} alt='' />
+              <img
+                src={values.avatar || logo}
+                alt='avatar'
+                className='w-full rounded-full'
+              />
               <button
                 type='button'
                 className='flex justify-center items-center absolute px-3 py-0.5 bottom-0 -right-2 w-max rounded-xl bg-teal-500 hover:bg-teal-700 transition duration-150 ease-in-out active:bg-teal-800 text-white'
@@ -142,21 +146,23 @@ const Profile = () => {
           </form>
         </div>
       </section>
-      <div className='flex flex-col items-center max-w-6xl px-3 mt-6 mx-auto'>
+      <div className='flex flex-col justify-center items-center max-w-6xl 2xl:max-w-full px-3 mt-6 mx-auto'>
         {!isLoading && listings.length > 0 && (
           <>
             <h2 className='text-2xl text-darker tracking-wider font-bold text-center mb-6'>
               My Listings
             </h2>
-            <ul className='sm:grid my-3 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
-              {listings.map((listing) => (
-                <ListingItem
-                  key={listing.id}
-                  id={listing?.id}
-                  listing={listing?.data}
-                />
-              ))}
-            </ul>
+            <div className='flex justify-center items-center'>
+              <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full mx-auto'>
+                {listings.map((listing) => (
+                  <ListingItem
+                    key={listing.id}
+                    id={listing?.id}
+                    listing={listing?.data}
+                  />
+                ))}
+              </ul>
+            </div>
           </>
         )}
       </div>

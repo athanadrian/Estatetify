@@ -21,7 +21,7 @@ const GoogleButton = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-
+      console.log('google', user);
       const userDoc = doc(db, 'users', user.uid);
       const userRef = await getDoc(userDoc);
 
