@@ -8,6 +8,7 @@ import {
   getDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   collection,
   query,
   where,
@@ -28,6 +29,7 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 } from 'firebase/storage';
 
 // Your web app's Firebase configuration
@@ -63,6 +65,7 @@ export {
   getDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   collection,
   query,
   where,
@@ -71,4 +74,5 @@ export {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 };

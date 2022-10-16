@@ -7,9 +7,9 @@ import { floors } from 'common/lookup-data';
 import { useNavigate } from 'react-router';
 import Moment from 'react-moment';
 
-const ListingItem = ({ id, listing }) => {
+const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   const navigate = useNavigate();
-  const { editListing, deleteListing, logo } = useListingContext();
+  const { logo } = useListingContext();
   const [showOwnerInfo, setShowOwnerInfo] = useState(false);
   const showFloor =
     listing.category === 'condo' ||
@@ -154,14 +154,14 @@ const ListingItem = ({ id, listing }) => {
             <AppIcon
               Icon={defaultStyles.icons.delete}
               className='absolute bottom-4 right-2 h-4 cursor-pointer text-red-500'
-              onClick={() => deleteListing(listing.id)}
+              onClick={() => deleteListing(id)}
             />
           )}
           {editListing && (
             <AppIcon
               Icon={defaultStyles.icons.edit}
               className='absolute bottom-4 right-7 h-4 cursor-pointer text-dark'
-              onClick={() => editListing(listing.id)}
+              onClick={() => editListing(id)}
             />
           )}
         </div>

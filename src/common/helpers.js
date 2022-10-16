@@ -5,6 +5,12 @@ export const getFirebaseErrorMessage = (str) => {
   }
 };
 
+export const getFirestoreImage = (str) => {
+  if (str !== '' || undefined) {
+    return str.substring(str.indexOf('/o/') + 3, str.lastIndexOf('?'));
+  }
+};
+
 // return the properties of lookup-data object
 export const mapEnumObject = (label, enumList) => {
   let obj = {};

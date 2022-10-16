@@ -29,9 +29,9 @@ const initialValues = {
 
 const AddListing = () => {
   const navigate = useNavigate();
-  const { handleUploadImageToStorage, createListing } = useListingContext();
+  const { handleUploadImageToStorage, createListing, isLoading, setLoading } =
+    useListingContext();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
-  const [isLoading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const {
     type,
@@ -136,8 +136,8 @@ const AddListing = () => {
     const listingDoc = await createListing(listingData);
 
     setLoading(false);
-    toast.success('Listing created successfully!');
     navigate(`/listings/${type}/${listingDoc.id}`);
+    toast.success('Listing created successfully!');
   };
 
   if (isLoading) return <Loader />;

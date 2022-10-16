@@ -15,7 +15,8 @@ const initialValues = {
 const Profile = () => {
   const { user, logOut } = useAuth();
   const { updateUser } = useProfileContext();
-  const { listings, getMyListings, isLoading } = useListingContext();
+  const { listings, getMyListings, isLoading, editListing, deleteListing } =
+    useListingContext();
   const navigate = useNavigate();
 
   const [values, setValues] = useState(initialValues);
@@ -49,6 +50,20 @@ const Profile = () => {
 
   const handleEditInfo = () => {
     setEditable((preVal) => !preVal);
+  };
+
+  const handleEditListing = (id) => {
+    navigate(`/listings/edit/${id}`);
+  };
+
+  const handleDeleteListing = async (listing) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete listing ${listing?.data?.title}`
+      )
+    ) {
+      await deleteListing(listing);
+    }
   };
 
   const handleLogout = () => {
@@ -159,6 +174,8 @@ const Profile = () => {
                     key={listing.id}
                     id={listing?.id}
                     listing={listing?.data}
+                    editListing={() => handleEditListing(listing?.id)}
+                    deleteListing={() => handleDeleteListing(listing)}
                   />
                 ))}
               </ul>

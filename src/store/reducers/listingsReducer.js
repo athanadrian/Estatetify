@@ -1,6 +1,7 @@
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
@@ -9,6 +10,9 @@ import {
   GET_MY_LISTINGS_SUCCESS,
   GET_LISTING_BEGIN,
   GET_LISTING_SUCCESS,
+  CREATE_LISTING_BEGIN,
+  CREATE_LISTING_SUCCESS,
+  CREATE_LISTING_ERROR,
   EDIT_LISTING_BEGIN,
   EDIT_LISTING_SUCCESS,
   EDIT_LISTING_ERROR,
@@ -32,6 +36,13 @@ const reducer = (state, action) => {
       showAlert: false,
       alertType: '',
       alertText: '',
+    };
+  }
+
+  if (action.type === SET_LOADING) {
+    return {
+      ...state,
+      isLoading: action.payload.status,
     };
   }
 
@@ -107,6 +118,33 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === CREATE_LISTING_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'success',
+      alertText: 'listing successfully created',
+    };
+  }
+
+  if (action.type === CREATE_LISTING_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'error',
+      alertText: action.payload.msg,
+    };
+  }
+
+  if (action.type === CREATE_LISTING_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
   if (action.type === EDIT_LISTING_SUCCESS) {
     //const { listingDoc } = action.payload;
     // for (const key in listing?.configuration) {
@@ -131,6 +169,7 @@ const reducer = (state, action) => {
       alertText: action.payload.msg,
     };
   }
+
   if (action.type === DELETE_LISTING_BEGIN) {
     return {
       ...state,
@@ -139,9 +178,11 @@ const reducer = (state, action) => {
   }
 
   if (action.type === DELETE_LISTING_SUCCESS) {
+    console.log('reducer state listings', state.listings);
     const listings = state.listings.filter(
-      (listing) => listing._id !== action.payload.id
+      (listing) => listing.id !== action.payload.id
     );
+    console.log('reducer state listings after', listings);
     return {
       ...state,
       isLoading: false,

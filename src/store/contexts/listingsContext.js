@@ -4,9 +4,12 @@ import {
   storage,
   ref,
   uploadBytesResumable,
+  deleteObject,
   getDownloadURL,
   db,
+  doc,
   addDoc,
+  deleteDoc,
   getDocs,
   collection,
   query,
@@ -20,6 +23,7 @@ import logo from 'images/estatetify-app.svg';
 import {
   CLEAR_ALERT,
   DISPLAY_ALERT,
+  SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
@@ -28,6 +32,9 @@ import {
   GET_MY_LISTINGS_SUCCESS,
   GET_LISTING_BEGIN,
   GET_LISTING_SUCCESS,
+  CREATE_LISTING_BEGIN,
+  CREATE_LISTING_SUCCESS,
+  CREATE_LISTING_ERROR,
   EDIT_LISTING_BEGIN,
   EDIT_LISTING_SUCCESS,
   EDIT_LISTING_ERROR,
@@ -36,6 +43,8 @@ import {
   DELETE_LISTING_ERROR,
 } from '../actions/listingsActions';
 import reducer from '../reducers/listingsReducer';
+import { toast } from 'react-toastify';
+import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 
 const initialState = {
   isLoading: false,
@@ -52,10 +61,15 @@ const ListingContext = createContext();
 const ListingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useAuth();
+
   const clearAlert = () => {
     setTimeout(() => {
       dispatch({ type: CLEAR_ALERT });
     }, 3000);
+  };
+
+  const setLoading = (status) => {
+    dispatch({ type: SET_LOADING, payload: { status } });
   };
 
   const displayAlert = () => {
@@ -135,45 +149,75 @@ const ListingProvider = ({ children }) => {
   };
 
   const createListing = async (listing) => {
-    const listingData = {
-      ...listing,
-      timestamp: serverTimestamp(),
-      userPhoto: user.photoURL ?? logo,
-      userRef: user.uid,
-    };
-    return await addDoc(collection(db, 'listings'), listingData);
+    dispatch({ type: CREATE_LISTING_BEGIN });
+    try {
+      const listingData = {
+        ...listing,
+        timestamp: serverTimestamp(),
+        userPhoto: user.photoURL ?? logo,
+        userRef: user.uid,
+      };
+      dispatch({
+        type: CREATE_LISTING_SUCCESS,
+      });
+      return await addDoc(collection(db, 'listings'), listingData);
+    } catch (error) {
+      dispatch({
+        type: CREATE_LISTING_ERROR,
+        payload: { msg: error.message },
+      });
+      console.log('😱 Error Creating listing: ', error.message);
+      toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
+    }
   };
 
   const editListing = async (id, listing) => {
-    dispatch({ type: EDIT_LISTING_BEGIN });
-    try {
-      // dispatch({
-      //   type: EDIT_LISTING_SUCCESS,
-      //   payload: { listing },
-      // });
-    } catch (error) {
-      dispatch({
-        type: EDIT_LISTING_ERROR,
-        payload: { msg: error.message },
-      });
-    }
-    clearAlert();
+    console.log('editing listing', id);
+    // dispatch({ type: EDIT_LISTING_BEGIN });
+    // try {
+    //   // dispatch({
+    //   //   type: EDIT_LISTING_SUCCESS,
+    //   //   payload: { listing },
+    //   // });
+    // } catch (error) {
+    //   dispatch({
+    //     type: EDIT_LISTING_ERROR,
+    //     payload: { msg: error.message },
+    //   });
+    // }
   };
 
-  const deleteListing = async (id) => {
+  const deleteListing = async (listing) => {
     dispatch({ type: DELETE_LISTING_BEGIN });
     try {
-      // dispatch({
-      //   type: DELETE_LISTING_SUCCESS,
-      //   payload: { id },
-      // });
+      await deleteDoc(doc(db, 'listings', listing?.id)).then(() => {
+        // Create a reference to the file to delete
+        listing?.data?.imgUrls.forEach(async (img) => {
+          const imgToDelete = getFirestoreImage(img);
+          const fileRef = ref(storage, imgToDelete);
+          // Delete the file
+          return await deleteObject(fileRef)
+            .then(() => {
+              console.log('File deleted successfully');
+            })
+            .catch((error) => {
+              console.log('Uh-oh, an error occurred!');
+            });
+        });
+      });
+      toast.success('Listing deleted successfully!');
+      dispatch({
+        type: DELETE_LISTING_SUCCESS,
+        payload: { id: listing?.id },
+      });
     } catch (error) {
       dispatch({
         type: DELETE_LISTING_ERROR,
         payload: { msg: error.message },
       });
+      console.log('😱 Error Deleting listing: ', error.message);
+      toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
-    clearAlert();
   };
 
   const handleUploadImageToStorage = async (image) => {
@@ -218,6 +262,7 @@ const ListingProvider = ({ children }) => {
       value={{
         ...state,
         displayAlert,
+        setLoading,
         getListings,
         getMyListings,
         getListingsByUser,

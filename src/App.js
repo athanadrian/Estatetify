@@ -10,6 +10,7 @@ import {
   SignUp,
   ForgotPassword,
   AddListing,
+  EditListing,
 } from './pages';
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
           <Route element={<UserRoute />}>
             <Route path='/profile' element={<Profile />} />
             <Route path='/listings/add' element={<AddListing />} />
+            <Route path='/listings/edit/:listingId' element={<EditListing />} />
           </Route>
           <Route path='/listings/:type/:listingId' element={<Listings />} />
           <Route path='/offers' element={<Offers />} />
