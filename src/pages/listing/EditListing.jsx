@@ -1,10 +1,11 @@
 import { FormInput, FormSelect, Label, Loader, PageHeader } from 'components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { categories, floors } from 'common/lookup-data';
 import { useListingContext } from 'store/contexts';
+import { useAuth } from 'hooks/useAuth';
 
 const initialValues = {
   type: 'rent',
@@ -29,9 +30,17 @@ const initialValues = {
 
 const EditListing = () => {
   const navigate = useNavigate();
-  const { handleUploadImageToStorage, createListing } = useListingContext();
+  const { listingId } = useParams();
+  const { user, logOut } = useAuth();
+  const {
+    handleUploadImageToStorage,
+    editListing,
+    isLoading,
+    setLoading,
+    getListing,
+    listing,
+  } = useListingContext();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
-  const [isLoading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const {
     type,
@@ -133,18 +142,42 @@ const EditListing = () => {
     delete listingData.latitude;
     delete listingData.longitude;
     !listingData.offer && delete listingData.offerPrice;
-    const listingDoc = await createListing(listingData);
+    await editListing(listingId, listingData);
 
+    navigate(`/listings/${type}/${listingId}`);
     setLoading(false);
-    toast.success('Listing created successfully!');
-    navigate(`/listings/${type}/${listingDoc.id}`);
+    toast.success('Listing updated successfully!');
   };
+
+  useEffect(() => {
+    const fetchListing = async () => {
+      await getListing(listingId);
+    };
+    fetchListing();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listingId]);
+
+  useEffect(() => {
+    if (listing) setValues(listing);
+    // else {
+    //   navigate('/home');
+    //   toast.error('Listing does not exist!');
+    // }
+  }, [listing]);
+
+  useEffect(() => {
+    if (listing && listing?.userRef !== user?.uid) {
+      logOut();
+      navigate('/sign-in');
+      toast.error(`You don't have permissions for that action!`);
+    }
+  }, [listing, user?.uid, logOut, navigate]);
 
   if (isLoading) return <Loader />;
 
   return (
     <main className='max-w-md mx-auto px-2'>
-      <PageHeader text='Add your Property' />
+      <PageHeader text='Edit Property' />
       <form onSubmit={handleSubmit}>
         <Label text='Sell / Rent' />
         <div className='flex justify-center items-center'>
@@ -455,7 +488,7 @@ const EditListing = () => {
           type='submit'
           className='mb-6 w-full px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'
         >
-          Add Listing
+          Update Listing
         </button>
       </form>
     </main>

@@ -22,11 +22,11 @@ const GoogleButton = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       console.log('google', user);
-      const userDoc = doc(db, 'users', user.uid);
-      const userRef = await getDoc(userDoc);
+      const userRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userRef);
 
-      if (!userRef.exists()) {
-        await setDoc(userDoc, {
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
           name: user.displayName,
           email: user.email,
           avatar: user.photoURL,

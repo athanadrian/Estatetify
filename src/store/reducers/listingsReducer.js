@@ -98,12 +98,6 @@ const reducer = (state, action) => {
 
   if (action.type === GET_LISTING_SUCCESS) {
     const listing = action.payload.listing;
-
-    // if (listing) {
-    //   for (const key in listing?.configuration) {
-    //     listing[key] = listing?.configuration[key];
-    //   }
-    // }
     return {
       ...state,
       isLoading: false,
@@ -146,7 +140,6 @@ const reducer = (state, action) => {
   }
 
   if (action.type === EDIT_LISTING_SUCCESS) {
-    //const { listingDoc } = action.payload;
     // for (const key in listing?.configuration) {
     //   listing[key] = listing?.configuration[key];
     // }
@@ -156,7 +149,6 @@ const reducer = (state, action) => {
       showAlert: true,
       alertType: 'success',
       alertText: 'listing successfully updated',
-      //listingDoc,
     };
   }
 
@@ -178,11 +170,9 @@ const reducer = (state, action) => {
   }
 
   if (action.type === DELETE_LISTING_SUCCESS) {
-    console.log('reducer state listings', state.listings);
     const listings = state.listings.filter(
       (listing) => listing.id !== action.payload.id
     );
-    console.log('reducer state listings after', listings);
     return {
       ...state,
       isLoading: false,

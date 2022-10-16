@@ -9,6 +9,8 @@ import {
   db,
   doc,
   addDoc,
+  getDoc,
+  updateDoc,
   deleteDoc,
   getDocs,
   collection,
@@ -52,7 +54,7 @@ const initialState = {
   alertText: '',
   alertType: '',
   logo: 'https://firebasestorage.googleapis.com/v0/b/estatetify-db.appspot.com/o/logo512.png?alt=media&token=008a2f5b-86b5-4334-95c4-bf48071260b8',
-  listing: {},
+  listing: undefined,
   listings: [],
 };
 
@@ -137,11 +139,13 @@ const ListingProvider = ({ children }) => {
     if (listingId) {
       dispatch({ type: GET_LISTING_BEGIN });
       try {
-        // const { data } = await clientApi.get(`/buildings/${buildingId}`);
-        // dispatch({
-        //   type: GET_LISTING_SUCCESS,
-        //   payload: { listing: data.listing },
-        // });
+        const listingRef = doc(db, 'listings', listingId);
+        const listingDoc = await getDoc(listingRef);
+        if (listingDoc.exists())
+          dispatch({
+            type: GET_LISTING_SUCCESS,
+            payload: { listing: { ...listingDoc.data() } },
+          });
       } catch (error) {
         console.log('😱 Error get building: ', error.message);
       }
@@ -172,19 +176,30 @@ const ListingProvider = ({ children }) => {
   };
 
   const editListing = async (id, listing) => {
-    console.log('editing listing', id);
-    // dispatch({ type: EDIT_LISTING_BEGIN });
-    // try {
-    //   // dispatch({
-    //   //   type: EDIT_LISTING_SUCCESS,
-    //   //   payload: { listing },
-    //   // });
-    // } catch (error) {
-    //   dispatch({
-    //     type: EDIT_LISTING_ERROR,
-    //     payload: { msg: error.message },
-    //   });
-    // }
+    dispatch({ type: EDIT_LISTING_BEGIN });
+    try {
+      const listingData = {
+        ...listing,
+        timestamp: serverTimestamp(),
+        userPhoto: user.photoURL ?? logo,
+        userRef: user.uid,
+      };
+      const updatedListing = await updateDoc(
+        doc(db, 'listings', id),
+        listingData
+      );
+      dispatch({
+        type: EDIT_LISTING_SUCCESS,
+        payload: { listing: updatedListing },
+      });
+    } catch (error) {
+      dispatch({
+        type: EDIT_LISTING_ERROR,
+        payload: { msg: error.message },
+      });
+      console.log('😱 Error Editing listing: ', error.message);
+      toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
+    }
   };
 
   const deleteListing = async (listing) => {

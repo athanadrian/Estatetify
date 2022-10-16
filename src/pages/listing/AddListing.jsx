@@ -135,8 +135,8 @@ const AddListing = () => {
     !listingData.offer && delete listingData.offerPrice;
     const listingDoc = await createListing(listingData);
 
-    setLoading(false);
     navigate(`/listings/${type}/${listingDoc.id}`);
+    setLoading(false);
     toast.success('Listing created successfully!');
   };
 
