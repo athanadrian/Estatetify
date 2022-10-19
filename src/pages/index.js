@@ -5,5 +5,6 @@ export { default as SignIn } from './auth/SignIn';
 export { default as SignUp } from './auth/SignUp';
 export { default as ForgotPassword } from './auth/ForgotPassword';
 export { default as Listing } from './listing/Listing';
+export { default as Listings } from './listing/Listings';
 export { default as AddListing } from './listing/AddListing';
 export { default as EditListing } from './listing/EditListing';

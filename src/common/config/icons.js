@@ -14,6 +14,7 @@ import {
   FaTrash,
   FaSignal,
   FaInfoCircle,
+  FaShareAlt,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
@@ -53,6 +54,7 @@ const icons = {
   squareFeet: BsDashSquareDotted,
   email: MdEmail,
   info: FaInfoCircle,
+  social: FaShareAlt,
 };
 
 export default icons;

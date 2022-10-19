@@ -4,6 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  background-color: #f3f4f6;
+:root {
+  /* dark shades of primary color*/
+  --primary: '#5E8EA2';
+  --night: '#2D4E5A';
+  --dark: '#31515E';
+  --darker: '#1A3D4B';
+  --light: '#B9D5DE';
+  --bg-main: #f3f4f6;
+}
+
+body {
+  background-color: var(--bg-main);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  color: #b9d5de;
+}
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+  background: #b9d5de !important;
 }

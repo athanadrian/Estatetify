@@ -136,15 +136,15 @@ const ListingProvider = ({ children }) => {
   };
 
   const getListing = async (listingId) => {
+    dispatch({ type: GET_LISTING_BEGIN });
     if (listingId) {
-      dispatch({ type: GET_LISTING_BEGIN });
       try {
         const listingRef = doc(db, 'listings', listingId);
         const listingDoc = await getDoc(listingRef);
         if (listingDoc.exists())
-          dispatch({
+          return dispatch({
             type: GET_LISTING_SUCCESS,
-            payload: { listing: { ...listingDoc.data() } },
+            payload: { listing: listingDoc.data() },
           });
       } catch (error) {
         console.log('😱 Error get building: ', error.message);

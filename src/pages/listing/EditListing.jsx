@@ -7,28 +7,27 @@ import { categories, floors } from 'common/lookup-data';
 import { useListingContext } from 'store/contexts';
 import { useAuth } from 'hooks/useAuth';
 
-const initialValues = {
-  type: 'rent',
-  title: '',
-  category: null,
-  squareFeet: 20,
-  floor: '',
-  rooms: 1,
-  beds: 1,
-  bathrooms: 1,
-  furnished: true,
-  parking: false,
-  offer: false,
-  address: '',
-  latitude: 0,
-  longitude: 0,
-  description: '',
-  regularPrice: 0,
-  offerPrice: 0,
-  images: {},
-};
-
 const EditListing = () => {
+  const initialValues = {
+    type: 'rent',
+    title: '',
+    category: null,
+    squareFeet: 20,
+    floor: '',
+    rooms: 1,
+    beds: 1,
+    bathrooms: 1,
+    furnished: true,
+    parking: false,
+    offer: false,
+    address: '',
+    latitude: 0,
+    longitude: 0,
+    description: '',
+    regularPrice: 0,
+    offerPrice: 0,
+    images: {},
+  };
   const navigate = useNavigate();
   const { listingId } = useParams();
   const { user, logOut } = useAuth();
@@ -40,6 +39,8 @@ const EditListing = () => {
     getListing,
     listing,
   } = useListingContext();
+  console.log('listing', listing);
+  console.log('user', user);
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [values, setValues] = useState(initialValues);
   const {
@@ -150,15 +151,13 @@ const EditListing = () => {
   };
 
   useEffect(() => {
-    const fetchListing = async () => {
-      await getListing(listingId);
-    };
-    fetchListing();
+    getListing(listingId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId]);
 
   useEffect(() => {
-    if (listing) setValues(listing);
+    if (listing !== undefined)
+      setValues((newValues) => ({ ...newValues, ...listing }));
     // else {
     //   navigate('/home');
     //   toast.error('Listing does not exist!');
@@ -166,12 +165,17 @@ const EditListing = () => {
   }, [listing]);
 
   useEffect(() => {
-    if (listing && listing?.userRef !== user?.uid) {
-      logOut();
-      navigate('/sign-in');
+    if (
+      listing !== undefined &&
+      user !== undefined &&
+      listing?.userRef !== user?.uid
+    ) {
+      //TODO
+      // logOut();
+      // navigate('/sign-in');
       toast.error(`You don't have permissions for that action!`);
     }
-  }, [listing, user?.uid, logOut, navigate]);
+  }, [listing, user, logOut, navigate]);
 
   if (isLoading) return <Loader />;
 
