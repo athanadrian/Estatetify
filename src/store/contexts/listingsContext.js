@@ -147,7 +147,7 @@ const ListingProvider = ({ children }) => {
             payload: { listing: listingDoc.data() },
           });
       } catch (error) {
-        console.log('😱 Error get building: ', error.message);
+        console.log('😱 Error get listing: ', error.message);
       }
     }
   };

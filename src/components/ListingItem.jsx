@@ -40,7 +40,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
       >
         <div>{listing?.timestamp.toDate()}</div>
       </Moment>
-      <div className='uppercase text-white bg-darker  px-4 py-1 text-xs rounded absolute top-3 right-3 z-10 shadow-lg'>
+      <div className='uppercase text-white bg-darker px-4 py-1 text-xs rounded absolute top-3 right-3 z-10 shadow-lg'>
         FOR {listing.type}
       </div>
       {showOwnerInfo && (
@@ -137,13 +137,9 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
         <p className={`${listing.offer ? offerStyle : regularStyle}`}>
           €{displayPrice(listing.regularPrice)}
         </p>
-
         {listing.offer && (
           <p className={`text-[#457b9d] mx-2 mt-2 font-semibold`}>
-            €
-            {listing.offerPrice
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            €{displayPrice(listing.offerPrice)}
           </p>
         )}
         <span className='text-[#457b9d] mt-2 font-semibold'>

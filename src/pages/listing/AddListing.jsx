@@ -241,7 +241,8 @@ const AddListing = () => {
               type='number'
               onChange={handleChange}
               placeholder='beds'
-              required
+              required={furnished}
+              disabled={!furnished}
             />
           </div>
           <div className='flex flex-col space-y-0.5 w-full'>

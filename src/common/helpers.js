@@ -24,5 +24,8 @@ export const mapEnumObject = (label, enumList) => {
 
 // display money value
 export const displayPrice = (value) => {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); //+ '.00';
+  if (value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); //+ '.00';
+  }
+  return 0;
 };

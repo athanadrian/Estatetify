@@ -125,18 +125,19 @@ const EditListing = () => {
       geolocation.lng = longitude;
       geolocation.address = address;
     }
-
-    const imgUrls = await Promise.all(
-      [...images].map((image) => handleUploadImageToStorage(image))
-    ).catch((error) => {
-      setLoading(false);
-      console.log('😱 Error Add Listing imgUrls: ', error);
-      toast.error('Images not uploaded!');
-    });
-
+    let imgUrls = [];
+    if (listing.imgUrls.length === 0) {
+      imgUrls = await Promise.all(
+        [...images].map((image) => handleUploadImageToStorage(image))
+      ).catch((error) => {
+        setLoading(false);
+        console.log('😱 Error Add Listing imgUrls: ', error);
+        toast.error('Images not uploaded!');
+      });
+    }
     const listingData = {
       ...values,
-      imgUrls,
+      imgUrls: listing.imgUrls.length === 0 ? imgUrls : listing.imgUrls,
       geolocation,
     };
     delete listingData.images;
@@ -278,7 +279,8 @@ const EditListing = () => {
               type='number'
               onChange={handleChange}
               placeholder='beds'
-              required
+              required={furnished}
+              disabled={!furnished}
             />
           </div>
           <div className='flex flex-col space-y-0.5 w-full'>
@@ -482,7 +484,7 @@ const EditListing = () => {
               name='images'
               accept='.jpg,.png,.jpeg'
               multiple
-              required
+              required={listing?.imgUrls.length === 0}
               onChange={handleChange}
               className='mt-3 mb-6 block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-7 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-dark file:text-white hover:file:bg-darker hover:file:shadow-lg transition duration-150 ease-in-out'
             />
