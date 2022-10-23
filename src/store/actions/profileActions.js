@@ -1,5 +1,6 @@
-export const DISPLAY_ALERT = 'SHOW_ALERT';
-export const CLEAR_ALERT = 'CLEAR_ALERT';
+export const GET_USER_BEGIN = 'GET_USER_BEGIN';
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const GET_USER_ERROR = 'GET_USER_ERROR';
 
 export const UPDATE_USER_BEGIN = 'UPDATE_USER_BEGIN';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';

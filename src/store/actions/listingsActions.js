@@ -1,5 +1,3 @@
-export const DISPLAY_ALERT = 'SHOW_ALERT';
-export const CLEAR_ALERT = 'CLEAR_ALERT';
 export const SET_LOADING = 'SET_LOADING';
 
 export const GET_ALL_LISTINGS_BEGIN = 'GET_ALL_LISTINGS_BEGIN';

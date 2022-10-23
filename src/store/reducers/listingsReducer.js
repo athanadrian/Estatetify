@@ -1,6 +1,4 @@
 import {
-  CLEAR_ALERT,
-  DISPLAY_ALERT,
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
@@ -22,23 +20,6 @@ import {
 } from '../actions/listingsActions';
 
 const reducer = (state, action) => {
-  if (action.type === DISPLAY_ALERT) {
-    return {
-      ...state,
-      showAlert: true,
-      alertType: 'error',
-      alertText: 'Please provide all values!',
-    };
-  }
-  if (action.type === CLEAR_ALERT) {
-    return {
-      ...state,
-      showAlert: false,
-      alertType: '',
-      alertText: '',
-    };
-  }
-
   if (action.type === SET_LOADING) {
     return {
       ...state,
@@ -116,9 +97,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'success',
-      alertText: 'listing successfully created',
     };
   }
 
@@ -126,9 +104,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'error',
-      alertText: action.payload.msg,
     };
   }
 
@@ -146,9 +121,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'success',
-      alertText: 'listing successfully updated',
     };
   }
 
@@ -156,9 +128,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'error',
-      alertText: action.payload.msg,
     };
   }
 
@@ -176,9 +145,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'success',
-      alertText: 'listing deleted successfully',
       listings,
     };
   }
@@ -187,9 +153,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'error',
-      alertText: action.payload.msg,
     };
   }
 

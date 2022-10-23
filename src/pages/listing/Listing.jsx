@@ -10,13 +10,16 @@ import SwiperCore, {
 import 'swiper/css/bundle';
 
 import defaultStyles from 'common/config';
-import { AppIcon, Loader } from 'components';
-import { useListingContext } from 'store/contexts';
+import { AppButton, AppIcon, ContactModal, Loader } from 'components';
+import { useCommonContext, useListingContext } from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
 import { floors } from 'common/lookup-data';
+import { useAuth } from 'hooks/useAuth';
 
 const Listing = () => {
   const { listingId } = useParams();
+  const { user } = useAuth();
+  const { openModal } = useCommonContext();
   const { getListing, listing, isLoading } = useListingContext();
   const [linkCopied, setLinkCopied] = useState(false);
 
@@ -88,7 +91,7 @@ const Listing = () => {
         )}
       </>
       <div className='flex flex-col md:flex-row max-w-6xl lg:mx-auto rounded p-4 bg-white lg:space-x-5'>
-        <div className='w-full h-[200px] '>
+        <div className='w-full '>
           <p className='text-[#457b9d] mx-2 text-2xl mt-2 font-semibold'>
             {listing?.title}
           </p>
@@ -202,9 +205,17 @@ const Listing = () => {
               </li>
             </ul>
           </div>
+          {user?.uid !== listing?.userRef && (
+            <AppButton
+              type='button'
+              onClick={openModal}
+              label='Contact Owner'
+            />
+          )}
         </div>
-        <div className='bg-red-500 w-full h-[200px] z-10 overflow-x-hidden'></div>
+        <div className='bg-red-500 w-full z-10 overflow-x-hidden'></div>
       </div>
+      <ContactModal />
     </main>
   );
 };

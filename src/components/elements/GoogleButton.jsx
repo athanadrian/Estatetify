@@ -21,15 +21,14 @@ const GoogleButton = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      console.log('google', user);
+
       const userRef = doc(db, 'users', user.uid);
       const userDoc = await getDoc(userRef);
 
       if (!userDoc.exists()) {
         await setDoc(userRef, {
-          name: user.displayName,
+          fullName: user.displayName,
           email: user.email,
-          avatar: user.photoURL,
           timestamp: serverTimestamp(),
         });
         return toast.success(`User signed-up successfully!`);

@@ -10,32 +10,41 @@ import { useListingContext, useProfileContext } from 'store/contexts';
 const initialValues = {
   fullName: '',
   email: '',
+  avatar: '',
 };
 
 const Profile = () => {
   const { user, logOut } = useAuth();
-  const { updateUser } = useProfileContext();
-  const { listings, getMyListings, isLoading, editListing, deleteListing } =
+  const { getProfileUser, updateUser, profileUser } = useProfileContext();
+  const { listings, getMyListings, isLoading, deleteListing } =
     useListingContext();
   const navigate = useNavigate();
 
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
 
+  const { fullName, email, avatar } = values;
   useEffect(() => {
-    if (user) {
+    if (profileUser !== undefined) {
       setValues((preValues) => ({
         ...preValues,
-        fullName: user?.displayName,
-        email: user?.email,
-        avatar: user?.photoURL,
+        fullName: profileUser?.fullName,
+        email: profileUser?.email,
+        avatar: profileUser?.avatar,
       }));
-      getMyListings();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileUser]);
+
+  useEffect(() => {
+    if (user !== undefined) getMyListings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  console.log('listings', listings);
+  useEffect(() => {
+    if (user !== undefined) getProfileUser(user?.uid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,12 +86,9 @@ const Profile = () => {
         <PageHeader text='Profile' />
         <div className='flex flex-col justify-center items-center gap-5 w-full md:w-[50%] mx-auto px-3 mt-6'>
           <form onSubmit={handleSubmit}>
-            <div
-              //src={logo}
-              className='relative w-48 h-48 rounded-full mb-6 mx-auto'
-            >
+            <div className='relative w-48 h-48 rounded-full mb-6 mx-auto'>
               <img
-                src={values.avatar || logo}
+                src={avatar || logo}
                 alt='avatar'
                 className='w-full rounded-full'
               />
@@ -99,7 +105,7 @@ const Profile = () => {
               type='text'
               name='fullName'
               placeholder='Full Name'
-              value={values.fullName}
+              value={fullName}
               onChange={handleChange}
               disabled={!isEditable}
             />
@@ -107,7 +113,7 @@ const Profile = () => {
               type='email'
               name='email'
               placeholder='Full Name'
-              value={values.email}
+              value={email}
               onChange={handleChange}
               className='mt-6'
               disabled
@@ -118,7 +124,6 @@ const Profile = () => {
             >
               <AppIcon
                 Icon={defaultStyles.icons.add_property}
-                //size={28}
                 className='text-light border-light border rounded-full p-1 text-xl'
               />
               <span className='ml-1'> Sell & rent a property</span>

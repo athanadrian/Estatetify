@@ -1,26 +1,32 @@
 import {
-  CLEAR_ALERT,
-  DISPLAY_ALERT,
+  GET_USER_BEGIN,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
 } from '../actions/profileActions';
 
 const reducer = (state, action) => {
-  if (action.type === DISPLAY_ALERT) {
+  if (action.type === GET_USER_BEGIN) {
     return {
       ...state,
-      showAlert: true,
-      alertType: 'error',
-      alertText: 'Please provide all values!',
+      isLoading: true,
     };
   }
-  if (action.type === CLEAR_ALERT) {
+
+  if (action.type === GET_USER_SUCCESS) {
     return {
       ...state,
-      showAlert: false,
-      alertType: '',
-      alertText: '',
+      isLoading: false,
+      profileUser: action.payload.profileUser,
+    };
+  }
+
+  if (action.type === GET_USER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
     };
   }
 
@@ -35,7 +41,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      listings: action.payload.listings,
     };
   }
 
@@ -43,9 +48,6 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      showAlert: true,
-      alertType: 'error',
-      alertText: action.payload.msg,
     };
   }
 

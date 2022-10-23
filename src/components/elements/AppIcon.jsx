@@ -4,8 +4,8 @@ import defaultStyles from 'common/config';
 
 const AppIcon = ({
   Icon = defaultStyles.icons.default,
-  color, //= defaultStyles.colors.red,
-  iconColor, // = defaultStyles.colors.default,
+  color,
+  iconColor,
   size,
   link,
   tooltip,

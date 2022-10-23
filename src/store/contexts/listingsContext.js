@@ -21,10 +21,7 @@ import {
 } from 'firebase.config';
 
 import { useContext, createContext, useReducer } from 'react';
-import logo from 'images/estatetify-app.svg';
 import {
-  CLEAR_ALERT,
-  DISPLAY_ALERT,
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
@@ -50,9 +47,6 @@ import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 
 const initialState = {
   isLoading: false,
-  showAlert: false,
-  alertText: '',
-  alertType: '',
   logo: 'https://firebasestorage.googleapis.com/v0/b/estatetify-db.appspot.com/o/logo512.png?alt=media&token=008a2f5b-86b5-4334-95c4-bf48071260b8',
   listing: undefined,
   listings: [],
@@ -64,28 +58,26 @@ const ListingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useAuth();
 
-  const clearAlert = () => {
-    setTimeout(() => {
-      dispatch({ type: CLEAR_ALERT });
-    }, 3000);
-  };
-
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
 
-  const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT });
-    clearAlert();
-  };
-
-  const getListings = async () => {
+  const getAllListings = async () => {
     dispatch({ type: GET_ALL_LISTINGS_BEGIN });
     try {
-      // dispatch({
-      //   type: GET_ALL_LISTINGS_SUCCESS,
-      //   payload: { listings },
-      // });
+      const listingsRef = collection(db, 'listings');
+      const listingsDocs = await getDocs(listingsRef);
+      let listings = [];
+      listingsDocs.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      dispatch({
+        type: GET_ALL_LISTINGS_SUCCESS,
+        payload: { listings },
+      });
     } catch (error) {
       console.log('😱 Error get listings: ', error.message);
     }
@@ -93,24 +85,28 @@ const ListingProvider = ({ children }) => {
 
   const getListingsByUser = async (userId) => {
     dispatch({ type: GET_LISTINGS_BY_USER_BEGIN });
-    const listingsRef = collection(db, 'listings');
-    const listingQuery = query(
-      listingsRef,
-      where('userRef', '==', userId),
-      orderBy('timestamp', 'desc')
-    );
-    const listingSnap = await getDocs(listingQuery);
-    let listings = [];
-    listingSnap.forEach((listingDoc) => {
-      return listings.push({
-        id: listingDoc.id,
-        data: listingDoc.data(),
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('userRef', '==', userId),
+        orderBy('timestamp', 'desc')
+      );
+      const listingSnap = await getDocs(listingQuery);
+      let listings = [];
+      listingSnap.forEach((listingDoc) => {
+        return listings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
       });
-    });
-    dispatch({
-      type: GET_MY_LISTINGS_SUCCESS,
-      payload: { listings },
-    });
+      dispatch({
+        type: GET_LISTINGS_BY_USER_SUCCESS,
+        payload: { listings },
+      });
+    } catch (error) {
+      console.log('😱 Error get User listing: ', error.message);
+    }
   };
 
   const getMyListings = async () => {
@@ -158,7 +154,6 @@ const ListingProvider = ({ children }) => {
       const listingData = {
         ...listing,
         timestamp: serverTimestamp(),
-        userPhoto: user.photoURL ?? logo,
         userRef: user.uid,
       };
       dispatch({
@@ -168,7 +163,6 @@ const ListingProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: CREATE_LISTING_ERROR,
-        payload: { msg: error.message },
       });
       console.log('😱 Error Creating listing: ', error.message);
       toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
@@ -181,7 +175,6 @@ const ListingProvider = ({ children }) => {
       const listingData = {
         ...listing,
         timestamp: serverTimestamp(),
-        userPhoto: user.photoURL ?? logo,
         userRef: user.uid,
       };
       const updatedListing = await updateDoc(
@@ -195,7 +188,6 @@ const ListingProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: EDIT_LISTING_ERROR,
-        payload: { msg: error.message },
       });
       console.log('😱 Error Editing listing: ', error.message);
       toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
@@ -228,7 +220,6 @@ const ListingProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: DELETE_LISTING_ERROR,
-        payload: { msg: error.message },
       });
       console.log('😱 Error Deleting listing: ', error.message);
       toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
@@ -276,9 +267,8 @@ const ListingProvider = ({ children }) => {
     <ListingContext.Provider
       value={{
         ...state,
-        displayAlert,
         setLoading,
-        getListings,
+        getAllListings,
         getMyListings,
         getListingsByUser,
         getListing,

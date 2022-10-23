@@ -13,8 +13,6 @@ import {
 import { useContext, createContext, useReducer } from 'react';
 
 import {
-  CLEAR_ALERT,
-  DISPLAY_ALERT,
   SIGN_UP_USER_BEGIN,
   SIGN_UP_USER_SUCCESS,
   SIGN_UP_USER_ERROR,
@@ -31,25 +29,12 @@ import { getFirebaseErrorMessage } from 'common/helpers';
 
 const initialState = {
   isLoading: false,
-  showAlert: false,
-  alertText: '',
-  alertType: '',
 };
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const clearAlert = () => {
-    setTimeout(() => {
-      dispatch({ type: CLEAR_ALERT });
-    }, 3000);
-  };
-
-  const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT });
-    clearAlert();
-  };
 
   const signUpUser = async (signUpData) => {
     const { fullName, email, password } = signUpData;
@@ -70,7 +55,7 @@ const AuthProvider = ({ children }) => {
       dispatch({ type: SIGN_UP_USER_SUCCESS });
       toast.success('Sign up was successful!');
     } catch (error) {
-      dispatch({ type: SIGN_UP_USER_ERROR, payload: { msg: error.message } });
+      dispatch({ type: SIGN_UP_USER_ERROR });
       console.log('😱 Error Sign-up: ', error.message);
       toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
@@ -91,7 +76,7 @@ const AuthProvider = ({ children }) => {
         );
       }
     } catch (error) {
-      dispatch({ type: SIGN_IN_USER_ERROR, payload: { msg: error.message } });
+      dispatch({ type: SIGN_IN_USER_ERROR });
       console.log('😱 Error Sign-in: ', error.message);
       toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
@@ -104,7 +89,7 @@ const AuthProvider = ({ children }) => {
       dispatch({ type: RESET_PASSWORD_SUCCESS });
       toast.success('Email was sent');
     } catch (error) {
-      dispatch({ type: RESET_PASSWORD_ERROR, payload: { msg: error.message } });
+      dispatch({ type: RESET_PASSWORD_ERROR });
       console.log('😱 Error Forgot-Password: ', error.message);
       return toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
@@ -114,7 +99,6 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         ...state,
-        displayAlert,
         signUpUser,
         signInUser,
         resetPassword,

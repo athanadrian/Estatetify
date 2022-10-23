@@ -33,11 +33,10 @@ const icons = {
   showPassword: AiFillEye,
   hidePassword: AiFillEyeInvisible,
   google: FcGoogle,
-  edit: MdEdit, // AiOutlineEdit,
+  edit: MdEdit,
   save: AiOutlineSave,
   image_edit: RiImageEditFill,
   add_property: MdOutlineAddBusiness,
-  // RENTALS CATEGORIES
   apartment: FaHome,
   office: GiDesk,
   maisonette: RiBuilding2Line,

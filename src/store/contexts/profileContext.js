@@ -1,11 +1,12 @@
 import { useAuth } from 'hooks/useAuth';
-import { updateProfile, db, doc, updateDoc } from 'firebase.config';
+import { updateProfile, db, doc, getDoc, updateDoc } from 'firebase.config';
 
 import { useContext, createContext, useReducer } from 'react';
 
 import {
-  CLEAR_ALERT,
-  DISPLAY_ALERT,
+  GET_USER_BEGIN,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
@@ -15,11 +16,8 @@ import { toast } from 'react-toastify';
 
 const initialState = {
   isLoading: false,
-  showAlert: false,
-  alertText: '',
-  alertType: '',
-  listing: {},
-  listings: [],
+  profileUser: undefined,
+  users: [],
 };
 
 const ProfileContext = createContext();
@@ -27,38 +25,47 @@ const ProfileContext = createContext();
 const ProfileProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useAuth();
-  const clearAlert = () => {
-    setTimeout(() => {
-      dispatch({ type: CLEAR_ALERT });
-    }, 3000);
-  };
 
-  const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT });
-    clearAlert();
+  const getProfileUser = async (id) => {
+    if (id) {
+      dispatch({ type: GET_USER_BEGIN });
+      try {
+        const userRef = doc(db, 'users', id);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            payload: { profileUser: userDoc.data() },
+          });
+        }
+      } catch (error) {
+        console.log('😱 Error Get User: ', error.message);
+        dispatch({ type: GET_USER_ERROR });
+        toast.error('😱 Error: Could not get user data');
+      }
+    }
   };
 
   const updateUser = async (userData) => {
     const { fullName, avatar } = userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
-      if (user?.displayName !== fullName || user?.photoURL !== avatar) {
+      if (user?.displayName !== fullName) {
         // update data firebase/auth
         await updateProfile(user, {
           displayName: fullName,
-          photoURL: avatar,
         });
         // update data in firestore
-        const userDoc = doc(db, 'users', user.uid);
-        await updateDoc(userDoc, {
-          displayName: fullName,
-          photoURL: avatar,
+        const userRef = doc(db, 'users', user.uid);
+        await updateDoc(userRef, {
+          fullName,
+          avatar,
         });
         dispatch({ type: UPDATE_USER_SUCCESS });
         toast.success('Profile updated successfully!');
       }
     } catch (error) {
-      console.log('😱 Error Profile: ', error.message);
+      console.log('😱 Error Update User: ', error.message);
       dispatch({ type: UPDATE_USER_ERROR });
       toast.error('😱 Error: ', error.message);
     }
@@ -68,7 +75,7 @@ const ProfileProvider = ({ children }) => {
     <ProfileContext.Provider
       value={{
         ...state,
-        displayAlert,
+        getProfileUser,
         updateUser,
       }}
     >

@@ -1,4 +1,11 @@
-import { FormInput, FormSelect, Label, Loader, PageHeader } from 'components';
+import {
+  AppButton,
+  FormInput,
+  FormSelect,
+  Label,
+  Loader,
+  PageHeader,
+} from 'components';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -39,8 +46,7 @@ const EditListing = () => {
     getListing,
     listing,
   } = useListingContext();
-  console.log('listing', listing);
-  console.log('user', user);
+
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [values, setValues] = useState(initialValues);
   const {
@@ -490,12 +496,7 @@ const EditListing = () => {
             />
           </label>
         </div>
-        <button
-          type='submit'
-          className='mb-6 w-full px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out'
-        >
-          Update Listing
-        </button>
+        <AppButton type='submit' label='Update Listing' />
       </form>
     </main>
   );
