@@ -1,26 +1,20 @@
 import { useEffect, useState } from 'react';
 
-import {
-  useListingContext,
-  useProfileContext,
-  useCommonContext,
-} from 'store/contexts';
+import { useProfileContext, useCommonContext } from 'store/contexts';
 import AppIcon from './elements/AppIcon';
 import defaultStyles from 'common/config';
 import Label from './elements/Label';
 import AppButton from './elements/AppButton';
 
-const ContactModal = () => {
+const ContactModal = ({ listing }) => {
   const [message, setMessage] = useState('');
-  const { listing } = useListingContext();
-  const { user, getUser } = useProfileContext();
+  const { profileUser, getProfileUser } = useProfileContext();
   const { showModal, closeModal } = useCommonContext();
 
   useEffect(() => {
-    getUser(listing?.userRef);
+    getProfileUser(listing?.userRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listing?.userRef]);
-
   return (
     <>
       {showModal ? (
@@ -40,7 +34,7 @@ const ContactModal = () => {
                     <h4 className='text-lg text-dark'>
                       Send your message to{' '}
                       <span className='font-semibold text-darker'>
-                        {user?.fullName}
+                        {profileUser?.fullName}
                       </span>{' '}
                       for the property{' '}
                       <span className='font-semibold text-darker'>
@@ -61,7 +55,7 @@ const ContactModal = () => {
                     <div className='items-center gap-2 mt-3 sm:flex'>
                       <a
                         className='w-full'
-                        href={`mailto:${user?.email}?subject=${listing?.title}&body=${message}`}
+                        href={`mailto:${profileUser?.email}?subject=${listing?.title}&body=${message}`}
                       >
                         <AppButton label='Send Message' />
                       </a>

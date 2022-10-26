@@ -151,7 +151,7 @@ const AddListing = () => {
 
   return (
     <main className='max-w-md mx-auto px-2'>
-      <PageHeader text='Add your Property' />
+      <PageHeader title='Add your Property' />
       <form onSubmit={handleSubmit}>
         <Label text='Sell / Rent' />
         <div className='flex justify-center items-center'>

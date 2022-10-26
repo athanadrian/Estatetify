@@ -47,7 +47,6 @@ import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 
 const initialState = {
   isLoading: false,
-  logo: 'https://firebasestorage.googleapis.com/v0/b/estatetify-db.appspot.com/o/logo512.png?alt=media&token=008a2f5b-86b5-4334-95c4-bf48071260b8',
   listing: undefined,
   listings: [],
 };
@@ -132,18 +131,20 @@ const ListingProvider = ({ children }) => {
   };
 
   const getListing = async (listingId) => {
-    dispatch({ type: GET_LISTING_BEGIN });
     if (listingId) {
-      try {
-        const listingRef = doc(db, 'listings', listingId);
-        const listingDoc = await getDoc(listingRef);
-        if (listingDoc.exists())
-          return dispatch({
-            type: GET_LISTING_SUCCESS,
-            payload: { listing: listingDoc.data() },
-          });
-      } catch (error) {
-        console.log('😱 Error get listing: ', error.message);
+      dispatch({ type: GET_LISTING_BEGIN });
+      if (listingId) {
+        try {
+          const listingRef = doc(db, 'listings', listingId);
+          const listingDoc = await getDoc(listingRef);
+          if (listingDoc.exists())
+            return dispatch({
+              type: GET_LISTING_SUCCESS,
+              payload: { listing: listingDoc.data() },
+            });
+        } catch (error) {
+          console.log('😱 Error get listing: ', error.message);
+        }
       }
     }
   };

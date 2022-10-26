@@ -1,10 +1,17 @@
 import React from 'react';
 
-const PageHeader = ({ text }) => {
+const PageHeader = ({ title, subtitle }) => {
   return (
-    <h1 className='text-3xl text-darker tracking-wider font-bold text-center mt-6'>
-      {text}
-    </h1>
+    <>
+      {title && (
+        <h1 className='text-darker font-bold text-4xl my-5 tracking-wider text-center'>
+          {title}
+        </h1>
+      )}
+      {subtitle && (
+        <h2 className='text-gray-400 text-base font-medium'>{subtitle}</h2>
+      )}
+    </>
   );
 };
 

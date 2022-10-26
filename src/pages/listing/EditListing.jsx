@@ -188,7 +188,7 @@ const EditListing = () => {
 
   return (
     <main className='max-w-md mx-auto px-2'>
-      <PageHeader text='Edit Property' />
+      <PageHeader title='Edit Property' />
       <form onSubmit={handleSubmit}>
         <Label text='Sell / Rent' />
         <div className='flex justify-center items-center'>

@@ -26,3 +26,7 @@ body {
 .swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
   background: #b9d5de !important;
 }
+
+html {
+  scrollbar-width: none;
+}

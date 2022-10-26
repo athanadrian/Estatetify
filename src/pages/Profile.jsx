@@ -83,7 +83,7 @@ const Profile = () => {
   return (
     <>
       <section className='max-w-6xl flex flex-col justify-center items-center mx-auto'>
-        <PageHeader text='Profile' />
+        <PageHeader title='Profile' />
         <div className='flex flex-col justify-center items-center gap-5 w-full md:w-[50%] mx-auto px-3 mt-6'>
           <form onSubmit={handleSubmit}>
             <div className='relative w-48 h-48 rounded-full mb-6 mx-auto'>
@@ -120,13 +120,13 @@ const Profile = () => {
             />
             <Link
               to='/listings/add'
-              className='flex justify-center items-center bg-blue-500 px-4 py-2 text-md mt-6 text-center text-light rounded w-full shadow-md font-medium capitalize hover:bg-blue-700 transition duration-1000 ease-in-out hover:shadow-lg active:bg-blue-800'
+              className='flex justify-center items-center mt-6 mb-3 w-full px-7 py-3 bg-primary text-white font-medium text-sm uppercase rounded shadow-md hover:bg-darker hover:shadow-lg focus:bg-darker focus:shadow-lg active:bg-darker active:shadow-lg transition duration-150 ease-in-out'
             >
               <AppIcon
                 Icon={defaultStyles.icons.add_property}
                 className='text-light border-light border rounded-full p-1 text-xl'
               />
-              <span className='ml-1'> Sell & rent a property</span>
+              <span className='ml-3'> Sell & rent a property</span>
             </Link>
             <div className='flex flex-row justify-between w-full mt-3 whitespace-nowrap'>
               <p className='flex justify-center items-center text-md text-primary'>
@@ -169,14 +169,12 @@ const Profile = () => {
       <div className='flex flex-col justify-center items-center max-w-6xl 2xl:max-w-full px-3 mt-6 mx-auto'>
         {!isLoading && listings.length > 0 && (
           <>
-            <h2 className='text-2xl text-darker tracking-wider font-bold text-center mb-6'>
-              My Listings
-            </h2>
+            <PageHeader title='My Listings' />
             <div className='flex justify-center items-center'>
               <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full mx-auto'>
                 {listings.map((listing) => (
                   <ListingItem
-                    key={listing.id}
+                    key={listing?.id}
                     id={listing?.id}
                     listing={listing?.data}
                     editListing={() => handleEditListing(listing?.id)}

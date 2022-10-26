@@ -4,7 +4,7 @@ import React from 'react';
 const Offers = () => {
   return (
     <>
-      <PageHeader text='Offers' />
+      <PageHeader title='Offers' />
     </>
   );
 };

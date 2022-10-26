@@ -11,3 +11,5 @@ export { default as GoogleButton } from './elements/GoogleButton';
 export { default as AppButton } from './elements/AppButton';
 export { default as AuthButton } from './elements/AuthButton';
 export { default as Label } from './elements/Label';
+export { default as LandView } from './home/LandView';
+export { default as Slider } from './home/Slider';
