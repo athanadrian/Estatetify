@@ -6,7 +6,7 @@ import SwiperCore, {
   Pagination,
   Autoplay,
 } from 'swiper';
-import { Loader, PageHeader } from 'components';
+import { Filter, Loader, PageHeader } from 'components';
 import { useListingContext } from 'store/contexts';
 import 'swiper/css/bundle';
 import { useNavigate } from 'react-router';
@@ -58,10 +58,10 @@ const Slider = () => {
                 }}
                 className='relative w-full h-[300px] overflow-hidden'
               />
-              <p className='absolute text-white bg-darker px-4 py-2 text-base rounded-br-2xl top-3 left-1'>
+              <p className='absolute text-white bg-darker px-4 py-2 text-base rounded-br-2xl top-3 left-2'>
                 {data?.title}
               </p>
-              <div className='flex justify-center max-w-[90%] absolute text-white bg-red-500 px-4 py-2 text-base rounded-tr-3xl bottom-3 left-1'>
+              <div className='flex justify-center max-w-[90%] absolute text-white bg-red-500 px-4 py-2 text-base rounded-tr-3xl top-16 left-2'>
                 <p className={`${data.offer ? offerStyle : regularStyle}`}>
                   €{displayPrice(data.regularPrice)}
                 </p>
@@ -77,6 +77,7 @@ const Slider = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        <Filter />
       </>
     )
   );
