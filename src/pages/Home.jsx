@@ -8,22 +8,17 @@ const Home = () => {
   const { getAllListings, listings, isLoading } = useListingContext();
   const { user } = useAuth();
 
-  useEffect(() => {
-    const query = ['offer', '==', true];
-    const limit = 4;
-    getAllListings(query, limit);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   const query = ['offer', '==', true];
+  //   const limit = 4;
+  //   getAllListings(query, limit);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   console.log('all listings', listings);
   console.log('user home', user);
-  if (isLoading) return <Loader />;
-  if (listings.length === 0)
-    return (
-      <>
-        <PageHeader title='Sorry no listings found!' />
-      </>
-    );
+  //
+
   return (
     <div className=''>
       <Slider />

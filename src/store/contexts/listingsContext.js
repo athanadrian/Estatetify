@@ -69,7 +69,7 @@ const ListingProvider = ({ children }) => {
     dispatch({ type: GET_ALL_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
-      if (q === undefined) {
+      if (q === undefined || []) {
         queryString = query(
           listingsRef,
           orderBy('timestamp', 'desc'),
