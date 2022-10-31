@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import logo from 'images/estatetify-app.svg';
-import { AppIcon, FormInput, Label, PageHeader, ListingItem } from 'components';
+import { AppIcon, FormInput, Label, PageHeader } from 'components';
 import defaultStyles from 'common/config';
 import { useAuth } from 'hooks/useAuth';
 import { useListingContext, useProfileContext } from 'store/contexts';
+import ListingItemList from 'components/ListingItemList';
 
 const initialValues = {
   fullName: '',
@@ -14,11 +15,10 @@ const initialValues = {
 };
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { user, logOut } = useAuth();
   const { getProfileUser, updateUser, profileUser } = useProfileContext();
-  const { listings, getMyListings, isLoading, deleteListing } =
-    useListingContext();
-  const navigate = useNavigate();
+  const { listings, getMyListings, isLoading } = useListingContext();
 
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
@@ -37,12 +37,8 @@ const Profile = () => {
   }, [profileUser]);
 
   useEffect(() => {
-    if (user !== undefined) getMyListings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  useEffect(() => {
-    if (user !== undefined) getProfileUser(user?.uid);
+    if (user !== undefined && user?.uid) getProfileUser(user?.uid);
+    getMyListings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -59,20 +55,6 @@ const Profile = () => {
 
   const handleEditInfo = () => {
     setEditable((preVal) => !preVal);
-  };
-
-  const handleEditListing = (id) => {
-    navigate(`/listings/edit/${id}`);
-  };
-
-  const handleDeleteListing = async (listing) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete listing ${listing?.data?.title}`
-      )
-    ) {
-      await deleteListing(listing);
-    }
   };
 
   const handleLogout = () => {
@@ -170,19 +152,7 @@ const Profile = () => {
         {!isLoading && listings.length > 0 && (
           <>
             <PageHeader title='My Listings' />
-            <div className='flex justify-center items-center'>
-              <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full mx-auto'>
-                {listings.map((listing) => (
-                  <ListingItem
-                    key={listing?.id}
-                    id={listing?.id}
-                    listing={listing?.data}
-                    editListing={() => handleEditListing(listing?.id)}
-                    deleteListing={() => handleDeleteListing(listing)}
-                  />
-                ))}
-              </ul>
-            </div>
+            <ListingItemList listings={listings} />
           </>
         )}
       </div>

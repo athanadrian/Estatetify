@@ -55,6 +55,7 @@ const reducer = (state, action) => {
       listings: action.payload.listings,
     };
   }
+
   if (action.type === GET_MY_LISTINGS_BEGIN) {
     return {
       ...state,

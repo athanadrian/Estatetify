@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { auth, onAuthStateChanged } from 'firebase.config';
 
 export const useAuth = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
-  const logOut = () => {
-    auth.signOut();
+  const logOut = async () => {
+    await auth.signOut();
   };
 
   useEffect(() => {
@@ -15,9 +16,19 @@ export const useAuth = () => {
       if (user) {
         setLoggedIn(true);
         setUser(user);
+      } else {
+        setUser(undefined);
       }
       setLoading(false);
     });
   }, []);
-  return { user, loggedIn, isLoading, logOut };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) setAuthenticated(true);
+      else setAuthenticated(false);
+    });
+  }, []);
+
+  return { user, loggedIn, isAuthenticated, isLoading, logOut };
 };

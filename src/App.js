@@ -10,8 +10,9 @@ import {
   ForgotPassword,
   AddListing,
   EditListing,
-  Listings,
+  //Listings,
   Listing,
+  OwnerProfile,
 } from './pages';
 
 const App = () => {
@@ -26,7 +27,7 @@ const App = () => {
             <Route path='/listings/add' element={<AddListing />} />
             <Route path='/listings/edit/:listingId' element={<EditListing />} />
           </Route>
-          <Route path='/profile/:ownerId' element={<Profile />} />
+          <Route path='/owner-profile/:ownerId' element={<OwnerProfile />} />
           <Route path='/listings/:type/:listingId' element={<Listing />} />
           <Route path='/offers' element={<Offers />} />
           <Route path='/sign-in' element={<SignIn />} />

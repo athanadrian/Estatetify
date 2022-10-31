@@ -16,6 +16,7 @@ import {
   FaInfoCircle,
   FaShareAlt,
   FaChair,
+  FaHeart,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
@@ -56,6 +57,7 @@ const icons = {
   info: FaInfoCircle,
   social: FaShareAlt,
   furnished: FaChair,
+  favorite: FaHeart,
 };
 
 export default icons;

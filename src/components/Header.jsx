@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import logo from 'images/estatetify-app.svg';
-import { onAuthStateChanged, auth } from 'firebase.config';
+import { useAuth } from 'hooks/useAuth';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setAuthenticated] = useState(false);
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) setAuthenticated(true);
-      else setAuthenticated(false);
-    });
-  }, []);
+  const { isAuthenticated } = useAuth();
 
   const Links = [
     { name: 'home', link: '/home' },

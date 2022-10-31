@@ -15,6 +15,7 @@ import {
   getDocs,
   collection,
   query,
+  limit,
   where,
   orderBy,
   serverTimestamp,
@@ -61,16 +62,34 @@ const ListingProvider = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
 
-  const getAllListings = async () => {
+  const getAllListings = async (q, lim) => {
+    console.log('ctx q', q);
+    //console.log('ctx ...q', ...q);
+    let queryString;
     dispatch({ type: GET_ALL_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
-      const listingsDocs = await getDocs(listingsRef);
+      if (q === undefined) {
+        queryString = query(
+          listingsRef,
+          orderBy('timestamp', 'desc'),
+          limit(lim)
+        );
+      } else {
+        queryString = query(
+          listingsRef,
+          where(...q),
+          orderBy('timestamp', 'desc'),
+          limit(lim)
+        );
+      }
+      const listingQuery = queryString;
+      const listingsDocs = await getDocs(listingQuery);
       let listings = [];
-      listingsDocs.forEach((doc) => {
+      listingsDocs.forEach((listingDoc) => {
         return listings.push({
-          id: doc.id,
-          data: doc.data(),
+          id: listingDoc.id,
+          data: listingDoc.data(),
         });
       });
       dispatch({
@@ -78,11 +97,12 @@ const ListingProvider = ({ children }) => {
         payload: { listings },
       });
     } catch (error) {
-      console.log('😱 Error get listings: ', error.message);
+      console.log('😱 Error get all listings: ', error.message);
     }
   };
 
   const getListingsByUser = async (userId) => {
+    console.log('first');
     dispatch({ type: GET_LISTINGS_BY_USER_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -91,9 +111,9 @@ const ListingProvider = ({ children }) => {
         where('userRef', '==', userId),
         orderBy('timestamp', 'desc')
       );
-      const listingSnap = await getDocs(listingQuery);
+      const listingsDocs = await getDocs(listingQuery);
       let listings = [];
-      listingSnap.forEach((listingDoc) => {
+      listingsDocs.forEach((listingDoc) => {
         return listings.push({
           id: listingDoc.id,
           data: listingDoc.data(),
@@ -116,9 +136,9 @@ const ListingProvider = ({ children }) => {
       where('userRef', '==', user.uid),
       orderBy('timestamp', 'desc')
     );
-    const listingSnap = await getDocs(listingQuery);
+    const listingsDocs = await getDocs(listingQuery);
     let listings = [];
-    listingSnap.forEach((listingDoc) => {
+    listingsDocs.forEach((listingDoc) => {
       return listings.push({
         id: listingDoc.id,
         data: listingDoc.data(),

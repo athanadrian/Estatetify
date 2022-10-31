@@ -11,6 +11,7 @@ import {
   deleteDoc,
   collection,
   query,
+  limit,
   where,
   orderBy,
 } from 'firebase/firestore';
@@ -69,6 +70,7 @@ export {
   collection,
   query,
   where,
+  limit,
   orderBy,
   storage,
   ref,

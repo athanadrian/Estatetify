@@ -27,10 +27,21 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
     'text-[#457b9d] mt-2 font-semibold line-through decoration-red-500';
   const regularStyle = 'text-[#457b9d] mx-2 mt-2 font-semibold';
 
+  const toggleMessageModal = () => {
+    openModal();
+    setShowOwnerInfo(false);
+  };
+
+  const toggleProfileModal = () => {
+    //openModal();
+    setShowOwnerInfo(false);
+  };
+
   useEffect(() => {
     getProfileUser(listing?.userRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listing?.userRef]);
+  console.log('user', user);
   console.log('profileUser', profileUser);
   return (
     <>
@@ -67,14 +78,15 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
               <div className='flex flex-col h-full justify-center items-center space-y-3 transition-transform duration-300 ease-in-out'>
                 <div className='bg-primary text-white rounded-full w-[48px] h-[48px] justify-center items-center flex'>
                   <AppIcon
-                    onClick={openModal}
+                    onClick={toggleMessageModal}
                     tooltip='Message Owner'
                     className='text-[26px] cursor-pointer'
                     Icon={defaultStyles.icons.email}
                   />
                 </div>
-                <Link to={`/profile/${listing?.userRef}`}>
+                <Link to={`/owner-profile/${listing?.userRef}`}>
                   <AppIcon
+                    onClick={toggleProfileModal}
                     tooltip='Profile'
                     className='text-primary text-5xl cursor-pointer'
                     Icon={defaultStyles.icons.info}
@@ -164,22 +176,30 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           <span className='text-[#457b9d] mt-2 font-semibold'>
             {listing.type === 'rent' && ' / month'}
           </span>
-          <div className='text-light'>
-            {deleteListing && (
-              <AppIcon
-                Icon={defaultStyles.icons.delete}
-                className='absolute bottom-4 right-2 h-4 cursor-pointer text-red-500'
-                onClick={() => deleteListing(id)}
-              />
-            )}
-            {editListing && (
-              <AppIcon
-                Icon={defaultStyles.icons.edit}
-                className='absolute bottom-4 right-7 h-4 cursor-pointer text-dark'
-                onClick={() => editListing(id)}
-              />
-            )}
-          </div>
+          {user && user?.uid === listing?.userRef ? (
+            <div className='text-light'>
+              {deleteListing && (
+                <AppIcon
+                  Icon={defaultStyles.icons.delete}
+                  className='absolute bottom-4 right-2 h-4 cursor-pointer text-red-500'
+                  onClick={() => deleteListing(id)}
+                />
+              )}
+              {editListing && (
+                <AppIcon
+                  Icon={defaultStyles.icons.edit}
+                  className='absolute bottom-4 right-7 h-4 cursor-pointer text-dark'
+                  onClick={() => editListing(id)}
+                />
+              )}
+            </div>
+          ) : (
+            <AppIcon
+              Icon={defaultStyles.icons.favorite}
+              className='absolute bottom-4 right-7 h-4 cursor-pointer text-dark'
+              onClick={() => console.log('favorite')}
+            />
+          )}
         </div>
       </li>
       <ContactModal listing={listing} />

@@ -1,16 +1,29 @@
-import { LandView, PageHeader, Slider } from 'components';
+import { LandView, Loader, PageHeader, Slider } from 'components';
+import { ListingItemList } from 'components';
+import { useAuth } from 'hooks/useAuth';
 import React, { useEffect } from 'react';
 import { useListingContext } from 'store/contexts';
 
 const Home = () => {
-  const { getAllListings, listings } = useListingContext();
+  const { getAllListings, listings, isLoading } = useListingContext();
+  const { user } = useAuth();
 
   useEffect(() => {
-    getAllListings();
+    const query = ['offer', '==', true];
+    const limit = 4;
+    getAllListings(query, limit);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log('all listings', listings);
+  console.log('user home', user);
+  if (isLoading) return <Loader />;
+  if (listings.length === 0)
+    return (
+      <>
+        <PageHeader title='Sorry no listings found!' />
+      </>
+    );
   return (
     <div className=''>
       <Slider />
@@ -20,8 +33,7 @@ const Home = () => {
           <PageHeader title='Discover Our Featured Properties' />
           <PageHeader subtitle='Discover best deals for your future house' />
         </div>
-        {/* <FeaturedProp properties={properties}/>
-            <Carousel/> */}
+        <ListingItemList listings={listings} />
       </div>
     </div>
   );
