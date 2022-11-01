@@ -2,8 +2,9 @@ import React from 'react';
 import { useListingContext } from 'store/contexts';
 import { useNavigate } from 'react-router';
 import ListingItem from './ListingItem';
+import { Link } from 'react-router-dom';
 
-const ListingItemList = ({ listings }) => {
+const ListingItemList = ({ link, title, subtitle, listings }) => {
   const navigate = useNavigate();
   const { deleteListing } = useListingContext();
 
@@ -23,19 +24,31 @@ const ListingItemList = ({ listings }) => {
 
   return (
     <>
-      <div className='flex justify-center items-center mx-auto'>
-        <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full mx-auto'>
-          {listings.map((listing) => (
-            <ListingItem
-              key={listing?.id}
-              id={listing?.id}
-              listing={listing?.data}
-              editListing={() => handleEditListing(listing?.id)}
-              deleteListing={() => handleDeleteListing(listing)}
-            />
-          ))}
-        </ul>
-      </div>
+      {listings && listings.length > 0 && (
+        <div className='m-2 mb-6'>
+          <h2 className='px-3 text-darker text-2xl mt-6 font-semibold tracking-wider'>
+            {title}
+          </h2>
+          <Link to={link}>
+            <p className='px-3 text-sm  text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out'>
+              {subtitle}...
+            </p>
+          </Link>
+          <div className='flex justify-center items-center mx-auto'>
+            <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full mx-auto'>
+              {listings?.map((listing) => (
+                <ListingItem
+                  key={listing?.id}
+                  id={listing?.id}
+                  listing={listing?.data}
+                  editListing={() => handleEditListing(listing?.id)}
+                  deleteListing={() => handleDeleteListing(listing)}
+                />
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </>
   );
 };

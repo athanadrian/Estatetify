@@ -3,7 +3,7 @@ import AppButton from './elements/AppButton';
 
 const Filter = () => {
   return (
-    <div className='relative  flex flex-col mx-20 bottom-20 opacity-80 z-20'>
+    <div className='relative flex flex-col mx-20 bottom-20 opacity-80 z-20'>
       <div className='flex flex-row bg-light box-content w-fit rounded-t-xl cursor-pointer'>
         <div className='px-16 py-4 font-semibold text-base text-gray-500 rounded-t-xl bg-white'>
           Rent

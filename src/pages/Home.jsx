@@ -1,34 +1,54 @@
+import React, { useEffect } from 'react';
 import { LandView, Loader, PageHeader, Slider } from 'components';
 import { ListingItemList } from 'components';
-import { useAuth } from 'hooks/useAuth';
-import React, { useEffect } from 'react';
 import { useListingContext } from 'store/contexts';
 
 const Home = () => {
-  const { getAllListings, listings, isLoading } = useListingContext();
-  const { user } = useAuth();
+  const {
+    getRentListings,
+    getSaleListings,
+    getOfferListings,
+    offerListings,
+    rentListings,
+    saleListings,
+  } = useListingContext();
 
-  // useEffect(() => {
-  //   const query = ['offer', '==', true];
-  //   const limit = 4;
-  //   getAllListings(query, limit);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  console.log('all listings', listings);
-  console.log('user home', user);
-  //
+  useEffect(() => {
+    getOfferListings(4);
+    getRentListings(4);
+    getSaleListings(4);
+    //getTypeListings('sale',4)
+  }, []);
 
   return (
-    <div className=''>
+    <div>
       <Slider />
       {/* <LandView /> */}
-      <div className='flex flex-col my-24'>
-        <div className='flex flex-col items-center justify-center mb-20'>
+      <div className='flex flex-col mx-20 my-12 space-y-6'>
+        <div className='flex flex-col items-center justify-center mb-10'>
           <PageHeader title='Discover Our Featured Properties' />
           <PageHeader subtitle='Discover best deals for your future house' />
         </div>
-        <ListingItemList listings={listings} />
+        <div>
+          <ListingItemList
+            link='/offers'
+            title='Recent offers'
+            subtitle='Show more offers'
+            listings={offerListings}
+          />
+          <ListingItemList
+            link='/listings/rent'
+            title='Places for rent'
+            subtitle='Show more places for rent'
+            listings={rentListings}
+          />
+          <ListingItemList
+            link='/listings/sale'
+            title='Places for sale'
+            subtitle='Show more places for sale'
+            listings={saleListings}
+          />
+        </div>
       </div>
     </div>
   );

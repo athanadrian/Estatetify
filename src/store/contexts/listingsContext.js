@@ -30,6 +30,14 @@ import {
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
   GET_MY_LISTINGS_SUCCESS,
+  GET_FILTERED_LISTINGS_BEGIN,
+  GET_FILTERED_LISTINGS_SUCCESS,
+  GET_OFFER_LISTINGS_BEGIN,
+  GET_OFFER_LISTINGS_SUCCESS,
+  GET_RENT_LISTINGS_BEGIN,
+  GET_RENT_LISTINGS_SUCCESS,
+  GET_SALE_LISTINGS_BEGIN,
+  GET_SALE_LISTINGS_SUCCESS,
   GET_LISTING_BEGIN,
   GET_LISTING_SUCCESS,
   CREATE_LISTING_BEGIN,
@@ -50,6 +58,10 @@ const initialState = {
   isLoading: false,
   listing: undefined,
   listings: [],
+  filteredListings: [],
+  offerListings: [],
+  rentListings: [],
+  saleListings: [],
 };
 
 const ListingContext = createContext();
@@ -62,28 +74,15 @@ const ListingProvider = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
 
-  const getAllListings = async (q, lim) => {
-    console.log('ctx q', q);
-    //console.log('ctx ...q', ...q);
-    let queryString;
+  const getAllListings = async (lim) => {
     dispatch({ type: GET_ALL_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
-      if (q === undefined || []) {
-        queryString = query(
-          listingsRef,
-          orderBy('timestamp', 'desc'),
-          limit(lim)
-        );
-      } else {
-        queryString = query(
-          listingsRef,
-          where(...q),
-          orderBy('timestamp', 'desc'),
-          limit(lim)
-        );
-      }
-      const listingQuery = queryString;
+      const listingQuery = query(
+        listingsRef,
+        orderBy('timestamp', 'desc'),
+        limit(lim)
+      );
       const listingsDocs = await getDocs(listingQuery);
       let listings = [];
       listingsDocs.forEach((listingDoc) => {
@@ -95,6 +94,121 @@ const ListingProvider = ({ children }) => {
       dispatch({
         type: GET_ALL_LISTINGS_SUCCESS,
         payload: { listings },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getFilteredListings = async (filters, lim) => {
+    console.log('ctx filters', filters);
+    //console.log('ctx ...q', ...q);
+    let whereConditions = [];
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        whereConditions.push(where(key, '==', filters[key]));
+      });
+    }
+    dispatch({ type: GET_FILTERED_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        ...whereConditions,
+        orderBy('timestamp', 'desc'),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      let listings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return listings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_FILTERED_LISTINGS_SUCCESS,
+        payload: { listings },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+  const getOfferListings = async (lim) => {
+    dispatch({ type: GET_OFFER_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('offer', '==', true),
+        orderBy('timestamp', 'desc'),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      let listings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return listings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_OFFER_LISTINGS_SUCCESS,
+        payload: { listings },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getRentListings = async (lim) => {
+    dispatch({ type: GET_RENT_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('type', '==', 'rent'),
+        orderBy('timestamp', 'desc'),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      let rentListings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return rentListings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_RENT_LISTINGS_SUCCESS,
+        payload: { rentListings },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getSaleListings = async (lim) => {
+    dispatch({ type: GET_SALE_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('type', '==', 'sale'),
+        orderBy('timestamp', 'desc'),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      let saleListings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return saleListings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_SALE_LISTINGS_SUCCESS,
+        payload: { saleListings },
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -292,6 +406,10 @@ const ListingProvider = ({ children }) => {
         getAllListings,
         getMyListings,
         getListingsByUser,
+        getFilteredListings,
+        getOfferListings,
+        getRentListings,
+        getSaleListings,
         getListing,
         createListing,
         editListing,

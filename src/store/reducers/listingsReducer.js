@@ -6,6 +6,14 @@ import {
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
   GET_MY_LISTINGS_SUCCESS,
+  GET_FILTERED_LISTINGS_BEGIN,
+  GET_FILTERED_LISTINGS_SUCCESS,
+  GET_OFFER_LISTINGS_BEGIN,
+  GET_OFFER_LISTINGS_SUCCESS,
+  GET_RENT_LISTINGS_BEGIN,
+  GET_RENT_LISTINGS_SUCCESS,
+  GET_SALE_LISTINGS_BEGIN,
+  GET_SALE_LISTINGS_SUCCESS,
   GET_LISTING_BEGIN,
   GET_LISTING_SUCCESS,
   CREATE_LISTING_BEGIN,
@@ -41,6 +49,68 @@ const reducer = (state, action) => {
       listings: action.payload.listings,
     };
   }
+
+  if (action.type === GET_FILTERED_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_FILTERED_LISTINGS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      filteredListings: action.payload.listings,
+    };
+  }
+
+  if (action.type === GET_OFFER_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_OFFER_LISTINGS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      offerListings: action.payload.listings,
+    };
+  }
+
+  if (action.type === GET_RENT_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_RENT_LISTINGS_SUCCESS) {
+    const rentListings = action.payload.rentListings;
+    return {
+      ...state,
+      isLoading: false,
+      rentListings,
+    };
+  }
+  if (action.type === GET_SALE_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_SALE_LISTINGS_SUCCESS) {
+    const saleListings = action.payload.saleListings;
+    return {
+      ...state,
+      isLoading: false,
+      saleListings,
+    };
+  }
+
   if (action.type === GET_LISTINGS_BY_USER_BEGIN) {
     return {
       ...state,

@@ -21,7 +21,7 @@ const Slider = () => {
   const regularStyle = 'text-light text-base font-semibold';
 
   useEffect(() => {
-    getAllListings([], 5);
+    getAllListings(5);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,7 +43,7 @@ const Slider = () => {
           navigation
           pagination={{ type: 'progressbar' }}
           effect='fade'
-          module={EffectFade}
+          modules={[EffectFade]}
           autoplay={{ delay: 3000 }}
         >
           {listings.map(({ id, data }) => (
@@ -53,7 +53,7 @@ const Slider = () => {
             >
               <div
                 style={{
-                  background: `url(${data?.imgUrls[0]}) center, no-repeat`,
+                  background: `url(${data?.imgUrls[0]}) center no-repeat`,
                   backgroundSize: 'cover',
                 }}
                 className='relative w-full h-[300px] overflow-hidden'
