@@ -25,8 +25,6 @@ const Slider = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('listings', listings);
-
   if (isLoading) return <Loader />;
 
   if (listings.length === 0)

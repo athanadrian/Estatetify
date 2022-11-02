@@ -18,6 +18,7 @@ import {
   limit,
   where,
   orderBy,
+  startAfter,
   serverTimestamp,
 } from 'firebase.config';
 
@@ -34,6 +35,8 @@ import {
   GET_FILTERED_LISTINGS_SUCCESS,
   GET_OFFER_LISTINGS_BEGIN,
   GET_OFFER_LISTINGS_SUCCESS,
+  GET_MORE_OFFER_LISTINGS_BEGIN,
+  GET_MORE_OFFER_LISTINGS_SUCCESS,
   GET_RENT_LISTINGS_BEGIN,
   GET_RENT_LISTINGS_SUCCESS,
   GET_SALE_LISTINGS_BEGIN,
@@ -60,6 +63,7 @@ const initialState = {
   listings: [],
   filteredListings: [],
   offerListings: [],
+  lastVisibleOfferListing: null,
   rentListings: [],
   saleListings: [],
 };
@@ -101,8 +105,6 @@ const ListingProvider = ({ children }) => {
   };
 
   const getFilteredListings = async (filters, lim) => {
-    console.log('ctx filters', filters);
-    //console.log('ctx ...q', ...q);
     let whereConditions = [];
     if (filters) {
       Object.keys(filters).forEach((key) => {
@@ -145,6 +147,8 @@ const ListingProvider = ({ children }) => {
         limit(lim)
       );
       const listingsDocs = await getDocs(listingQuery);
+      const lastVisibleOfferListing =
+        listingsDocs.docs[listingsDocs.docs.length - 1];
       let listings = [];
       listingsDocs.forEach((listingDoc) => {
         return listings.push({
@@ -154,7 +158,37 @@ const ListingProvider = ({ children }) => {
       });
       dispatch({
         type: GET_OFFER_LISTINGS_SUCCESS,
-        payload: { listings },
+        payload: { listings, lastVisibleOfferListing },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getMoreOfferListings = async (lim) => {
+    dispatch({ type: GET_MORE_OFFER_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('offer', '==', true),
+        orderBy('timestamp', 'desc'),
+        startAfter(state.lastVisibleOfferListing),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      const lastVisibleOfferListing =
+        listingsDocs.docs[listingsDocs.docs.length - 1];
+      let listings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return listings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_MORE_OFFER_LISTINGS_SUCCESS,
+        payload: { listings, lastVisibleOfferListing },
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -172,6 +206,8 @@ const ListingProvider = ({ children }) => {
         limit(lim)
       );
       const listingsDocs = await getDocs(listingQuery);
+      const lastVisibleTypeListing =
+        listingsDocs.docs[listingsDocs.docs.length - 1];
       let rentListings = [];
       listingsDocs.forEach((listingDoc) => {
         return rentListings.push({
@@ -215,8 +251,9 @@ const ListingProvider = ({ children }) => {
     }
   };
 
+  const getMoreTypeListings = (type, lim) => {};
+
   const getListingsByUser = async (userId) => {
-    console.log('first');
     dispatch({ type: GET_LISTINGS_BY_USER_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -408,6 +445,7 @@ const ListingProvider = ({ children }) => {
         getListingsByUser,
         getFilteredListings,
         getOfferListings,
+        getMoreOfferListings,
         getRentListings,
         getSaleListings,
         getListing,

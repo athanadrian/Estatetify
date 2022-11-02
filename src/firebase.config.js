@@ -14,6 +14,7 @@ import {
   limit,
   where,
   orderBy,
+  startAfter,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -72,6 +73,7 @@ export {
   where,
   limit,
   orderBy,
+  startAfter,
   storage,
   ref,
   uploadBytesResumable,

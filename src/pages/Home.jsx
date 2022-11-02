@@ -21,7 +21,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className='mx-auto xl:mx-20 px-3'>
       <Slider />
       {/* <LandView /> */}
       <div className='flex flex-col mx-20 my-12 space-y-6'>
@@ -29,27 +29,25 @@ const Home = () => {
           <PageHeader title='Discover Our Featured Properties' />
           <PageHeader subtitle='Discover best deals for your future house' />
         </div>
-        <div>
-          <ListingItemList
-            link='/offers'
-            title='Recent offers'
-            subtitle='Show more offers'
-            listings={offerListings}
-          />
-          <ListingItemList
-            link='/listings/rent'
-            title='Places for rent'
-            subtitle='Show more places for rent'
-            listings={rentListings}
-          />
-          <ListingItemList
-            link='/listings/sale'
-            title='Places for sale'
-            subtitle='Show more places for sale'
-            listings={saleListings}
-          />
-        </div>
       </div>
+      <ListingItemList
+        link='/offers'
+        title='Recent offers'
+        subtitle='Show more offers'
+        listings={offerListings}
+      />
+      <ListingItemList
+        link='/listings/rent'
+        title='Places for rent'
+        subtitle='Show more places for rent'
+        listings={rentListings}
+      />
+      <ListingItemList
+        link='/listings/sale'
+        title='Places for sale'
+        subtitle='Show more places for sale'
+        listings={saleListings}
+      />
     </div>
   );
 };

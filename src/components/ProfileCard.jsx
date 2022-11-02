@@ -3,7 +3,6 @@ import logo from 'images/estatetify-app.svg';
 import Moment from 'react-moment';
 
 const ProfileCard = ({ profileUser }) => {
-  console.log('profileUser', profileUser);
   return (
     <>
       <div className='mx-auto w-2/3'>

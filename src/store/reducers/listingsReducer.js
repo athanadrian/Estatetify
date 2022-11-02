@@ -10,6 +10,8 @@ import {
   GET_FILTERED_LISTINGS_SUCCESS,
   GET_OFFER_LISTINGS_BEGIN,
   GET_OFFER_LISTINGS_SUCCESS,
+  GET_MORE_OFFER_LISTINGS_BEGIN,
+  GET_MORE_OFFER_LISTINGS_SUCCESS,
   GET_RENT_LISTINGS_BEGIN,
   GET_RENT_LISTINGS_SUCCESS,
   GET_SALE_LISTINGS_BEGIN,
@@ -77,6 +79,23 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       offerListings: action.payload.listings,
+      lastVisibleOfferListing: action.payload.lastVisibleOfferListing,
+    };
+  }
+  if (action.type === GET_MORE_OFFER_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_MORE_OFFER_LISTINGS_SUCCESS) {
+    const offerListings = [...state.offerListings, ...action.payload.listings];
+    return {
+      ...state,
+      isLoading: false,
+      offerListings,
+      lastVisibleOfferListing: action.payload.lastVisibleOfferListing,
     };
   }
 

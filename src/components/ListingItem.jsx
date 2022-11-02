@@ -41,11 +41,10 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
     getProfileUser(listing?.userRef);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listing?.userRef]);
-  console.log('user', user);
-  console.log('profileUser', profileUser);
+
   return (
     <>
-      <li className='relative mx-3 w-80 h-fit rounded-lg border border-gray-400 m-[10px]'>
+      <li className='relative mx-auto w-80 h-fit rounded-lg border border-gray-400 m-[10px]'>
         <div
           className='z-0 m-0 max-h-[250px] w-full overflow-hidden cursor-pointer'
           onClick={() => navigate(`/listings/${listing.type}/${id}`)}

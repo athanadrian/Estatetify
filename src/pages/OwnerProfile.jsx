@@ -13,8 +13,6 @@ const OwnerProfile = () => {
     isLoading: isListingsLoading,
   } = useListingContext();
 
-  console.log('ownerId', ownerId);
-
   useEffect(() => {
     if (ownerId) {
       getProfileUser(ownerId);

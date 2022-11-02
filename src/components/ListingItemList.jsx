@@ -35,7 +35,7 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
             </p>
           </Link>
           <div className='flex justify-center items-center mx-auto'>
-            <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full mx-auto'>
+            <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full'>
               {listings?.map((listing) => (
                 <ListingItem
                   key={listing?.id}
