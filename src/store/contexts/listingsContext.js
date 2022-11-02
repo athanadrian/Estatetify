@@ -37,6 +37,10 @@ import {
   GET_OFFER_LISTINGS_SUCCESS,
   GET_MORE_OFFER_LISTINGS_BEGIN,
   GET_MORE_OFFER_LISTINGS_SUCCESS,
+  GET_MORE_TYPE_LISTINGS_BEGIN,
+  GET_MORE_TYPE_LISTINGS_SUCCESS,
+  GET_TYPE_LISTINGS_BEGIN,
+  GET_TYPE_LISTINGS_SUCCESS,
   GET_RENT_LISTINGS_BEGIN,
   GET_RENT_LISTINGS_SUCCESS,
   GET_SALE_LISTINGS_BEGIN,
@@ -66,6 +70,8 @@ const initialState = {
   lastVisibleOfferListing: null,
   rentListings: [],
   saleListings: [],
+  typeListings: [],
+  lastVisibleTypeListing: null,
 };
 
 const ListingContext = createContext();
@@ -206,8 +212,6 @@ const ListingProvider = ({ children }) => {
         limit(lim)
       );
       const listingsDocs = await getDocs(listingQuery);
-      const lastVisibleTypeListing =
-        listingsDocs.docs[listingsDocs.docs.length - 1];
       let rentListings = [];
       listingsDocs.forEach((listingDoc) => {
         return rentListings.push({
@@ -251,7 +255,64 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getMoreTypeListings = (type, lim) => {};
+  const getTypeListings = async (type, lim) => {
+    dispatch({ type: GET_TYPE_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('type', '==', type),
+        orderBy('timestamp', 'desc'),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      const lastVisibleTypeListing =
+        listingsDocs.docs[listingsDocs.docs.length - 1];
+      let typeListings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return typeListings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_TYPE_LISTINGS_SUCCESS,
+        payload: { type, typeListings, lastVisibleTypeListing },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getMoreTypeListings = async (type, lim) => {
+    dispatch({ type: GET_MORE_TYPE_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('type', '==', type),
+        orderBy('timestamp', 'desc'),
+        startAfter(state.lastVisibleTypeListing),
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      const lastVisibleTypeListing =
+        listingsDocs.docs[listingsDocs.docs.length - 1];
+      let typeListings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return typeListings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_MORE_TYPE_LISTINGS_SUCCESS,
+        payload: { type, typeListings, lastVisibleTypeListing },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
 
   const getListingsByUser = async (userId) => {
     dispatch({ type: GET_LISTINGS_BY_USER_BEGIN });
@@ -263,6 +324,7 @@ const ListingProvider = ({ children }) => {
         orderBy('timestamp', 'desc')
       );
       const listingsDocs = await getDocs(listingQuery);
+
       let listings = [];
       listingsDocs.forEach((listingDoc) => {
         return listings.push({
@@ -446,6 +508,8 @@ const ListingProvider = ({ children }) => {
         getFilteredListings,
         getOfferListings,
         getMoreOfferListings,
+        getTypeListings,
+        getMoreTypeListings,
         getRentListings,
         getSaleListings,
         getListing,

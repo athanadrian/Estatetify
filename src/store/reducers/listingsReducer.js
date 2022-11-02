@@ -12,6 +12,10 @@ import {
   GET_OFFER_LISTINGS_SUCCESS,
   GET_MORE_OFFER_LISTINGS_BEGIN,
   GET_MORE_OFFER_LISTINGS_SUCCESS,
+  GET_TYPE_LISTINGS_BEGIN,
+  GET_TYPE_LISTINGS_SUCCESS,
+  GET_MORE_TYPE_LISTINGS_BEGIN,
+  GET_MORE_TYPE_LISTINGS_SUCCESS,
   GET_RENT_LISTINGS_BEGIN,
   GET_RENT_LISTINGS_SUCCESS,
   GET_SALE_LISTINGS_BEGIN,
@@ -73,7 +77,6 @@ const reducer = (state, action) => {
       isLoading: true,
     };
   }
-
   if (action.type === GET_OFFER_LISTINGS_SUCCESS) {
     return {
       ...state,
@@ -88,7 +91,6 @@ const reducer = (state, action) => {
       isLoading: true,
     };
   }
-
   if (action.type === GET_MORE_OFFER_LISTINGS_SUCCESS) {
     const offerListings = [...state.offerListings, ...action.payload.listings];
     return {
@@ -98,20 +100,19 @@ const reducer = (state, action) => {
       lastVisibleOfferListing: action.payload.lastVisibleOfferListing,
     };
   }
-
   if (action.type === GET_RENT_LISTINGS_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
-
   if (action.type === GET_RENT_LISTINGS_SUCCESS) {
     const rentListings = action.payload.rentListings;
     return {
       ...state,
       isLoading: false,
       rentListings,
+      lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
     };
   }
   if (action.type === GET_SALE_LISTINGS_BEGIN) {
@@ -120,13 +121,55 @@ const reducer = (state, action) => {
       isLoading: true,
     };
   }
-
   if (action.type === GET_SALE_LISTINGS_SUCCESS) {
     const saleListings = action.payload.saleListings;
     return {
       ...state,
       isLoading: false,
       saleListings,
+      lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
+    };
+  }
+  if (action.type === GET_TYPE_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === GET_TYPE_LISTINGS_SUCCESS) {
+    let typeListings = [];
+    const type = action.payload.type;
+    if (type === 'rent') {
+      typeListings = action.payload.typeListings;
+    } else {
+      typeListings = action.payload.typeListings;
+    }
+    return {
+      ...state,
+      isLoading: false,
+      typeListings,
+      lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
+    };
+  }
+  if (action.type === GET_MORE_TYPE_LISTINGS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+  if (action.type === GET_MORE_TYPE_LISTINGS_SUCCESS) {
+    let typeListings = [];
+    const type = action.payload.type;
+    if (type === 'rent') {
+      typeListings = [...state.typeListings, ...action.payload.typeListings];
+    } else {
+      typeListings = [...state.typeListings, ...action.payload.typeListings];
+    }
+    return {
+      ...state,
+      isLoading: false,
+      typeListings,
+      lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
     };
   }
 
@@ -205,9 +248,6 @@ const reducer = (state, action) => {
   }
 
   if (action.type === EDIT_LISTING_SUCCESS) {
-    // for (const key in listing?.configuration) {
-    //   listing[key] = listing?.configuration[key];
-    // }
     return {
       ...state,
       isLoading: false,
