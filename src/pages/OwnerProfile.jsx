@@ -28,7 +28,7 @@ const OwnerProfile = () => {
         <PageHeader title='Owner Profile' />
         <ProfileCard profileUser={profileUser} />
       </section>
-      <div className='flex flex-col justify-center items-center max-w-6xl 2xl:max-w-full px-3 mt-6 mx-auto'>
+      <div className='mx-auto xl:mx-20 px-3 pt-6'>
         <>
           <PageHeader title={`Listings by ${profileUser?.fullName}`} />
           <ListingItemList listings={listings} />

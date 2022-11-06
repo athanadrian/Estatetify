@@ -148,14 +148,14 @@ const Profile = () => {
           </form>
         </div>
       </section>
-      <div className='flex flex-col justify-center items-center max-w-6xl 2xl:max-w-full px-3 mt-6 mx-auto'>
+      <>
         {!isLoading && listings.length > 0 && (
-          <>
+          <div className='mx-auto xl:mx-20 px-3 pt-6'>
             <PageHeader title='My Listings' />
             <ListingItemList listings={listings} />
-          </>
+          </div>
         )}
-      </div>
+      </>
     </>
   );
 };
