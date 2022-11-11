@@ -32,7 +32,7 @@ const Listings = () => {
             <main>
               <ListingItemList listings={typeListings} />
             </main>
-            {lastVisibleTypeListing && (
+            {lastVisibleTypeListing ? (
               <div className='flex justify-center items-center'>
                 <button
                   onClick={() => getMoreTypeListings(4)}
@@ -41,6 +41,8 @@ const Listings = () => {
                   Load more
                 </button>
               </div>
+            ) : (
+              <PageHeader title='There are no more listings' />
             )}
           </>
         ) : (

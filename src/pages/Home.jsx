@@ -17,6 +17,7 @@ const Home = () => {
     getOfferListings(4);
     getRentListings(4);
     getSaleListings(4);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -24,7 +25,7 @@ const Home = () => {
       <Slider />
       <div className='px-5 w-full'>
         {/* <LandView /> */}
-        <div className='flex flex-col mx-20 my-12 space-y-6'>
+        <div className='flex flex-col mx-20 my-10 space-y-6'>
           <div className='flex flex-col items-center justify-center mb-10'>
             <PageHeader title='Discover Our Featured Properties' />
             <PageHeader subtitle='Discover best deals for your future house' />

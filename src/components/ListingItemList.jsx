@@ -26,7 +26,7 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
     <>
       {listings && listings.length > 0 && (
         <div className='m-2 mb-6'>
-          <h2 className='px-3 text-darker text-2xl mt-6 font-semibold tracking-wider'>
+          <h2 className='px-3 text-darker text-2xl mt-10 font-semibold tracking-wider'>
             {title}
           </h2>
           <Link to={link}>
@@ -34,7 +34,7 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
               {subtitle}...
             </p>
           </Link>
-          <div className='flex justify-center items-center mx-auto'>
+          <div>
             <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full'>
               {listings?.map((listing) => (
                 <ListingItem

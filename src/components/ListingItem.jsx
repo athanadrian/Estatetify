@@ -44,7 +44,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
 
   return (
     <>
-      <li className='relative mx-auto w-80 h-fit rounded-lg border border-gray-400 m-[10px]'>
+      <li className='relative mx-auto w-80 h-fit rounded-lg border border-gray-400 m-[10px] shadow-md hover:shadow-lg transition-shadow duration-150 ease-in'>
         <div
           className='z-0 m-0 max-h-[250px] w-full overflow-hidden cursor-pointer'
           onClick={() => navigate(`/listings/${listing.type}/${id}`)}

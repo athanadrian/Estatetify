@@ -65,7 +65,7 @@ const Profile = () => {
   return (
     <>
       <section className='max-w-6xl flex flex-col justify-center items-center mx-auto'>
-        <PageHeader title='Profile' />
+        <PageHeader title='My Profile' />
         <div className='flex flex-col justify-center items-center gap-5 w-full md:w-[50%] mx-auto px-3 mt-6'>
           <form onSubmit={handleSubmit}>
             <div className='relative w-48 h-48 rounded-full mb-6 mx-auto'>

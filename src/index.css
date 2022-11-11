@@ -27,6 +27,10 @@ body {
   background: #b9d5de !important;
 }
 
+html::-webkit-scrollbar {
+  display: none;
+}
+
 html {
   scrollbar-width: none;
 }
