@@ -13,7 +13,7 @@ const FormSelect = ({
       value={value !== null ? value : ''}
       name={name}
       onChange={onChange}
-      className={`px-4 py-3 w-full rounded shadow-lg bg-dark transition duration-150 hover:bg-darker focus:ring-0 focus:outline-none text-white ${className}`}
+      className={`px-4 py-3 w-full rounded shadow-lg bg-primary transition duration-150 focus:ring-0 focus:outline-none text-white ${className}`}
     >
       {value === null && <option value=''>Select</option>}
       {listData?.map((listItem) => (

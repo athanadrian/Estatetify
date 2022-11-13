@@ -74,13 +74,13 @@ const Profile = () => {
                 alt='avatar'
                 className='w-full rounded-full'
               />
-              <button
+              {/* <button
                 type='button'
                 className='flex justify-center items-center absolute px-3 py-0.5 bottom-0 -right-2 w-max rounded-xl bg-teal-500 hover:bg-teal-700 transition duration-150 ease-in-out active:bg-teal-800 text-white'
               >
                 <AppIcon Icon={defaultStyles.icons.image_edit} />
                 <span className='ml-1'>change</span>
-              </button>
+              </button> */}
             </div>
             {isEditable && <Label text='Full Name' />}
             <FormInput
