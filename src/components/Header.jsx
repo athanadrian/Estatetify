@@ -21,7 +21,7 @@ const Header = () => {
       <header className='flex justify-between items-center px-3 max-w-6xl mx-auto p-3'>
         <div
           className='flex cursor-pointer justify-center items-center font-bold text-darker mobile:text-lg tablet:text-xl laptop:text-2xl'
-          onClick={() => navigate('/home')}
+          onClick={() => navigate('/')}
         >
           <img src={logo} alt='logo' width={28} height={28} />
           <p className='pl-2'>Estatetify</p>

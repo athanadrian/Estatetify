@@ -11,6 +11,7 @@ module.exports = {
         light: '#B9D5DE',
       },
       screens: {
+        xs: '300px',
         mobile: '400px',
         tablet: '640px',
         laptop: '1024px',

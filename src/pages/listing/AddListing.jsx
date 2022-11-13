@@ -105,6 +105,7 @@ const AddListing = () => {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
       );
       const data = await response.json();
+      //console.log('geo data', data.results[0]?.address_components);
       geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
       geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
       geolocation.address = data.results[0]?.formatted_address ?? '';

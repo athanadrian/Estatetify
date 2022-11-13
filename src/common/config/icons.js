@@ -17,6 +17,10 @@ import {
   FaShareAlt,
   FaChair,
   FaHeart,
+  FaPaperPlane,
+  FaBuilding,
+  FaShieldAlt,
+  FaFileInvoiceDollar,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
@@ -58,6 +62,10 @@ const icons = {
   social: FaShareAlt,
   furnished: FaChair,
   favorite: FaHeart,
+  feature_quality: FaShieldAlt,
+  feature_find: FaPaperPlane,
+  feature_update: FaBuilding,
+  feature_low_cost: FaFileInvoiceDollar,
 };
 
 export default icons;

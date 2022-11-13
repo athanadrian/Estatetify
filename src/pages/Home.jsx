@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { LandView, Loader, PageHeader, Slider } from 'components';
+import { PageHeader, Slider } from 'components';
 import { ListingItemList } from 'components';
 import { useListingContext } from 'store/contexts';
 
@@ -24,7 +24,6 @@ const Home = () => {
     <>
       <Slider />
       <div className='px-5 w-full'>
-        {/* <LandView /> */}
         <div className='flex flex-col mx-20 my-10 space-y-6'>
           <div className='flex flex-col items-center justify-center mb-10'>
             <PageHeader title='Discover Our Featured Properties' />
