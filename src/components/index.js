@@ -9,6 +9,7 @@ export { default as ListingItem } from './ListingItem';
 export { default as ListingItemList } from './ListingItemList';
 export { default as FormInput } from './elements/FormInput';
 export { default as FormSelect } from './elements/FormSelect';
+export { default as FormLookUpSelect } from './elements/FormLookUpSelect';
 export { default as AppIcon } from './elements/AppIcon';
 export { default as GoogleButton } from './elements/GoogleButton';
 export { default as AppButton } from './elements/AppButton';

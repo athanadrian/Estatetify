@@ -29,3 +29,17 @@ export const displayPrice = (value) => {
   }
   return 0;
 };
+
+// Get city and state from leaflet geoData
+// 'locality' for city
+// 'administrative' for state
+// 'country' for country
+export const getGeoData = (property, leafletData) => {
+  const geoData = leafletData.find((item) => {
+    if (item.types.find((str) => str.includes(property))) {
+      return item;
+    }
+    return '';
+  });
+  return geoData.long_name;
+};

@@ -3,18 +3,24 @@ import {
   //sizes
 } from 'common/lookup-data';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useListingContext } from 'store/contexts';
 import AppButton from './elements/AppButton';
-import FormSelect from './elements/FormSelect';
+import { FormLookUpSelect, FormSelect } from 'components';
 const initialFilters = {
   type: 'rent',
   category: '',
   size: '',
+  city: '',
 };
 const Filter = () => {
   const [filters, setFilters] = useState(initialFilters);
+  const { getListingsLocations, cities, listingsLocations } =
+    useListingContext();
   const {
     type,
     category,
+    city,
     // size
     // squareFeet,
     // floor,
@@ -43,6 +49,11 @@ const Filter = () => {
     e.preventDefault();
     //
   };
+
+  useEffect(() => {
+    getListingsLocations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -74,15 +85,26 @@ const Filter = () => {
             <div className='text-gray-400 mb-2'>Location</div>
             <div className='text-night font-bold text-xl'>Athens</div>
           </div> */}
-          <div className='flex flex-col'>
+          <div className='flex flex-col mb-3'>
             <div className='text-gray-400 mb-2'>Category</div>
-            <FormSelect
+            <FormLookUpSelect
               value={category}
               name={'category'}
-              className='py-0 px-0 w-full shadow-none rounded bg-transparent hover:bg-white  active:bg-white focus:ring-0 focus:outline-none text-night font-bold text-xl focus:bg-white'
+              className='px-0 py-3 w-full shadow-none rounded bg-transparent hover:bg-white  active:bg-white focus:ring-0 focus:outline-none text-night font-bold text-xl focus:bg-white border-b-2 border-gray-200'
               onChange={handleChange}
               required
               listData={categories}
+            />
+          </div>
+          <div className='flex flex-col mb-3'>
+            <div className='text-gray-400 mb-2'>Location</div>
+            <FormSelect
+              value={city}
+              name={'city'}
+              className='mb-3 px-0 py-3 w-full shadow-none rounded bg-transparent hover:bg-white  active:bg-white focus:ring-0 focus:outline-none text-night font-bold text-xl focus:bg-white border-b-2 border-gray-200'
+              onChange={handleChange}
+              required
+              listData={cities}
             />
           </div>
           {/* <div className='flex flex-col'>
@@ -102,7 +124,10 @@ const Filter = () => {
               €85,000 - €98,000
             </div>
           </div> */}
-          <AppButton label='Search' className='laptop:w-max w-full' />
+          <AppButton
+            label='Search'
+            className='w-full laptop:w-1/5 laptop:h-1/5 self-center'
+          />
         </div>
       </div>
     </form>

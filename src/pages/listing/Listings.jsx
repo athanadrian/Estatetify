@@ -13,13 +13,12 @@ const Listings = () => {
     lastVisibleTypeListing,
     getMoreTypeListings,
   } = useListingContext();
-  console.log('type', type);
 
   useEffect(() => {
     getTypeListings(type, 8);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
-  console.log('type listings', typeListings);
+
   if (isLoading) return <Loader />;
   return (
     <>

@@ -1,7 +1,7 @@
 import {
   AppButton,
   FormInput,
-  FormSelect,
+  FormLookUpSelect,
   Label,
   Loader,
   PageHeader,
@@ -13,6 +13,7 @@ import { useNavigate, useParams } from 'react-router';
 import { categories, floors } from 'common/lookup-data';
 import { useListingContext } from 'store/contexts';
 import { useAuth } from 'hooks/useAuth';
+import { getGeoData } from 'common/helpers';
 
 const EditListing = () => {
   const initialValues = {
@@ -117,6 +118,12 @@ const EditListing = () => {
       geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
       geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
       geolocation.address = data.results[0]?.formatted_address ?? '';
+      geolocation.city =
+        getGeoData('locality', data.results[0]?.address_components) ?? '';
+      geolocation.state =
+        getGeoData('administrative', data.results[0]?.address_components) ?? '';
+      geolocation.country =
+        getGeoData('country', data.results[0]?.address_components) ?? '';
 
       location = data.status === 'ZERO_RESULTS' && undefined;
 
@@ -165,10 +172,6 @@ const EditListing = () => {
   useEffect(() => {
     if (listing !== undefined)
       setValues((newValues) => ({ ...newValues, ...listing }));
-    // else {
-    //   navigate('/home');
-    //   toast.error('Listing does not exist!');
-    // }
   }, [listing]);
 
   useEffect(() => {
@@ -227,10 +230,10 @@ const EditListing = () => {
         <div className='flex justify-center items-center space-x-3'>
           <div className='flex flex-col space-y-0.5 w-full'>
             <Label text='category' />
-            <FormSelect
+            <FormLookUpSelect
               value={category}
               name={'category'}
-              className=''
+              className='px-4 py-3 w-full rounded shadow-lg bg-primary hover:bg-dark focus:bg-darker transition duration-150 focus:ring-0 focus:outline-none text-white'
               onChange={handleChange}
               required
               listData={categories}
@@ -251,10 +254,10 @@ const EditListing = () => {
           </div>
           <div className='flex flex-col space-y-0.5 w-full'>
             <Label text='Floor' />
-            <FormSelect
+            <FormLookUpSelect
               value={floor}
               name={'floor'}
-              className='capitalize'
+              className='capitalize px-4 py-3 w-full rounded shadow-lg bg-primary hover:bg-dark focus:bg-darker transition duration-150 focus:ring-0 focus:outline-none text-white'
               onChange={handleChange}
               required={showFloor}
               listData={floors}

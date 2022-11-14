@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FormSelect = ({
+const FormLookUpSelect = ({
   value,
   name,
   className,
@@ -10,20 +10,20 @@ const FormSelect = ({
 }) => {
   return (
     <select
-      value={value !== '' ? value : ''}
+      value={value !== null ? value : ''}
       name={name}
       onChange={onChange}
       className={className}
       {...otherProps}
     >
-      <option value=''>Select</option>
+      {value === null && <option value=''>Select</option>}
       {listData?.map((listItem) => (
-        <option key={listItem} value={listItem}>
-          {listItem}
+        <option key={listItem.id} value={listItem.enum}>
+          {listItem.title}
         </option>
       ))}
     </select>
   );
 };
 
-export default FormSelect;
+export default FormLookUpSelect;

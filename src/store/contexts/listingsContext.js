@@ -27,6 +27,8 @@ import {
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
+  GET_ALL_LISTINGS_LOCATIONS_BEGIN,
+  GET_ALL_LISTINGS_LOCATIONS_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
@@ -65,6 +67,10 @@ const initialState = {
   isLoading: false,
   listing: undefined,
   listings: [],
+  listingsLocations: [],
+  cities: [],
+  states: [],
+  countries: [],
   filteredListings: [],
   offerListings: [],
   lastVisibleOfferListing: null,
@@ -107,6 +113,27 @@ const ListingProvider = ({ children }) => {
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getListingsLocations = async () => {
+    //dispatch({ type: GET_ALL_LISTINGS_LOCATIONS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(listingsRef, orderBy('timestamp', 'desc'));
+      const listingsDocs = await getDocs(listingQuery);
+      let listingsLocations = [];
+      listingsDocs.forEach((listingDoc) => {
+        return listingsLocations.push({
+          ...listingDoc.data().geolocation,
+        });
+      });
+      dispatch({
+        type: GET_ALL_LISTINGS_LOCATIONS_SUCCESS,
+        payload: { listingsLocations },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings locations: ', error.message);
     }
   };
 
@@ -503,6 +530,7 @@ const ListingProvider = ({ children }) => {
         ...state,
         setLoading,
         getAllListings,
+        getListingsLocations,
         getMyListings,
         getListingsByUser,
         getFilteredListings,

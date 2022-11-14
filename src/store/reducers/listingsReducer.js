@@ -2,6 +2,8 @@ import {
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
+  GET_ALL_LISTINGS_LOCATIONS_BEGIN,
+  GET_ALL_LISTINGS_LOCATIONS_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
@@ -53,6 +55,29 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       listings: action.payload.listings,
+    };
+  }
+
+  if (action.type === GET_ALL_LISTINGS_LOCATIONS_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_ALL_LISTINGS_LOCATIONS_SUCCESS) {
+    const listingsLocations = action.payload.listingsLocations;
+    const tmpCities = listingsLocations.filter((loc) => loc.city !== undefined);
+    const cities = [...new Set(tmpCities.map((loc) => loc.city))];
+    const states = listingsLocations.map((loc) => loc.state);
+    const countries = listingsLocations.map((loc) => loc.country);
+    return {
+      ...state,
+      isLoading: false,
+      listingsLocations,
+      cities,
+      states,
+      countries,
     };
   }
 

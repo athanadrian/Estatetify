@@ -233,7 +233,15 @@ const Listing = () => {
                 ]}
               >
                 <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
+                  <div className='flex items-center justify-center font-medium whitespace-nowrap'>
+                    <AppIcon
+                      className='text-primary text-2xl mr-2'
+                      Icon={defaultStyles.icons[listing?.category]}
+                    />
+                    <p className='capitalize text-primary font-semibold text-lg'>
+                      {listing?.category}
+                    </p>
+                  </div>
                 </Popup>
               </Marker>
             </MapContainer>
