@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import ContactModal from './ContactModal';
 import { useAuth } from 'hooks/useAuth';
+import FavoriteButton from './FavoriteButton';
 
 const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   const { logo, openModal } = useCommonContext();
   const { getProfileUser, profileUser } = useProfileContext();
   const [showOwnerInfo, setShowOwnerInfo] = useState(false);
+
   const showFloor =
     listing.category === 'condo' ||
     listing.category === 'office' ||
@@ -33,7 +35,6 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   };
 
   const toggleProfileModal = () => {
-    //openModal();
     setShowOwnerInfo(false);
   };
 
@@ -51,8 +52,8 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
         >
           <img
             className=' overflow-hidden rounded-t-lg hover:scale-105 transition-scale duration-200 ease-in'
-            src={listing.imgUrls.length > 0 ? listing.imgUrls[0] : logo}
-            alt={listing.title}
+            src={listing?.imgUrls.length > 0 ? listing?.imgUrls[0] : logo}
+            alt={listing?.title}
             loading='lazy'
           />
         </div>
@@ -63,7 +64,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           <div>{listing?.timestamp.toDate()}</div>
         </Moment>
         <div className='uppercase text-white bg-darker px-4 py-1 text-xs rounded absolute top-3 right-3 z-10 shadow-lg'>
-          FOR {listing.type}
+          FOR {listing?.type}
         </div>
         {showOwnerInfo && (
           <div
@@ -107,7 +108,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
         </div>
         <div className='px-3 py-5'>
           <h1 className='text-dark text-sm font-bold mb-3 truncate'>
-            {listing.title}
+            {listing?.title}
           </h1>
           <div className='flex items-center space-x-1'>
             <AppIcon
@@ -115,19 +116,19 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
               className='h-4 w-4 text-primary'
             />
             <p className='text-gray-400 text-xs font-medium truncate'>
-              {listing?.geolocation?.address || listing.address}
+              {listing?.geolocation?.address || listing?.address}
             </p>
           </div>
         </div>
         <div className='flex flex-row px-3 pb-5 justify-start text-gray-400'>
           <div className='flex flex-col items-center justify-center text-lg font-medium'>
-            <AppIcon Icon={defaultStyles.icons[listing.category]} />
-            <p className='capitalize pt-1 text-xs'>{listing.category}</p>
+            <AppIcon Icon={defaultStyles.icons[listing?.category]} />
+            <p className='capitalize pt-1 text-xs'>{listing?.category}</p>
           </div>
           <div className='flex flex-col items-center justify-center text-lg font-medium'>
             <AppIcon Icon={defaultStyles.icons.squareFeet} />
             <p className='mx-6 pt-1 text-xs'>
-              {listing.squareFeet} m<sup>2</sup>
+              {listing?.squareFeet} m<sup>2</sup>
             </p>
           </div>
           {showFloor && (
@@ -141,31 +142,33 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           <div className='flex flex-col items-center justify-center text-lg font-medium'>
             <AppIcon Icon={defaultStyles.icons.rooms} />
             <p className='pt-1 text-xs capitalize'>
-              {listing.rooms > 1 ? `${listing.rooms} rooms` : '1 room'}
+              {listing?.rooms > 1 ? `${listing?.rooms} rooms` : '1 room'}
             </p>
           </div>
           <div className='flex flex-col items-center justify-center text-lg font-medium'>
             <AppIcon Icon={defaultStyles.icons.beds} />
             <p className='pt-1 text-xs capitalize'>
-              {listing.beds > 1 ? `${listing.beds} beds` : '1 bed'}
+              {listing?.beds > 1 ? `${listing?.beds} beds` : '1 bed'}
             </p>
           </div>
           <div className='flex flex-col items-center justify-center text-lg font-medium'>
             <AppIcon Icon={defaultStyles.icons.bathrooms} />
             <p className='pt-1 text-xs capitalize'>
-              {listing.bathrooms > 1 ? `${listing.bathrooms} baths` : '1 bath'}
+              {listing?.bathrooms > 1
+                ? `${listing?.bathrooms} baths`
+                : '1 bath'}
             </p>
           </div>
-          {listing.parking && (
+          {listing?.parking && (
             <div className='flex flex-col items-center justify-center text-lg font-medium'>
               <AppIcon Icon={defaultStyles.icons.warehouse} />
-              <p className='pt-1 text-xs'>{listing.parking} Garage</p>
+              <p className='pt-1 text-xs'>{listing?.parking} Garage</p>
             </div>
           )}
         </div>
         <div className='flex flex-row justify-start px-3 py-3 items-center'>
-          <p className={`${listing.offer ? offerStyle : regularStyle}`}>
-            €{displayPrice(listing.regularPrice)}
+          <p className={`${listing?.offer ? offerStyle : regularStyle}`}>
+            €{displayPrice(listing?.regularPrice)}
           </p>
           {listing.offer && (
             <p className={`text-[#457b9d] mx-2 mt-2 font-semibold`}>
@@ -193,11 +196,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
               )}
             </div>
           ) : (
-            <AppIcon
-              Icon={defaultStyles.icons.favorite}
-              className='absolute bottom-4 right-7 h-4 cursor-pointer text-dark'
-              onClick={() => console.log('favorite')}
-            />
+            <FavoriteButton id={id} listing={listing} />
           )}
         </div>
       </li>

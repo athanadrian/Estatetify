@@ -4,6 +4,7 @@ export { default as ContactModal } from './ContactModal';
 export { default as PageHeader } from './PageHeader';
 export { default as UserRoute } from './UserRoute';
 export { default as Filter } from './Filter';
+export { default as FavoriteButton } from './FavoriteButton';
 export { default as ProfileCard } from './ProfileCard';
 export { default as ListingItem } from './ListingItem';
 export { default as ListingItemList } from './ListingItemList';

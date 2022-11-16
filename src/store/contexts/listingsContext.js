@@ -58,13 +58,19 @@ import {
   DELETE_LISTING_BEGIN,
   DELETE_LISTING_SUCCESS,
   DELETE_LISTING_ERROR,
+  ADD_LISTING_TO_FAVORITES,
+  REMOVE_LISTING_FROM_FAVORITES,
+  REMOVE_ALL_FAVORITES,
 } from '../actions/listingsActions';
 import reducer from '../reducers/listingsReducer';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 
+const userFavorites = localStorage.getItem('userFavorites');
+
 const initialState = {
   isLoading: false,
+  isLoadingLocations: false,
   listing: undefined,
   listings: [],
   listingsLocations: [],
@@ -78,6 +84,7 @@ const initialState = {
   saleListings: [],
   typeListings: [],
   lastVisibleTypeListing: null,
+  userFavorites: JSON.parse(userFavorites) ?? [],
 };
 
 const ListingContext = createContext();
@@ -88,6 +95,33 @@ const ListingProvider = ({ children }) => {
 
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
+  };
+
+  const addRemoveFavorite = async ({ listing, favorite = true }) => {
+    try {
+      if (favorite) {
+        dispatch({
+          type: ADD_LISTING_TO_FAVORITES,
+          payload: { listing },
+        });
+        toast.success('Listing added to your favorites successfully!');
+      } else {
+        dispatch({
+          type: REMOVE_LISTING_FROM_FAVORITES,
+          payload: { listing },
+        });
+        toast.success('Listing removed from your favorites successfully!');
+      }
+    } catch (error) {
+      console.log('😱 Error Add/Remove Listing: ', error.response.data.msg);
+    }
+  };
+
+  const removeAllFavorites = (id) => {
+    dispatch({
+      type: REMOVE_ALL_FAVORITES,
+    });
+    toast.success('All favorites removed successfully!');
   };
 
   const getAllListings = async (lim) => {
@@ -117,7 +151,7 @@ const ListingProvider = ({ children }) => {
   };
 
   const getListingsLocations = async () => {
-    //dispatch({ type: GET_ALL_LISTINGS_LOCATIONS_BEGIN });
+    dispatch({ type: GET_ALL_LISTINGS_LOCATIONS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
       const listingQuery = query(listingsRef, orderBy('timestamp', 'desc'));
@@ -545,6 +579,8 @@ const ListingProvider = ({ children }) => {
         editListing,
         deleteListing,
         handleUploadImageToStorage,
+        addRemoveFavorite,
+        removeAllFavorites,
       }}
     >
       {children}

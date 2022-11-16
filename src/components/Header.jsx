@@ -1,11 +1,15 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from 'images/estatetify-app.svg';
 import { useAuth } from 'hooks/useAuth';
+import AppIcon from './elements/AppIcon';
+import defaultStyles from 'common/config';
+import { useListingContext } from 'store/contexts';
 
 const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { userFavorites } = useListingContext();
 
   const Links = [
     { name: 'home', link: '/home' },
@@ -31,6 +35,17 @@ const Header = () => {
             'flex items-center mobile:text-sm tablet:text-sm laptop:text-base space-x-10'
           }
         >
+          {userFavorites.length > 0 && (
+            <Link to='/favorites' className='relative'>
+              <AppIcon
+                Icon={defaultStyles.icons.favorite}
+                className='text-red-500 text-2xl'
+              />
+              <div className='absolute -right-2 -top-2 p-0.5 w-4 h-4 bg-darker text-xs text-white rounded-full text-center flex items-center justify-center'>
+                {userFavorites.length}
+              </div>
+            </Link>
+          )}
           {Links.map((link) => (
             <li key={link.link} className='mobile:mx-2 tablet:mx-3 laptop:mx-5'>
               <NavLink

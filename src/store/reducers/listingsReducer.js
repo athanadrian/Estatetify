@@ -33,6 +33,9 @@ import {
   DELETE_LISTING_BEGIN,
   DELETE_LISTING_SUCCESS,
   DELETE_LISTING_ERROR,
+  ADD_LISTING_TO_FAVORITES,
+  REMOVE_LISTING_FROM_FAVORITES,
+  REMOVE_ALL_FAVORITES,
 } from '../actions/listingsActions';
 
 const reducer = (state, action) => {
@@ -61,7 +64,7 @@ const reducer = (state, action) => {
   if (action.type === GET_ALL_LISTINGS_LOCATIONS_BEGIN) {
     return {
       ...state,
-      isLoading: true,
+      isLoadingLocations: true,
     };
   }
 
@@ -73,7 +76,7 @@ const reducer = (state, action) => {
     const countries = listingsLocations.map((loc) => loc.country);
     return {
       ...state,
-      isLoading: false,
+      isLoadingLocations: false,
       listingsLocations,
       cities,
       states,
@@ -308,6 +311,35 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
+    };
+  }
+
+  if (action.type === ADD_LISTING_TO_FAVORITES) {
+    const listing = action.payload.listing;
+    const userFavorites = [...state.userFavorites, listing];
+    localStorage.setItem('userFavorites', JSON.stringify(userFavorites));
+    return {
+      ...state,
+      userFavorites,
+    };
+  }
+
+  if (action.type === REMOVE_LISTING_FROM_FAVORITES) {
+    const { id } = action.payload.listing;
+    const userFavorites = state.userFavorites.filter((fav) => fav.id !== id);
+    localStorage.setItem('userFavorites', JSON.stringify(userFavorites));
+    return {
+      ...state,
+      userFavorites,
+    };
+  }
+
+  if (action.type === REMOVE_ALL_FAVORITES) {
+    const userFavorites = [];
+    localStorage.setItem('userFavorites', JSON.stringify(userFavorites));
+    return {
+      ...state,
+      userFavorites,
     };
   }
 

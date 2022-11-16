@@ -173,13 +173,10 @@ const EditListing = () => {
     if (listing !== undefined)
       setValues((newValues) => ({ ...newValues, ...listing }));
   }, [listing]);
-
+  console.log('listing', listing);
+  console.log('user', user);
   useEffect(() => {
-    if (
-      listing !== undefined &&
-      user !== undefined &&
-      listing?.userRef !== user?.uid
-    ) {
+    if (listing !== undefined && user && listing?.userRef !== user?.uid) {
       //TODO
       // logOut();
       // navigate('/sign-in');
