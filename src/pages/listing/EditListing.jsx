@@ -174,8 +174,7 @@ const EditListing = () => {
     if (listing !== undefined)
       setValues((newValues) => ({ ...newValues, ...listing }));
   }, [listing]);
-  console.log('listing', listing);
-  console.log('user', user);
+
   useEffect(() => {
     if (listing !== undefined && user && listing?.userRef !== user?.uid) {
       //TODO

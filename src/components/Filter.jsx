@@ -16,12 +16,7 @@ const initialFilters = {
 const Filter = () => {
   const [filters, setFilters] = useState(initialFilters);
   const navigate = useNavigate();
-  const {
-    getListingsLocations,
-    cities,
-    getFilteredListings,
-    filteredListings,
-  } = useListingContext();
+  const { getListingsLocations, cities } = useListingContext();
   const {
     type,
     category,
@@ -33,14 +28,9 @@ const Filter = () => {
     // bathrooms,
     // furnished,
     // parking,
-    // address,
-    // latitude,
-    // longitude,
     // offer,
-    // description,
     // regularPrice,
     // offerPrice,
-    // images,
   } = filters;
 
   const handleChange = (e) => {
@@ -50,25 +40,14 @@ const Filter = () => {
   };
 
   const handleFilterListings = async () => {
-    //await getFilteredListings(filters, undefined);
     navigate('/search-results', { state: { filters } });
     //
   };
 
   const handleClearFilters = async () => {
     setFilters(initialFilters);
-    await getFilteredListings(
-      {
-        type: 'rent',
-        category: null,
-        city: '',
-        squareFeet: null,
-      },
-      undefined
-    );
-    //
   };
-  console.log('filteredListings', filteredListings);
+
   useEffect(() => {
     getListingsLocations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,7 +104,7 @@ const Filter = () => {
             <FormLookUpSelect
               value={squareFeet}
               name='squareFeet'
-              className='px-0 py-3 w-full shadow-none rounded bg-transparent hover:bg-white  active:bg-white focus:ring-0 focus:outline-none text-night font-bold text-xl focus:bg-white border-b-2 border-gray-200 mb-3'
+              className='px-0 py-3 w-full shadow-none rounded bg-transparent hover:bg-white  active:bg-white focus:ring-0 focus:outline-none text-night font-bold text-xl focus:bg-white border-b-2 border-gray-200 mb-6'
               onChange={handleChange}
               listData={sizes}
             />

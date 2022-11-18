@@ -7,6 +7,7 @@ import { useListingContext } from 'store/contexts';
 const SearchResults = () => {
   const { filteredListings, getFilteredListings } = useListingContext();
   const location = useLocation();
+
   useEffect(() => {
     getFilteredListings(location?.state?.filters, undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +24,7 @@ const SearchResults = () => {
                 className='mt-0'
                 title={`Found ${
                   filteredListings.length > 1
-                    ? `${filteredListings.length?.beds} listings`
+                    ? `${filteredListings.length} listings`
                     : '1 listing'
                 }`}
               />

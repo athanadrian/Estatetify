@@ -10,13 +10,15 @@ const FormLookUpSelect = ({
 }) => {
   return (
     <select
-      value={value !== null ? value : ''}
+      value={value ?? ''}
       name={name}
       onChange={onChange}
       className={className}
       {...otherProps}
     >
-      {value === null && <option value=''>Select</option>}
+      <option defaultValue value=''>
+        Select
+      </option>
       {listData?.map((listItem) => (
         <option key={listItem.id} value={listItem.enum}>
           {listItem.title}

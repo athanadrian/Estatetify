@@ -152,12 +152,10 @@ const ListingProvider = ({ children }) => {
   };
 
   const getFilteredListings = async (filters, lim) => {
-    console.log('ctx filters', filters);
     dispatch({ type: GET_FILTERED_LISTINGS_BEGIN });
     try {
       let whereConditions = [];
       if (filters) {
-        console.log('ctx filters', filters);
         Object.keys(filters).forEach((key) => {
           if (key === 'squareFeet' && filters['squareFeet']) {
             const sq = sizes.find(
@@ -174,7 +172,6 @@ const ListingProvider = ({ children }) => {
           }
         });
       }
-      console.log('where conditions', whereConditions);
       const listingsRef = collection(db, 'listings');
       const listingQuery = query(
         listingsRef,

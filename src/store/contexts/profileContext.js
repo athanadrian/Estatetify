@@ -47,10 +47,11 @@ const ProfileProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    const { fullName, avatar } = userData;
+    console.log('ctx userData', userData);
+    const { fullName, mobile, avatar } = userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
-      if (user?.displayName !== fullName) {
+      if (user?.displayName !== fullName || user?.mobile !== mobile) {
         // update data firebase/auth
         await updateProfile(user, {
           displayName: fullName,
@@ -60,6 +61,7 @@ const ProfileProvider = ({ children }) => {
         await updateDoc(userRef, {
           fullName,
           avatar,
+          mobile,
         });
         dispatch({ type: UPDATE_USER_SUCCESS });
         toast.success('Profile updated successfully!');

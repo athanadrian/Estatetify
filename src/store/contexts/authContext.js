@@ -49,6 +49,8 @@ const AuthProvider = ({ children }) => {
       const user = userCredential.user;
       const userData = { ...signUpData };
       delete userData.password;
+      userData.mobile = '';
+      userData.avatar = '';
       userData.timestamp = serverTimestamp();
 
       await setDoc(doc(db, 'users', user.uid), userData);
