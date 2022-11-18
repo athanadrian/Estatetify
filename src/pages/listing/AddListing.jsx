@@ -142,6 +142,7 @@ const AddListing = () => {
       ...values,
       imgUrls,
       geolocation,
+      squareFeet: Number(values.squareFeet),
     };
     delete listingData.images;
     delete listingData.latitude;
@@ -211,8 +212,8 @@ const AddListing = () => {
             <FormInput
               name='squareFeet'
               value={squareFeet}
-              min='20'
-              max='500'
+              min={20}
+              max={500}
               type='number'
               onChange={handleChange}
               placeholder='sq feet'

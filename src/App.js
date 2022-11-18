@@ -15,6 +15,7 @@ import {
   OwnerProfile,
   LandingPage,
   Favorites,
+  SearchResults,
 } from './pages';
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
           <Route path='/owner-profile/:ownerId' element={<OwnerProfile />} />
           <Route path='/offers' element={<Offers />} />
           <Route path='/favorites' element={<Favorites />} />
+          <Route path='/search-results' element={<SearchResults />} />
           <Route path='/listings/:type' element={<Listings />} />
           <Route path='/listings/:type/:listingId' element={<Listing />} />
           <Route path='/sign-in' element={<SignIn />} />

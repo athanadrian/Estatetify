@@ -11,6 +11,7 @@ import ListingItemList from 'components/ListingItemList';
 const initialValues = {
   fullName: '',
   email: '',
+  mobile: '',
   avatar: '',
 };
 
@@ -23,17 +24,18 @@ const Profile = () => {
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
 
-  const { fullName, email, avatar } = values;
+  const { fullName, mobile, email, avatar } = values;
   useEffect(() => {
     if (profileUser !== undefined) {
       setValues((preValues) => ({
         ...preValues,
         fullName: profileUser?.fullName,
+        mobile: profileUser?.mobile,
         email: profileUser?.email,
         avatar: profileUser?.avatar,
       }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileUser]);
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const Profile = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setValues((preValues) => ({ ...preValues, [name]: value }));
+    setValues((preValues) => ({ ...preValues, [name]: value, avatar: '' }));
   };
 
   const handleSubmit = async (e) => {
@@ -89,6 +91,16 @@ const Profile = () => {
               placeholder='Full Name'
               value={fullName}
               onChange={handleChange}
+              disabled={!isEditable}
+            />
+            {isEditable && <Label text='Mobile' />}
+            <FormInput
+              type='text'
+              name='mobile'
+              placeholder='Mobile +...'
+              value={mobile}
+              onChange={handleChange}
+              className='mt-6 placeholder:text-primary'
               disabled={!isEditable}
             />
             <FormInput

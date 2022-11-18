@@ -41,7 +41,7 @@ const Listings = () => {
                 </button>
               </div>
             ) : (
-              <PageHeader title='There are no more listings' />
+              <PageHeader title={`There are no more places for ${type}`} />
             )}
           </>
         ) : (

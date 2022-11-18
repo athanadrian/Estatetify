@@ -20,7 +20,7 @@ const Offers = () => {
   return (
     <>
       <div className='mx-auto xl:mx-20 px-3'>
-        <PageHeader title='Offers' />
+        <PageHeader title='Our recent offers' />
         {isLoading ? (
           <Loader />
         ) : offerListings && offerListings.length > 0 ? (
@@ -28,7 +28,7 @@ const Offers = () => {
             <main>
               <ListingItemList listings={offerListings} />
             </main>
-            {lastVisibleOfferListing && (
+            {lastVisibleOfferListing ? (
               <div className='flex justify-center items-center'>
                 <button
                   onClick={() => getMoreOfferListings(4)}
@@ -37,10 +37,12 @@ const Offers = () => {
                   Load more
                 </button>
               </div>
+            ) : (
+              <PageHeader title='There are no more offers' />
             )}
           </>
         ) : (
-          <PageHeader title='There are no current offers' />
+          <PageHeader title='There are no more offers' />
         )}
       </div>
     </>

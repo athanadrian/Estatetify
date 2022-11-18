@@ -152,6 +152,7 @@ const EditListing = () => {
       ...values,
       imgUrls: listing.imgUrls.length === 0 ? imgUrls : listing.imgUrls,
       geolocation,
+      squareFeet: Number(values.squareFeet),
     };
     delete listingData.images;
     delete listingData.latitude;

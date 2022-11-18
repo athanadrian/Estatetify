@@ -9,9 +9,9 @@ const Favorites = () => {
   return (
     <>
       <div className='mx-auto xl:mx-20 px-3'>
-        <div className='flex flex-col items-center justify-center mb-10'>
-          {userFavorites.length > 0 ? (
-            <>
+        {userFavorites.length > 0 ? (
+          <>
+            <div className='flex flex-col items-center justify-center mb-10'>
               <PageHeader title='Check out your Favorites' />
               <h2
                 onClick={removeAllFavorites}
@@ -19,25 +19,25 @@ const Favorites = () => {
               >
                 Clear all favorites
               </h2>
-              <main>
-                <ListingItemList listings={userFavorites} />
-              </main>
-            </>
-          ) : (
-            <>
-              <PageHeader title="You don't have any favorites left" />
-              <h2 className='text-gray-400 text-base font-medium'>
-                Check out newest
-                <Link
-                  to='/offers'
-                  className='text-lg text-primary hover:underline ml-2'
-                >
-                  offers...
-                </Link>
-              </h2>
-            </>
-          )}
-        </div>
+            </div>
+            <main>
+              <ListingItemList listings={userFavorites} />
+            </main>
+          </>
+        ) : (
+          <div className='flex flex-col items-center justify-center mb-10'>
+            <PageHeader title="You don't have any favorites" />
+            <h2 className='text-gray-400 text-base font-medium'>
+              Check out newest
+              <Link
+                to='/offers'
+                className='text-lg text-primary hover:underline ml-2'
+              >
+                offers...
+              </Link>
+            </h2>
+          </div>
+        )}
       </div>
     </>
   );

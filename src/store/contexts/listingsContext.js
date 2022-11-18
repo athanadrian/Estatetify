@@ -65,6 +65,7 @@ import {
 import reducer from '../reducers/listingsReducer';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
+import { sizes } from 'common/lookup-data';
 
 const userFavorites = localStorage.getItem('userFavorites');
 
@@ -150,6 +151,54 @@ const ListingProvider = ({ children }) => {
     }
   };
 
+  const getFilteredListings = async (filters, lim) => {
+    console.log('ctx filters', filters);
+    dispatch({ type: GET_FILTERED_LISTINGS_BEGIN });
+    try {
+      let whereConditions = [];
+      if (filters) {
+        console.log('ctx filters', filters);
+        Object.keys(filters).forEach((key) => {
+          if (key === 'squareFeet' && filters['squareFeet']) {
+            const sq = sizes.find(
+              (size) => size.enum === filters['squareFeet']
+            );
+            whereConditions.push(where('squareFeet', '>=', sq.min));
+            whereConditions.push(where('squareFeet', '<=', sq.max));
+          } else if (key === 'city' && filters['city']) {
+            whereConditions.push(
+              where('geolocation.city', '==', filters['city'])
+            );
+          } else if (filters[key]) {
+            whereConditions.push(where(key, '==', filters[key]));
+          }
+        });
+      }
+      console.log('where conditions', whereConditions);
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        //orderBy('timestamp', 'desc'),
+        ...whereConditions,
+        limit(lim)
+      );
+      const listingsDocs = await getDocs(listingQuery);
+      let filteredListings = [];
+      listingsDocs.forEach((listingDoc) => {
+        return filteredListings.push({
+          id: listingDoc.id,
+          data: listingDoc.data(),
+        });
+      });
+      dispatch({
+        type: GET_FILTERED_LISTINGS_SUCCESS,
+        payload: { filteredListings },
+      });
+    } catch (error) {
+      console.log('😱 Error get filtered listings: ', error.message);
+    }
+  };
+
   const getListingsLocations = async () => {
     dispatch({ type: GET_ALL_LISTINGS_LOCATIONS_BEGIN });
     try {
@@ -171,38 +220,6 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getFilteredListings = async (filters, lim) => {
-    let whereConditions = [];
-    if (filters) {
-      Object.keys(filters).forEach((key) => {
-        whereConditions.push(where(key, '==', filters[key]));
-      });
-    }
-    dispatch({ type: GET_FILTERED_LISTINGS_BEGIN });
-    try {
-      const listingsRef = collection(db, 'listings');
-      const listingQuery = query(
-        listingsRef,
-        ...whereConditions,
-        orderBy('timestamp', 'desc'),
-        limit(lim)
-      );
-      const listingsDocs = await getDocs(listingQuery);
-      let listings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
-          id: listingDoc.id,
-          data: listingDoc.data(),
-        });
-      });
-      dispatch({
-        type: GET_FILTERED_LISTINGS_SUCCESS,
-        payload: { listings },
-      });
-    } catch (error) {
-      console.log('😱 Error get all listings: ', error.message);
-    }
-  };
   const getOfferListings = async (lim) => {
     dispatch({ type: GET_OFFER_LISTINGS_BEGIN });
     try {
