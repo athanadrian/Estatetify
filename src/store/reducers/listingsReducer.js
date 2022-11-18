@@ -95,7 +95,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      filteredListings: action.payload.listings,
+      filteredListings: action.payload.filteredListings,
     };
   }
 
