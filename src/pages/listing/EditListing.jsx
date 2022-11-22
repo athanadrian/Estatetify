@@ -35,7 +35,7 @@ const EditListing = () => {
     description: '',
     regularPrice: 0,
     offerPrice: 0,
-    images: {},
+    images: null,
     imgUrls: [],
   };
   const navigate = useNavigate();
@@ -104,7 +104,7 @@ const EditListing = () => {
 
     if (imgUrls.length === 0) {
       setLoading(false);
-      toast.error('You must upload at least 1 image!');
+      toast.warning('You must upload at least 1 image!');
       return;
     }
 

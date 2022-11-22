@@ -71,7 +71,7 @@ const AddListing = () => {
     imgUrls,
     //tempFiles,
   } = values;
-  console.log('values', values);
+
   const showFloor =
     values.category === 'condo' ||
     values.category === 'office' ||
