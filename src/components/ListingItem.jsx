@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import ContactModal from './ContactModal';
 import { useAuth } from 'hooks/useAuth';
 import FavoriteButton from './FavoriteButton';
+import ProfileAvatar from './ProfileAvatar';
 
 const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   const navigate = useNavigate();
@@ -96,16 +97,20 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
             )}
           </div>
         )}
-        <div
+        <ProfileAvatar
+          avatar={profileUser?.avatar}
+          onClick={() => setShowOwnerInfo(!showOwnerInfo)}
+        />
+        {/* <div
           className='absolute w-12 h-12  bottom-60 right-3 cursor-pointer'
           onClick={() => setShowOwnerInfo(!showOwnerInfo)}
         >
           <img
-            className='rounded-full shadow-sm'
+            className='rounded-full shadow-sm w-12 h-12'
             src={profileUser?.avatar || logo}
             alt='Owner'
           />
-        </div>
+        </div> */}
         <div className='px-3 py-5'>
           <h1 className='text-dark text-sm font-bold mb-3 truncate'>
             {listing?.title}

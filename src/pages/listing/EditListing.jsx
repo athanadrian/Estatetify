@@ -1,5 +1,6 @@
 import {
   AppButton,
+  FormImageInput,
   FormInput,
   FormLookUpSelect,
   Label,
@@ -35,19 +36,20 @@ const EditListing = () => {
     regularPrice: 0,
     offerPrice: 0,
     images: {},
+    imgUrls: [],
   };
   const navigate = useNavigate();
   const { listingId } = useParams();
   const { user, logOut } = useAuth();
   const {
     handleUploadImageToStorage,
+    deleteImageFromStorage,
     editListing,
     isLoading,
     setLoading,
     getListing,
     listing,
   } = useListingContext();
-
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [values, setValues] = useState(initialValues);
   const {
@@ -69,6 +71,7 @@ const EditListing = () => {
     regularPrice,
     offerPrice,
     images,
+    imgUrls,
   } = values;
 
   const showFloor =
@@ -98,14 +101,16 @@ const EditListing = () => {
     e.preventDefault();
 
     setLoading(true);
+
+    if (imgUrls.length === 0) {
+      setLoading(false);
+      toast.error('You must upload at least 1 image!');
+      return;
+    }
+
     if (+offerPrice >= +regularPrice) {
       setLoading(false);
       toast.error('Offer price should be lower than regular price!');
-      return;
-    }
-    if (images.length > 6) {
-      setLoading(false);
-      toast.error('Maximum 6 images are allowed to upload!');
       return;
     }
     let geolocation = {};
@@ -138,19 +143,9 @@ const EditListing = () => {
       geolocation.lng = longitude;
       geolocation.address = address;
     }
-    let imgUrls = [];
-    if (listing.imgUrls.length === 0) {
-      imgUrls = await Promise.all(
-        [...images].map((image) => handleUploadImageToStorage(image))
-      ).catch((error) => {
-        setLoading(false);
-        console.log('😱 Error Add Listing imgUrls: ', error);
-        toast.error('Images not uploaded!');
-      });
-    }
+
     const listingData = {
       ...values,
-      imgUrls: listing.imgUrls.length === 0 ? imgUrls : listing.imgUrls,
       geolocation,
       squareFeet: Number(values.squareFeet),
     };
@@ -163,6 +158,47 @@ const EditListing = () => {
     navigate(`/listings/${type}/${listingId}`);
     setLoading(false);
     toast.success('Listing updated successfully!');
+  };
+
+  const handleUploadImages = async () => {
+    if (images === null || images.length === 0) {
+      toast.warning('Pick up to 6 images before uploading');
+      return;
+    }
+
+    if (imgUrls.length === 6 || images.length > 6) {
+      toast.warning('You are not allowed to upload more than 6 images');
+      return;
+    }
+
+    const tempImgUrls = await Promise.all(
+      [...images].map((image) => handleUploadImageToStorage(image))
+    ).catch((error) => {
+      setLoading(false);
+      console.log('😱 Error Add Listing imgUrls: ', error);
+      toast.error('Images not uploaded!');
+      return;
+    });
+    setValues((preValues) => ({
+      ...preValues,
+      imgUrls: [...imgUrls, ...tempImgUrls],
+      images: null,
+    }));
+  };
+
+  const handleDeleteListingImage = async (imgUrl) => {
+    try {
+      await deleteImageFromStorage(imgUrl);
+      const tempImgUrls = imgUrls.filter((img) => img !== imgUrl);
+      setValues((preValues) => ({
+        ...preValues,
+        imgUrls: tempImgUrls,
+      }));
+      toast.success('Temporary image removed successfully');
+    } catch (error) {
+      console.log('😱 Error remove Avatar: ', error);
+      toast.error('Temporary image was not removed!');
+    }
   };
 
   useEffect(() => {
@@ -478,24 +514,16 @@ const EditListing = () => {
             )}
           </div>
         )}
-        <div className='flex flex-col'>
-          <Label text='images' className='mb-0' />
-          <p className='mt-0 text-sm text-gray-400'>
-            The first image will be the cover (max 6)
-          </p>
-          <label className='block'>
-            <span className='sr-only'>Choose Image/s</span>
-            <input
-              type='file'
-              name='images'
-              accept='.jpg,.png,.jpeg'
-              multiple
-              required={listing?.imgUrls.length === 0}
-              onChange={handleChange}
-              className='mt-3 mb-6 block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-7 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-dark file:text-white hover:file:bg-darker hover:file:shadow-lg transition duration-150 ease-in-out'
-            />
-          </label>
-        </div>
+        <FormImageInput
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          pickedImages={images?.length ?? 0}
+          uploadedImgUrls={imgUrls}
+          handleDelete={handleDeleteListingImage}
+          handleUpload={handleUploadImages}
+          multiple
+        />
         <AppButton type='submit' label='Update Listing' />
       </form>
     </main>

@@ -509,16 +509,7 @@ const ListingProvider = ({ children }) => {
       await deleteDoc(doc(db, 'listings', listing?.id)).then(() => {
         // Create a reference to the file to delete
         listing?.data?.imgUrls.forEach(async (img) => {
-          const imgToDelete = getFirestoreImage(img);
-          const fileRef = ref(storage, imgToDelete);
-          // Delete the file
-          return await deleteObject(fileRef)
-            .then(() => {
-              console.log('File deleted successfully');
-            })
-            .catch((error) => {
-              console.log('Uh-oh, an error occurred!');
-            });
+          await deleteImageFromStorage(img);
         });
       });
       toast.success('Listing deleted successfully!');
@@ -535,7 +526,22 @@ const ListingProvider = ({ children }) => {
     }
   };
 
+  const deleteImageFromStorage = async (image) => {
+    const imgToDelete = getFirestoreImage(image);
+    const fileRef = ref(storage, imgToDelete);
+    // Delete the file
+    return await deleteObject(fileRef)
+      .then(() => {
+        console.log('File deleted successfully');
+        toast.success('File removed from DB successfully');
+      })
+      .catch((error) => {
+        console.log('Uh-oh, an error occurred!');
+      });
+  };
+
   const handleUploadImageToStorage = async (image) => {
+    console.log('ctx image', image);
     return new Promise((resolve, reject) => {
       const fileName = `${user?.uid}-${image.name}-${uuidv4()}`;
       const storageRef = ref(storage, fileName);
@@ -593,6 +599,7 @@ const ListingProvider = ({ children }) => {
         editListing,
         deleteListing,
         handleUploadImageToStorage,
+        deleteImageFromStorage,
         addRemoveFavorite,
         removeAllFavorites,
       }}

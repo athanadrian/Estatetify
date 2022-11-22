@@ -21,6 +21,7 @@ import {
   FaBuilding,
   FaShieldAlt,
   FaFileInvoiceDollar,
+  FaCloudUploadAlt,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
@@ -29,6 +30,7 @@ import {
   MdLocationOn,
   MdEdit,
   MdEmail,
+  MdOutlineCancel,
 } from 'react-icons/md';
 
 import { LogoIcon } from './svgIcons';
@@ -66,6 +68,8 @@ const icons = {
   feature_find: FaPaperPlane,
   feature_update: FaBuilding,
   feature_low_cost: FaFileInvoiceDollar,
+  upload: FaCloudUploadAlt,
+  cancel: MdOutlineCancel,
 };
 
 export default icons;

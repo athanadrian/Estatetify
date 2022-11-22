@@ -41,7 +41,6 @@ const Filter = () => {
 
   const handleFilterListings = async () => {
     navigate('/search-results', { state: { filters } });
-    //
   };
 
   const handleClearFilters = async () => {

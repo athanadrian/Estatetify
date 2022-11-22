@@ -51,7 +51,11 @@ const ProfileProvider = ({ children }) => {
     const { fullName, mobile, avatar } = userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
-      if (user?.displayName !== fullName || user?.mobile !== mobile) {
+      if (
+        user?.displayName !== fullName ||
+        user?.mobile !== mobile ||
+        user?.avatar !== mobile
+      ) {
         // update data firebase/auth
         await updateProfile(user, {
           displayName: fullName,

@@ -1,5 +1,6 @@
 import {
   AppButton,
+  FormImageInput,
   FormInput,
   FormLookUpSelect,
   Label,
@@ -21,7 +22,7 @@ const initialValues = {
   squareFeet: 20,
   floor: '',
   rooms: 1,
-  beds: 1,
+  beds: 0,
   bathrooms: 1,
   furnished: true,
   parking: false,
@@ -32,13 +33,20 @@ const initialValues = {
   description: '',
   regularPrice: 0,
   offerPrice: 0,
-  images: {},
+  images: null,
+  imgUrls: [],
+  //tempFiles: [],
 };
 
 const AddListing = () => {
   const navigate = useNavigate();
-  const { handleUploadImageToStorage, createListing, isLoading, setLoading } =
-    useListingContext();
+  const {
+    handleUploadImageToStorage,
+    deleteImageFromStorage,
+    createListing,
+    isLoading,
+    setLoading,
+  } = useListingContext();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [values, setValues] = useState(initialValues);
   const {
@@ -60,8 +68,10 @@ const AddListing = () => {
     regularPrice,
     offerPrice,
     images,
+    imgUrls,
+    //tempFiles,
   } = values;
-
+  console.log('values', values);
   const showFloor =
     values.category === 'condo' ||
     values.category === 'office' ||
@@ -78,15 +88,78 @@ const AddListing = () => {
       boolean = false;
     }
 
-    if (e.target.files)
-      setValues((preValues) => ({ ...preValues, images: e.target.files }));
-
+    if (e.target.files) {
+      setValues((preValues) => ({
+        ...preValues,
+        images: e.target.files,
+      }));
+    }
     if (!e.target.files)
       setValues((preValues) => ({ ...preValues, [name]: boolean ?? value }));
   };
 
+  const handleUploadImages = async () => {
+    if (images === null || images.length === 0) {
+      toast.warning('Pick up to 6 images before uploading');
+      return;
+    }
+
+    if (imgUrls.length === 6 || images.length > 6) {
+      toast.warning('You are not allowed to upload more than 6 images');
+      return;
+    }
+
+    const tempImgUrls = await Promise.all(
+      [...images].map((image) => handleUploadImageToStorage(image))
+    ).catch((error) => {
+      setLoading(false);
+      console.log('😱 Error Add Listing imgUrls: ', error);
+      toast.error('Images not uploaded!');
+      return;
+    });
+    setValues((preValues) => ({
+      ...preValues,
+      imgUrls: [...imgUrls, ...tempImgUrls],
+      images: null,
+    }));
+  };
+
+  const handleDeleteListingImage = async (imgUrl) => {
+    try {
+      await deleteImageFromStorage(imgUrl);
+      const tempImgUrls = imgUrls.filter((img) => img !== imgUrl);
+      setValues((preValues) => ({
+        ...preValues,
+        imgUrls: tempImgUrls,
+      }));
+      toast.success('Temporary image removed successfully');
+    } catch (error) {
+      console.log('😱 Error remove Avatar: ', error);
+      toast.error('Temporary image was not removed!');
+    }
+  };
+
+  // const handlePrepareToShowTemporaryImages = (event) => {
+  //   let tF = [];
+  //   if (event.target.files.length > 0) {
+  //     [...event.target.files].forEach((file) => {
+  //       tF.push(URL.createObjectURL(file));
+  //       setValues((preValues) => ({
+  //         ...preValues,
+  //         tempFiles: [...tempFiles, ...tF],
+  //       }));
+  //     });
+  //   }
+  // };
+  // console.log('tempFiles', tempFiles);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (imgUrls.length === 0) {
+      toast.warning('You must first upload the images.');
+      return;
+    }
 
     setLoading(true);
     if (+offerPrice >= +regularPrice) {
@@ -94,11 +167,7 @@ const AddListing = () => {
       toast.error('Offer price should be lower than regular price!');
       return;
     }
-    if (images.length > 6) {
-      setLoading(false);
-      toast.error('Maximum 6 images are allowed to upload!');
-      return;
-    }
+
     let geolocation = {};
     let location;
     if (geolocationEnabled) {
@@ -109,12 +178,6 @@ const AddListing = () => {
       geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
       geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
       geolocation.address = data.results[0]?.formatted_address ?? '';
-      geolocation.city =
-        getGeoData('locality', data.results[0]?.address_components) ?? '';
-      geolocation.state =
-        getGeoData('administrative', data.results[0]?.address_components) ?? '';
-      geolocation.country =
-        getGeoData('country', data.results[0]?.address_components) ?? '';
 
       location = data.status === 'ZERO_RESULTS' && undefined;
 
@@ -123,6 +186,13 @@ const AddListing = () => {
         toast.error('Please enter a valid address!');
         return;
       }
+
+      geolocation.city =
+        getGeoData('locality', data.results[0]?.address_components) ?? '';
+      geolocation.state =
+        getGeoData('administrative', data.results[0]?.address_components) ?? '';
+      geolocation.country =
+        getGeoData('country', data.results[0]?.address_components) ?? '';
     } else {
       setGeolocationEnabled(false);
       geolocation.lat = latitude;
@@ -130,23 +200,15 @@ const AddListing = () => {
       geolocation.address = address;
     }
 
-    const imgUrls = await Promise.all(
-      [...images].map((image) => handleUploadImageToStorage(image))
-    ).catch((error) => {
-      setLoading(false);
-      console.log('😱 Error Add Listing imgUrls: ', error);
-      toast.error('Images not uploaded!');
-    });
-
     const listingData = {
       ...values,
-      imgUrls,
       geolocation,
       squareFeet: Number(values.squareFeet),
     };
     delete listingData.images;
     delete listingData.latitude;
     delete listingData.longitude;
+    delete listingData.imagesLength;
     !listingData.offer && delete listingData.offerPrice;
     const listingDoc = await createListing(listingData);
 
@@ -154,7 +216,6 @@ const AddListing = () => {
     setLoading(false);
     toast.success('Listing created successfully!');
   };
-
   if (isLoading) return <Loader />;
 
   return (
@@ -251,7 +312,7 @@ const AddListing = () => {
             <FormInput
               name='beds'
               value={beds}
-              min='1'
+              min='0'
               max='50'
               type='number'
               onChange={handleChange}
@@ -449,24 +510,18 @@ const AddListing = () => {
             )}
           </div>
         )}
-        <div className='flex flex-col'>
-          <Label text='images' className='mb-0' />
-          <p className='mt-0 text-sm text-gray-400'>
-            The first image will be the cover (max 6)
-          </p>
-          <label className='block'>
-            <span className='sr-only'>Choose Image/s</span>
-            <input
-              type='file'
-              name='images'
-              accept='.jpg,.png,.jpeg'
-              multiple
-              required
-              onChange={handleChange}
-              className='mt-3 mb-6 block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-7 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-dark file:text-white hover:file:bg-darker hover:file:shadow-lg transition duration-150 ease-in-out'
-            />
-          </label>
-        </div>
+        <FormImageInput
+          onChange={(e) => {
+            //handlePrepareToShowTemporaryImages(e);
+            handleChange(e);
+          }}
+          pickedImages={images?.length ?? 0}
+          uploadedImgUrls={imgUrls}
+          //previewImages={tempFiles}
+          handleDelete={handleDeleteListingImage}
+          handleUpload={handleUploadImages}
+          multiple
+        />
         <AppButton type='submit' label='Add Listing' />
       </form>
     </main>
