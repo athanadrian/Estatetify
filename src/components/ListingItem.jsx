@@ -62,7 +62,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           fromNow
           className='uppercase text-white bg-primary  px-4 py-1 text-xs rounded absolute top-3 left-3 z-10 shadow-lg'
         >
-          <div>{listing?.timestamp.toDate()}</div>
+          {listing?.timestamp.toDate()}
         </Moment>
         <div className='uppercase text-white bg-darker px-4 py-1 text-xs rounded absolute top-3 right-3 z-10 shadow-lg'>
           FOR {listing?.type}
@@ -101,16 +101,6 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           avatar={profileUser?.avatar}
           onClick={() => setShowOwnerInfo(!showOwnerInfo)}
         />
-        {/* <div
-          className='absolute w-12 h-12  bottom-60 right-3 cursor-pointer'
-          onClick={() => setShowOwnerInfo(!showOwnerInfo)}
-        >
-          <img
-            className='rounded-full shadow-sm w-12 h-12'
-            src={profileUser?.avatar || logo}
-            alt='Owner'
-          />
-        </div> */}
         <div className='px-3 py-5'>
           <h1 className='text-dark text-sm font-bold mb-3 truncate'>
             {listing?.title}
