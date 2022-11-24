@@ -182,10 +182,23 @@ const ListingProvider = ({ children }) => {
       const listingsDocs = await getDocs(listingQuery);
       let filteredListings = [];
       listingsDocs.forEach((listingDoc) => {
-        return filteredListings.push({
+        let profile = getProfileData(listingDoc.data().userRef).then(
+          async (prof) => {
+            console.log('prof', prof);
+            await new Promise((resolve, reject) => {
+              resolve(prof).then((result) => result);
+            });
+          }
+        );
+        console.log('profile', profile);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
-        });
+          profile,
+        };
+        filteredListings.push(listing);
+        console.log('filteredListings', filteredListings);
+        return filteredListings;
       });
       dispatch({
         type: GET_FILTERED_LISTINGS_SUCCESS,
@@ -193,6 +206,19 @@ const ListingProvider = ({ children }) => {
       });
     } catch (error) {
       console.log('😱 Error get filtered listings: ', error.message);
+    }
+  };
+
+  const getProfileData = async (id) => {
+    if (id) {
+      let profile = {};
+      const userRef = doc(db, 'users', id);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        profile = { id: userDoc.id, ...userDoc.data() };
+        console.log('data profile', profile);
+        return profile;
+      }
     }
   };
 
