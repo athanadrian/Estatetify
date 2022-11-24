@@ -55,6 +55,8 @@ const ContactModal = ({ listing }) => {
                     <div className='items-center gap-2 mt-3 sm:flex'>
                       <a
                         className='w-full'
+                        target='_blank'
+                        rel='noreferrer noopener'
                         href={`mailto:${profileUser?.email}?subject=${listing?.title}&body=${message}`}
                       >
                         <AppButton label='Send Message' />

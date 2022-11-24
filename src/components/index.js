@@ -21,4 +21,5 @@ export { default as AuthButton } from './elements/AuthButton';
 export { default as Label } from './elements/Label';
 export { default as LandView } from './home/LandView';
 export { default as Features } from './home/Features';
+export { default as Footer } from './home/Footer';
 export { default as Slider } from './home/Slider';

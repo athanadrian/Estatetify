@@ -22,6 +22,10 @@ const initialValues = {
   avatar: '',
   avatarImg: null,
   imgUrl: '',
+  call: false,
+  sms: false,
+  viber: false,
+  whatsApp: false,
 };
 
 const Profile = () => {
@@ -39,7 +43,18 @@ const Profile = () => {
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
 
-  const { fullName, mobile, email, avatar, avatarImg, imgUrl } = values;
+  const {
+    fullName,
+    mobile,
+    email,
+    avatar,
+    avatarImg,
+    imgUrl,
+    call,
+    sms,
+    viber,
+    whatsApp,
+  } = values;
   useEffect(() => {
     if (profileUser !== undefined) {
       setValues((preValues) => ({
@@ -65,6 +80,11 @@ const Profile = () => {
 
     if (!e.target.files)
       setValues((preValues) => ({ ...preValues, [name]: value }));
+  };
+
+  const handleChecked = (e) => {
+    const { name, checked } = e.target;
+    setValues((preValues) => ({ ...preValues, [name]: checked }));
   };
 
   const handleSubmit = async (e) => {
@@ -191,12 +211,60 @@ const Profile = () => {
               <FormInput
                 type='text'
                 name='mobile'
-                placeholder='Mobile +...'
+                placeholder='+country code-mobile'
                 value={mobile}
                 onChange={handleChange}
                 className='placeholder:text-primary w-full'
                 disabled={!isEditable}
               />
+              {isEditable && (
+                <>
+                  <Label text='Contact Via' className='mb-0' />
+                  <p className='text-gray-400'>
+                    The mobile you register will be used for your contact apps
+                  </p>
+                </>
+              )}
+              <div
+                className={`flex justify-between px-4 py-2 rounded ${
+                  !isEditable
+                    ? ' cursor-not-allowed bg-gray-300 text-dark'
+                    : ' bg-white text-gray-700 border border-gray-300'
+                }`}
+              >
+                <SocialCheckBox
+                  label='Call'
+                  name='call'
+                  disabled={!isEditable}
+                  onChange={handleChecked}
+                  checked={call}
+                  value={call}
+                />
+                <SocialCheckBox
+                  label='SMS'
+                  name='sms'
+                  disabled={!isEditable}
+                  onChange={handleChecked}
+                  checked={sms}
+                  value={sms}
+                />
+                <SocialCheckBox
+                  label='Viber'
+                  name='viber'
+                  disabled={!isEditable}
+                  onChange={handleChecked}
+                  checked={viber}
+                  value={viber}
+                />
+                <SocialCheckBox
+                  label='WhatsApp'
+                  name='whatsApp'
+                  disabled={!isEditable}
+                  onChange={handleChecked}
+                  checked={whatsApp}
+                  value={whatsApp}
+                />
+              </div>
               {isEditable && <Label text='Email' className='mt-0' />}
               <FormInput
                 type='email'
@@ -230,12 +298,14 @@ const Profile = () => {
                   >
                     {isEditable ? 'Save' : 'Edit'}
                     {isEditable ? (
-                      <AppIcon
-                        Icon={defaultStyles.icons.save}
-                        link
-                        nav
-                        className='ml-1'
-                      />
+                      <>
+                        <AppIcon
+                          Icon={defaultStyles.icons.save}
+                          link
+                          nav
+                          className='ml-0.5'
+                        />
+                      </>
                     ) : (
                       <AppIcon
                         Icon={defaultStyles.icons.edit}
@@ -245,6 +315,20 @@ const Profile = () => {
                       />
                     )}
                   </span>
+                  {isEditable && (
+                    <span
+                      onClick={handleEditInfo}
+                      className='ml-3 cursor-pointer text-red-500 flex justify-center items-center'
+                    >
+                      Cancel
+                      <AppIcon
+                        Icon={defaultStyles.icons.cancel}
+                        link
+                        nav
+                        className='ml-0.5'
+                      />
+                    </span>
+                  )}
                 </p>
                 <p
                   className='text-md text-red-500 cursor-pointer hover:underline hover:text-red-700 transition duration-150 ease-in-out'
@@ -270,3 +354,31 @@ const Profile = () => {
 };
 
 export default Profile;
+
+const SocialCheckBox = ({
+  label,
+  name,
+  checked,
+  value,
+  onChange,
+  disabled,
+}) => {
+  return (
+    <div className='block '>
+      <div className='mt-2'>
+        <label className='inline-flex items-center'>
+          <input
+            name={name}
+            checked={checked}
+            value={value}
+            onChange={onChange}
+            type='checkbox'
+            disabled={disabled}
+            className='w-4 h-4'
+          />
+          <span className='ml-2'>{label}</span>
+        </label>
+      </div>
+    </div>
+  );
+};

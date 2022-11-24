@@ -22,6 +22,9 @@ import {
   FaShieldAlt,
   FaFileInvoiceDollar,
   FaCloudUploadAlt,
+  FaSms,
+  FaViber,
+  FaWhatsapp,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
@@ -31,6 +34,7 @@ import {
   MdEdit,
   MdEmail,
   MdOutlineCancel,
+  MdCall,
 } from 'react-icons/md';
 
 import { LogoIcon } from './svgIcons';
@@ -70,6 +74,10 @@ const icons = {
   feature_low_cost: FaFileInvoiceDollar,
   upload: FaCloudUploadAlt,
   cancel: MdOutlineCancel,
+  sms: FaSms,
+  call: MdCall,
+  viber: FaViber,
+  whatsApp: FaWhatsapp,
 };
 
 export default icons;

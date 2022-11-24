@@ -43,3 +43,18 @@ export const getGeoData = (property, leafletData) => {
   });
   return geoData.long_name;
 };
+
+// remove (+) or (00) sign from mobile to use it in social contact apps
+export const normalizeMobile = (mobile) => {
+  if (
+    !mobile ||
+    typeof mobile !== 'string' ||
+    mobile === undefined ||
+    mobile === ' '
+  ) {
+    return '';
+  }
+
+  if (mobile.charAt(0) === '+') return mobile.substring(1);
+  if (mobile.slice(0, 2) === '00') return mobile.substring(2);
+};

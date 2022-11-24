@@ -47,8 +47,7 @@ const ProfileProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    console.log('ctx userData', userData);
-    const { fullName, mobile, avatar } = userData;
+    const { fullName, mobile, avatar, call, sms, viber, whatsApp } = userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       if (
@@ -66,6 +65,10 @@ const ProfileProvider = ({ children }) => {
           fullName,
           avatar,
           mobile,
+          call,
+          sms,
+          viber,
+          whatsApp,
         });
         dispatch({ type: UPDATE_USER_SUCCESS });
         toast.success('Profile updated successfully!');
