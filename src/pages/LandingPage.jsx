@@ -1,4 +1,8 @@
-import { Features, Footer, LandView } from 'components';
+import {
+  Features,
+  //Footer,
+  LandView,
+} from 'components';
 import React from 'react';
 
 const LandingPage = () => {
@@ -6,7 +10,7 @@ const LandingPage = () => {
     <div className='w-screen h-screen'>
       <LandView />
       <Features />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
