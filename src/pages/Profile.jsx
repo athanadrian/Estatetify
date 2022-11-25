@@ -11,9 +11,14 @@ import {
 } from 'components';
 import defaultStyles from 'common/config';
 import { useAuth } from 'hooks/useAuth';
-import { useListingContext, useProfileContext } from 'store/contexts';
+import {
+  useCommonContext,
+  useListingContext,
+  useProfileContext,
+} from 'store/contexts';
 import ListingItemList from 'components/ListingItemList';
 import { toast } from 'react-toastify';
+import ProfileModal from 'components/ProfileModal';
 
 const initialValues = {
   fullName: '',
@@ -39,6 +44,7 @@ const Profile = () => {
     getMyListings,
     isLoading,
   } = useListingContext();
+  const { openProfileModal } = useCommonContext();
 
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
@@ -63,6 +69,10 @@ const Profile = () => {
         mobile: profileUser?.mobile,
         email: profileUser?.email,
         avatar: profileUser?.avatar,
+        sms: profileUser?.sms,
+        call: profileUser?.call,
+        viber: profileUser?.viber,
+        whatsApp: profileUser?.whatsApp,
       }));
     }
   }, [profileUser]);
@@ -85,6 +95,10 @@ const Profile = () => {
   const handleChecked = (e) => {
     const { name, checked } = e.target;
     setValues((preValues) => ({ ...preValues, [name]: checked }));
+  };
+
+  const handleShowProfileCard = () => {
+    //
   };
 
   const handleSubmit = async (e) => {
@@ -137,29 +151,20 @@ const Profile = () => {
             onSubmit={handleSubmit}
             className='flex flex-col justify-center items-center'
           >
-            <div className='w-48 h-48 rounded-full mb-6 mx-auto'>
+            <div className='relative w-48 h-48 rounded-full mb-6 mx-auto'>
               <img
                 src={avatar || logo}
                 alt='avatar'
                 className='rounded-full w-48 h-48'
               />
-              {/* <button
-                onClick={handleToggleAvatar}
+              <button
+                onClick={openProfileModal}
                 type='button'
-                className='flex justify-center items-center absolute px-3 py-0.5 bottom-0 -right-2 w-max rounded-xl bg-teal-500 hover:bg-teal-700 transition duration-150 ease-in-out active:bg-teal-800 text-white'
+                className='flex justify-center items-center absolute px-3 py-1 bottom-0 left-32 w-max rounded bg-dark hover:bg-darker transition duration-150 ease-in-out active:bg-teal-800 text-white'
               >
-                <AppIcon
-                  Icon={
-                    changeAvatar
-                      ? defaultStyles.icons.cancel
-                      : defaultStyles.icons.image_edit
-                  }
-                  className={`${changeAvatar ? 'text-red-500' : ''}`}
-                />
-                <span className={`ml-1 ${changeAvatar ? 'text-red-500' : ''}`}>
-                  {changeAvatar ? 'Cancel' : 'Change'}
-                </span>
-              </button> */}
+                <AppIcon Icon={defaultStyles.icons.profile} />
+                <span className='ml-2 text-light'>Show Profile Card</span>
+              </button>
             </div>
             {isEditable && (
               <>
@@ -349,6 +354,7 @@ const Profile = () => {
           </div>
         )}
       </>
+      <ProfileModal profileUser={profileUser} />
     </>
   );
 };

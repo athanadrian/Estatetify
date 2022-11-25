@@ -1,4 +1,9 @@
-import { OPEN_MODAL, CLOSE_MODAL } from '../actions/commonActions';
+import {
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  OPEN_PROFILE_MODAL,
+  CLOSE_PROFILE_MODAL,
+} from '../actions/commonActions';
 
 const reducer = (state, action) => {
   if (action.type === OPEN_MODAL) {
@@ -11,6 +16,18 @@ const reducer = (state, action) => {
     return {
       ...state,
       showModal: false,
+    };
+  }
+  if (action.type === OPEN_PROFILE_MODAL) {
+    return {
+      ...state,
+      showProfileModal: true,
+    };
+  }
+  if (action.type === CLOSE_PROFILE_MODAL) {
+    return {
+      ...state,
+      showProfileModal: false,
     };
   }
 

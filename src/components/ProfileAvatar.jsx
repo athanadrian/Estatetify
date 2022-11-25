@@ -11,7 +11,8 @@ const ProfileAvatar = ({ avatar, onClick }) => {
     >
       <img
         className='rounded-full shadow-sm w-12 h-12'
-        src={avatar || logo}
+        src={logo}
+        //src={avatar || logo}
         alt='Owner'
       />
     </div>

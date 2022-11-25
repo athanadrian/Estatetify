@@ -15,6 +15,7 @@ export { default as FormSelect } from './elements/FormSelect';
 export { default as FormImageInput } from './elements/FormImageInput';
 export { default as FormLookUpSelect } from './elements/FormLookUpSelect';
 export { default as AppIcon } from './elements/AppIcon';
+export { default as Modal } from './elements/Modal';
 export { default as GoogleButton } from './elements/GoogleButton';
 export { default as AppButton } from './elements/AppButton';
 export { default as AuthButton } from './elements/AuthButton';

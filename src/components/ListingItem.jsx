@@ -99,7 +99,8 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
         )}
         <ProfileAvatar
           avatar={profileUser?.avatar}
-          onClick={() => setShowOwnerInfo(!showOwnerInfo)}
+          //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
+          onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
         />
         <div className='px-3 py-5'>
           <h1 className='text-dark text-sm font-bold mb-3 truncate'>
