@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AppIcon from './elements/AppIcon';
 import defaultStyles from 'common/config';
-import { useCommonContext, useProfileContext } from 'store/contexts';
+import { useCommonContext } from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
 import { floors } from 'common/lookup-data';
 import { useNavigate } from 'react-router';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
-import ContactModal from './ContactModal';
+//import ContactModal from './ContactModal';
 import { useAuth } from 'hooks/useAuth';
 import FavoriteButton from './FavoriteButton';
 import ProfileAvatar from './ProfileAvatar';
@@ -16,7 +16,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { logo, openModal } = useCommonContext();
-  const { getProfileUser, profileUser } = useProfileContext();
+  //const { getProfile, profile } = useProfileContext();
   const [showOwnerInfo, setShowOwnerInfo] = useState(false);
 
   const showFloor =
@@ -39,17 +39,12 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
     setShowOwnerInfo(false);
   };
 
-  useEffect(() => {
-    getProfileUser(listing?.userRef);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listing?.userRef]);
-
   return (
     <>
       <li className='relative mx-auto w-80 h-fit rounded-lg border border-gray-400 m-[10px] shadow-md hover:shadow-lg transition-shadow duration-150 ease-in'>
         <div
           className='z-0 m-0 max-h-[250px] w-full overflow-hidden cursor-pointer'
-          onClick={() => navigate(`/listings/${listing.type}/${id}`)}
+          onClick={() => navigate(`/listings/${listing?.type}/${id}`)}
         >
           <img
             className=' overflow-hidden rounded-t-lg hover:scale-105 transition-scale duration-200 ease-in'
@@ -98,7 +93,7 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           </div>
         )}
         <ProfileAvatar
-          avatar={profileUser?.avatar}
+          avatar={listing?.profile?.avatar}
           //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
           onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
         />
@@ -196,7 +191,11 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
           )}
         </div>
       </li>
-      <ContactModal listing={listing} />
+      {/* <ContactModal
+        fullName={listing?.profile?.fullName}
+        email={listing?.profile?.email}
+        title={listing?.title}
+      /> */}
     </>
   );
 };

@@ -134,8 +134,8 @@ const ListingProvider = ({ children }) => {
         orderBy('timestamp', 'desc'),
         limit(lim)
       );
-      const listingsDocs = await getDocs(listingQuery);
       let listings = [];
+      const listingsDocs = await getDocs(listingQuery);
       listingsDocs.forEach((listingDoc) => {
         return listings.push({
           id: listingDoc.id,
@@ -181,28 +181,21 @@ const ListingProvider = ({ children }) => {
       );
       const listingsDocs = await getDocs(listingQuery);
       let filteredListings = [];
-      listingsDocs.forEach((listingDoc) => {
-        let profile = getProfileData(listingDoc.data().userRef).then(
-          async (prof) => {
-            console.log('prof', prof);
-            await new Promise((resolve, reject) => {
-              resolve(prof).then((result) => result);
-            });
-          }
-        );
-        console.log('profile', profile);
+      listingsDocs.forEach(async (listingDoc) => {
+        const profile = await getProfileData(listingDoc.data().userRef);
         let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
           profile,
         };
-        filteredListings.push(listing);
-        console.log('filteredListings', filteredListings);
-        return filteredListings;
-      });
-      dispatch({
-        type: GET_FILTERED_LISTINGS_SUCCESS,
-        payload: { filteredListings },
+        listing.data.profile = profile;
+        filteredListings.push({
+          ...listing,
+        });
+        dispatch({
+          type: GET_FILTERED_LISTINGS_SUCCESS,
+          payload: { filteredListings },
+        });
       });
     } catch (error) {
       console.log('😱 Error get filtered listings: ', error.message);
@@ -211,16 +204,35 @@ const ListingProvider = ({ children }) => {
 
   const getProfileData = async (id) => {
     if (id) {
-      let profile = {};
       const userRef = doc(db, 'users', id);
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
-        profile = { id: userDoc.id, ...userDoc.data() };
-        console.log('data profile', profile);
-        return profile;
+        return { id: userDoc.id, ...userDoc.data() };
       }
     }
   };
+
+  // const mapProfileToListings = async (query, dispatchObj) => {
+  //   const listingsDocs = await getDocs(query);
+  //   let listings = [];
+  //   listingsDocs.forEach(async (listingDoc) => {
+  //     const profile = await getProfileData(listingDoc.data().userRef);
+  //     let listing = {
+  //       id: listingDoc.id,
+  //       data: listingDoc.data(),
+  //       profile,
+  //     };
+  //     listing.data.profile = profile;
+  //     listings.push({
+  //       ...listing,
+  //     });
+  //     dispatchObj = {
+  //       ...dispatchObj,
+  //       payload: (dispatchObj.payload[dispatchObj.category] = listings),
+  //     };
+  //     dispatch(dispatchObj);
+  //   });
+  // };
 
   const getListingsLocations = async () => {
     dispatch({ type: GET_ALL_LISTINGS_LOCATIONS_BEGIN });
@@ -257,15 +269,22 @@ const ListingProvider = ({ children }) => {
       const lastVisibleOfferListing =
         listingsDocs.docs[listingsDocs.docs.length - 1];
       let listings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
+
+      listingsDocs.forEach(async (listingDoc) => {
+        const profile = await getProfileData(listingDoc.data().userRef);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
+          profile,
+        };
+        listing.data.profile = profile;
+        listings.push({
+          ...listing,
         });
-      });
-      dispatch({
-        type: GET_OFFER_LISTINGS_SUCCESS,
-        payload: { listings, lastVisibleOfferListing },
+        dispatch({
+          type: GET_OFFER_LISTINGS_SUCCESS,
+          payload: { listings, lastVisibleOfferListing },
+        });
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -273,6 +292,39 @@ const ListingProvider = ({ children }) => {
   };
 
   const getMoreOfferListings = async (lim) => {
+    // dispatch({ type: GET_MORE_OFFER_LISTINGS_BEGIN });
+    // try {
+    //   const listingsRef = collection(db, 'listings');
+    //   const listingQuery = query(
+    //     listingsRef,
+    //     where('offer', '==', true),
+    //     orderBy('timestamp', 'desc'),
+    //     startAfter(state.lastVisibleOfferListing),
+    //     limit(lim)
+    //   );
+    //   const listingsDocs = await getDocs(listingQuery);
+    //   const lastVisibleOfferListing =
+    //     listingsDocs.docs[listingsDocs.docs.length - 1];
+    //   let listings = [];
+    //   listingsDocs.forEach(async (listingDoc) => {
+    //     const profile = {}; //await getProfileData(listingDoc.data().userRef);
+    //     let listing = {
+    //       id: listingDoc.id,
+    //       data: listingDoc.data(),
+    //       profile,
+    //     };
+    //     listing.data.profile = profile;
+    //     listings.push({
+    //       ...listing,
+    //     });
+    //     dispatch({
+    //       type: GET_MORE_OFFER_LISTINGS_SUCCESS,
+    //       payload: { listings, lastVisibleOfferListing },
+    //     });
+    //   });
+    // } catch (error) {
+    //   console.log('😱 Error get all listings: ', error.message);
+    // }
     dispatch({ type: GET_MORE_OFFER_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -287,10 +339,14 @@ const ListingProvider = ({ children }) => {
       const lastVisibleOfferListing =
         listingsDocs.docs[listingsDocs.docs.length - 1];
       let listings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
+      listingsDocs.forEach(async (listingDoc) => {
+        //const profile = await getProfileData(listingDoc.data().userRef);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
+        };
+        listings.push({
+          ...listing,
         });
       });
       dispatch({
@@ -314,15 +370,21 @@ const ListingProvider = ({ children }) => {
       );
       const listingsDocs = await getDocs(listingQuery);
       let rentListings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return rentListings.push({
+      listingsDocs.forEach(async (listingDoc) => {
+        const profile = await getProfileData(listingDoc.data().userRef);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
+          profile,
+        };
+        listing.data.profile = profile;
+        rentListings.push({
+          ...listing,
         });
-      });
-      dispatch({
-        type: GET_RENT_LISTINGS_SUCCESS,
-        payload: { rentListings },
+        dispatch({
+          type: GET_RENT_LISTINGS_SUCCESS,
+          payload: { rentListings },
+        });
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -341,15 +403,21 @@ const ListingProvider = ({ children }) => {
       );
       const listingsDocs = await getDocs(listingQuery);
       let saleListings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return saleListings.push({
+      listingsDocs.forEach(async (listingDoc) => {
+        const profile = await getProfileData(listingDoc.data().userRef);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
+          profile,
+        };
+        listing.data.profile = profile;
+        saleListings.push({
+          ...listing,
         });
-      });
-      dispatch({
-        type: GET_SALE_LISTINGS_SUCCESS,
-        payload: { saleListings },
+        dispatch({
+          type: GET_SALE_LISTINGS_SUCCESS,
+          payload: { saleListings },
+        });
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -370,15 +438,21 @@ const ListingProvider = ({ children }) => {
       const lastVisibleTypeListing =
         listingsDocs.docs[listingsDocs.docs.length - 1];
       let typeListings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return typeListings.push({
+      listingsDocs.forEach(async (listingDoc) => {
+        const profile = await getProfileData(listingDoc.data().userRef);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
+          profile,
+        };
+        listing.data.profile = profile;
+        typeListings.push({
+          ...listing,
         });
-      });
-      dispatch({
-        type: GET_TYPE_LISTINGS_SUCCESS,
-        payload: { type, typeListings, lastVisibleTypeListing },
+        dispatch({
+          type: GET_TYPE_LISTINGS_SUCCESS,
+          payload: { type, typeListings, lastVisibleTypeListing },
+        });
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -427,15 +501,21 @@ const ListingProvider = ({ children }) => {
       const listingsDocs = await getDocs(listingQuery);
 
       let listings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
+      listingsDocs.forEach(async (listingDoc) => {
+        const profile = await getProfileData(listingDoc.data().userRef);
+        let listing = {
           id: listingDoc.id,
           data: listingDoc.data(),
+          profile,
+        };
+        listing.data.profile = profile;
+        listings.push({
+          ...listing,
         });
-      });
-      dispatch({
-        type: GET_LISTINGS_BY_USER_SUCCESS,
-        payload: { listings },
+        dispatch({
+          type: GET_LISTINGS_BY_USER_SUCCESS,
+          payload: { listings },
+        });
       });
     } catch (error) {
       console.log('😱 Error get User listing: ', error.message);
@@ -450,17 +530,24 @@ const ListingProvider = ({ children }) => {
       where('userRef', '==', user.uid),
       orderBy('timestamp', 'desc')
     );
+
     const listingsDocs = await getDocs(listingQuery);
     let listings = [];
-    listingsDocs.forEach((listingDoc) => {
-      return listings.push({
+    listingsDocs.forEach(async (listingDoc) => {
+      const profile = await getProfileData(listingDoc.data().userRef);
+      let listing = {
         id: listingDoc.id,
         data: listingDoc.data(),
+        profile,
+      };
+      listing.data.profile = profile;
+      listings.push({
+        ...listing,
       });
-    });
-    dispatch({
-      type: GET_MY_LISTINGS_SUCCESS,
-      payload: { listings },
+      dispatch({
+        type: GET_MY_LISTINGS_SUCCESS,
+        payload: { listings },
+      });
     });
   };
 

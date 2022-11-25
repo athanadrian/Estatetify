@@ -1,21 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useProfileContext, useCommonContext } from 'store/contexts';
+import { useCommonContext } from 'store/contexts';
 import AppIcon from './elements/AppIcon';
 import defaultStyles from 'common/config';
 import Label from './elements/Label';
 import AppButton from './elements/AppButton';
 import Modal from './elements/Modal';
 
-const ContactModal = ({ listing }) => {
+const ContactModal = ({ fullName, email, title }) => {
   const [message, setMessage] = useState('');
-  const { profileUser, getProfileUser } = useProfileContext();
   const { showModal, closeModal } = useCommonContext();
 
-  useEffect(() => {
-    getProfileUser(listing?.userRef);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listing?.userRef]);
   return (
     <>
       <Modal open={showModal} close={closeModal}>
@@ -25,11 +20,9 @@ const ContactModal = ({ listing }) => {
         <div className='mt-2 text-center sm:ml-4 sm:text-left sm:mt-0'>
           <h4 className='text-lg text-dark'>
             Send your message to{' '}
-            <span className='font-semibold text-darker'>
-              {profileUser?.fullName}
-            </span>{' '}
-            for the property{' '}
-            <span className='font-semibold text-darker'>{listing?.title}</span>
+            <span className='font-semibold text-darker'>{fullName}</span> for
+            the property{' '}
+            <span className='font-semibold text-darker'>{title}</span>
           </h4>
           <Label text='Message' />
           <textarea
@@ -47,7 +40,7 @@ const ContactModal = ({ listing }) => {
               className='w-full'
               target='_blank'
               rel='noreferrer noopener'
-              href={`mailto:${profileUser?.email}?subject=${listing?.title}&body=${message}`}
+              href={`mailto:${email}?subject=${title}&body=${message}`}
             >
               <AppButton label='Send Message' />
             </a>

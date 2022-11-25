@@ -48,7 +48,6 @@ const Profile = () => {
 
   const [values, setValues] = useState(initialValues);
   const [isEditable, setEditable] = useState(false);
-
   const {
     fullName,
     mobile,
@@ -95,10 +94,6 @@ const Profile = () => {
   const handleChecked = (e) => {
     const { name, checked } = e.target;
     setValues((preValues) => ({ ...preValues, [name]: checked }));
-  };
-
-  const handleShowProfileCard = () => {
-    //
   };
 
   const handleSubmit = async (e) => {

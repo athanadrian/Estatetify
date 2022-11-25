@@ -1,7 +1,4 @@
-import { useEffect } from 'react';
-
-import { useProfileContext, useCommonContext } from 'store/contexts';
-import AppButton from './elements/AppButton';
+import { useCommonContext } from 'store/contexts';
 import Modal from './elements/Modal';
 import ProfileCard from './ProfileCard';
 
