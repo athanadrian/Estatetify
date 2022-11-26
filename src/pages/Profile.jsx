@@ -158,7 +158,7 @@ const Profile = () => {
                 className='flex justify-center items-center absolute px-3 py-1 bottom-0 left-32 w-max rounded bg-dark hover:bg-darker transition duration-150 ease-in-out active:bg-teal-800 text-white'
               >
                 <AppIcon Icon={defaultStyles.icons.profile} />
-                <span className='ml-2 text-light'>Show Profile Card</span>
+                <span className='ml-2 text-light'>My eCard</span>
               </button>
             </div>
             {isEditable && (

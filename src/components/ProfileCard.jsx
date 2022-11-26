@@ -5,15 +5,15 @@ import defaultStyles from 'common/config';
 
 import AppIcon from './elements/AppIcon';
 import { normalizeMobile } from 'common/helpers';
-const ProfileCard = ({ profileUser }) => {
+const ProfileCard = ({ className, profileUser }) => {
   return (
     <>
-      <div className='mx-auto w-2/3'>
+      <div className={`mx-auto  ${className} px-4`}>
         <div className='rounded-lg shadow-lg bg-dark w-full flex flex-row flex-wrap p-3 antialiased'>
-          <div className='md:w-1/3 w-full'>
+          <div className='md:w-1/3 w-full flex items-center justify-center'>
             <img
               alt='my avatar'
-              className='rounded-lg shadow-lg antialiased'
+              className='rounded-full shadow-lg antialiased'
               src={profileUser?.avatar || logo}
             />
           </div>

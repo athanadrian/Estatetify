@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { Header, UserRoute } from './components';
+import { Footer, Header, UserRoute } from './components';
 import {
   Profile,
   Home,
@@ -41,6 +41,7 @@ const App = () => {
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
         </Routes>
+        <Footer />
       </Router>
       <ToastContainer
         position='bottom-center'

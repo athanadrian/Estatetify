@@ -26,7 +26,7 @@ const OwnerProfile = () => {
     <>
       <section className='max-w-6xl flex flex-col justify-center items-center mx-auto'>
         <PageHeader title='Owner Profile' />
-        <ProfileCard profileUser={profileUser} />
+        <ProfileCard profileUser={profileUser} className='w-2/3' />
       </section>
       <div className='mx-auto xl:mx-20 px-3 pt-6'>
         <>

@@ -120,14 +120,6 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === GET_MORE_OFFER_LISTINGS_SUCCESS) {
-    // let unique1 = state.offerListings.filter(
-    //   (o) => action.payload.tmpListings.indexOf(o) === -1
-    // );
-    // let unique2 = action.payload.tmpListings.filter(
-    //   (o) => state.offerListings.indexOf(o) === -1
-    // );
-
-    // const offerListings = unique1.concat(unique2);
     const offerListings = [...state.offerListings, ...action.payload.listings];
     return {
       ...state,

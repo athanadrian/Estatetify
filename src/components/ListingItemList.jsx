@@ -29,11 +29,13 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
           <h2 className='px-3 text-darker text-2xl mt-10 font-semibold tracking-wider'>
             {title}
           </h2>
-          <Link to={link}>
-            <p className='px-3 text-sm  text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out'>
-              {subtitle}...
-            </p>
-          </Link>
+          {subtitle && (
+            <Link to={link}>
+              <p className='px-3 text-sm  text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out'>
+                {subtitle}...
+              </p>
+            </Link>
+          )}
           <div>
             <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full'>
               {listings?.map((listing) => (
