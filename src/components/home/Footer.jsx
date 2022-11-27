@@ -2,9 +2,9 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className=' bg-main py-5 text-center text-gray-400'>
+    <footer className=' bg-main py-5 text-center text-gray-400 mt-12'>
       <div className='container mx-auto'>
-        Copyright &copy; 2022.
+        Copyright &copy; {new Date().getFullYear()}.
         <a
           href='https://atana.site'
           target='_blank'
