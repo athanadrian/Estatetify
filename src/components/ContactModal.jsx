@@ -1,64 +1,126 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 import { useCommonContext } from 'store/contexts';
-import AppIcon from './elements/AppIcon';
-import defaultStyles from 'common/config';
-import Label from './elements/Label';
-import AppButton from './elements/AppButton';
 import Modal from './elements/Modal';
+import Loader from './Loader';
+import { toast } from 'react-toastify';
 
-const ContactModal = ({ listing }) => {
-  const [message, setMessage] = useState('');
-  const { showModal, closeModal } = useCommonContext();
+const ContactModal = ({ listing, profile }) => {
+  const [isLoading, setLoading] = useState(false);
+  const contactForm = useRef();
+  const { showModal, logo, closeModal } = useCommonContext();
+
+  const clearForm = () => {
+    contactForm.current.reset();
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    emailjs
+      .sendForm(
+        'service_csp466a',
+        'template_toabvtw',
+        contactForm.current,
+        'Qhq-u8uot2rRgOK9q'
+      )
+      .then(
+        (result) => {
+          setLoading(false);
+          toast.success('Email was send to the owner successfully.');
+          closeModal();
+          console.log(result.text);
+        },
+        (error) => {
+          setLoading(false);
+          console.log(error.text);
+        }
+      );
+  };
+
   return (
     <>
       {showModal ? (
         <>
           <Modal open={showModal} close={closeModal}>
-            <div className='relative w-full max-w-lg p-4 mx-auto bg-white rounded-md shadow-lg'>
-              <div className='mt-3 sm:flex'>
-                <div className='flex items-center justify-center flex-none w-12 h-12 mx-auto bg-dark text-white text-2xl rounded-full'>
-                  <AppIcon Icon={defaultStyles.icons.email} />
+            <div className='relative mx-auto flex-1 w-full max-w-lg mb-8 bg-white border border-gray-300 rounded-lg px-6 py-8'>
+              <div className='flex items-center gap-x-4 mb-8'>
+                <div className='w-20 h-20 p-1 border border-gray-300 rounded-full'>
+                  <img src={logo} alt='atana'></img>
                 </div>
-                <div className='mt-2 text-center sm:ml-4 sm:text-left sm:mt-0'>
-                  <h4 className='text-lg text-dark'>
-                    Send your message to{' '}
-                    <span className='font-semibold text-darker'>
-                      {listing?.profile?.fullName}
-                    </span>{' '}
-                    for the property{' '}
-                    <span className='font-semibold text-darker'>
-                      {listing?.title}
-                    </span>
-                  </h4>
-                  <Label text='Message' />
-                  <textarea
-                    name='description'
-                    value={message}
-                    type='text'
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder='message owner'
-                    className='mb-3 focus:outline-none w-full min-h-max px-4 py-2 text-base placeholder:capitalize placeholder:text-light text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white'
-                    rows={3}
-                    required
-                  />
-                  <div className='items-center gap-2 mt-3 sm:flex'>
-                    <a
-                      className='w-full'
-                      target='_blank'
-                      rel='noreferrer noopener'
-                      href={`mailto:${listing?.profile?.email}?subject=${listing?.title}&body=${message}`}
-                    >
-                      <AppButton label='Send Message' />
-                    </a>
-                    <AppButton
-                      onClick={closeModal}
-                      label='cancel'
-                      className='bg-gray-400 hover:bg-gray-500 focus:bg-gray-500 active:bg-gray-600'
-                    />
-                  </div>
+                <div>
+                  <div className='font-bold text-lg'>{profile?.fullName}</div>
+                  <span className='text-primary text-sm'>{profile?.email}</span>
                 </div>
               </div>
+              {!isLoading ? (
+                <form
+                  ref={contactForm}
+                  className='flex flex-col gap-y-4'
+                  onSubmit={sendEmail}
+                >
+                  <input
+                    className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'
+                    type='text'
+                    placeholder='Name*'
+                    name='user_name'
+                    required
+                  />
+                  <input
+                    className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'
+                    type='text'
+                    placeholder='Email*'
+                    name='user_email'
+                    required
+                  />
+                  <input
+                    className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'
+                    type='text'
+                    placeholder='Phone'
+                    name='user_phone'
+                  />
+                  <input
+                    type='hidden'
+                    name='owner_email'
+                    value={`${profile?.email}`}
+                  />
+                  <input
+                    type='hidden'
+                    name='listing_title'
+                    value={listing?.title}
+                  />
+                  <input
+                    type='hidden'
+                    name='owner_name'
+                    value={profile?.fullName}
+                  />
+                  <textarea
+                    className='border border-gray-300 focus:border-dark rounded w-full p-4 h-36 text-sm text-gray-400 outline-none resize-none'
+                    type='text'
+                    name='message'
+                    placeholder='Message*'
+                    defaultValue={`I am interested in ${listing?.title}`}
+                  />
+                  <div className='flex gap-x-2'>
+                    <button
+                      className='bg-dark hover:bg-darker text-white rounded p-4 text-sm w-full transition'
+                      type='submit'
+                    >
+                      Send email
+                    </button>
+                    <button
+                      type='button'
+                      onClick={clearForm}
+                      className='border border-dark text-dark hover:border-dark hover:text-dark rounded p-4 text-sm w-full transition'
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <Loader />
+              )}
             </div>
           </Modal>
         </>
@@ -66,24 +128,4 @@ const ContactModal = ({ listing }) => {
     </>
   );
 };
-// <>
-//   {open ? (
-//     <>
-//       <div className='fixed inset-0 z-10 overflow-y-auto'>
-//         <div
-//           className='fixed inset-0 w-full h-full bg-black opacity-40'
-//           onClick={close}
-//         >
-//           <div className='flex items-center min-h-screen px-4 py-8'>
-//             <div className='relative w-full max-w-lg tablet:max-w-3xl p-4 mx-auto bg-white rounded-md shadow-lg'>
-//               <div className='my-3 sm:flex'>{children}</div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   ) : null}
-// </>
-//);
-//};
 export default ContactModal;

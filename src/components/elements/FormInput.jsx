@@ -13,7 +13,7 @@ const FormInput = ({
     <input
       name={name}
       type={type}
-      className={`focus:ring-0 focus:outline-none w-full px-4 py-3 rounded text-base placeholder:capitalize placeholder:text-light placeholder:text-base bg-white text-gray-700 border border-gray-300 
+      className={`focus:border-dark outline-none w-full px-4 py-3 rounded text-base placeholder:capitalize placeholder:text-light placeholder:text-base bg-white text-gray-700 border border-gray-300 
       disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-dark ${className} `}
       placeholder={placeholder}
       value={value}

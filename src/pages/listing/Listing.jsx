@@ -11,7 +11,11 @@ import 'swiper/css/bundle';
 
 import defaultStyles from 'common/config';
 import { AppButton, AppIcon, ContactModal, Loader } from 'components';
-import { useCommonContext, useListingContext } from 'store/contexts';
+import {
+  useCommonContext,
+  useListingContext,
+  useProfileContext,
+} from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
 import { floors } from 'common/lookup-data';
 import { useAuth } from 'hooks/useAuth';
@@ -22,6 +26,7 @@ const Listing = () => {
   const { user } = useAuth();
   const { openModal } = useCommonContext();
   const { getListing, listing, isLoading } = useListingContext();
+  const { profileUser, getProfileUser } = useProfileContext();
   const [linkCopied, setLinkCopied] = useState(false);
 
   const showFloor =
@@ -48,6 +53,11 @@ const Listing = () => {
     getListing(listingId);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId]);
+
+  useEffect(() => {
+    getProfileUser(listing?.userRef);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listing]);
 
   if (isLoading) return <Loader />;
 
@@ -144,7 +154,10 @@ const Listing = () => {
                 <p className='capitalize ml-1'>{listing?.category}</p>
               </li>
               <li className='flex items-center justify-center font-medium whitespace-nowrap'>
-                <AppIcon Icon={defaultStyles.icons.squareFeet} />
+                <AppIcon
+                  Icon={defaultStyles.icons.squareFeet}
+                  className='text-lg'
+                />
                 <p className='ml-1 '>
                   <span className='capitalize'> {listing?.squareFeet} </span>m
                   <sup>2</sup>
@@ -248,7 +261,7 @@ const Listing = () => {
           </div>
         )}
       </div>
-      <ContactModal listing={listing} />
+      <ContactModal listing={listing} profile={profileUser} />
     </main>
   );
 };

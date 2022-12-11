@@ -175,7 +175,7 @@ const ListingProvider = ({ children }) => {
       const listingsRef = collection(db, 'listings');
       const listingQuery = query(
         listingsRef,
-        //orderBy('timestamp', 'desc'),
+        orderBy('timestamp', 'desc'),
         ...whereConditions,
         limit(lim)
       );
@@ -262,7 +262,7 @@ const ListingProvider = ({ children }) => {
       const listingQuery = query(
         listingsRef,
         where('offer', '==', true),
-        orderBy('timestamp', 'desc'),
+        //orderBy('timestamp', 'desc'),
         limit(lim)
       );
       const listingsDocs = await getDocs(listingQuery);
@@ -292,61 +292,25 @@ const ListingProvider = ({ children }) => {
   };
 
   const getMoreOfferListings = async (lim) => {
-    // dispatch({ type: GET_MORE_OFFER_LISTINGS_BEGIN });
-    // try {
-    //   const listingsRef = collection(db, 'listings');
-    //   const listingQuery = query(
-    //     listingsRef,
-    //     where('offer', '==', true),
-    //     orderBy('timestamp', 'desc'),
-    //     startAfter(state.lastVisibleOfferListing),
-    //     limit(lim)
-    //   );
-    //   const listingsDocs = await getDocs(listingQuery);
-    //   const lastVisibleOfferListing =
-    //     listingsDocs.docs[listingsDocs.docs.length - 1];
-    //   let listings = [];
-    //   listingsDocs.forEach(async (listingDoc) => {
-    //     const profile = {}; //await getProfileData(listingDoc.data().userRef);
-    //     let listing = {
-    //       id: listingDoc.id,
-    //       data: listingDoc.data(),
-    //       profile,
-    //     };
-    //     listing.data.profile = profile;
-    //     listings.push({
-    //       ...listing,
-    //     });
-    //     dispatch({
-    //       type: GET_MORE_OFFER_LISTINGS_SUCCESS,
-    //       payload: { listings, lastVisibleOfferListing },
-    //     });
-    //   });
-    // } catch (error) {
-    //   console.log('😱 Error get all listings: ', error.message);
-    // }
     dispatch({ type: GET_MORE_OFFER_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
       const listingQuery = query(
         listingsRef,
         where('offer', '==', true),
-        orderBy('timestamp', 'desc'),
+        //orderBy('timestamp', 'desc'),
         startAfter(state.lastVisibleOfferListing),
         limit(lim)
       );
       const listingsDocs = await getDocs(listingQuery);
+
       const lastVisibleOfferListing =
         listingsDocs.docs[listingsDocs.docs.length - 1];
       let listings = [];
-      listingsDocs.forEach(async (listingDoc) => {
-        //const profile = await getProfileData(listingDoc.data().userRef);
-        let listing = {
+      listingsDocs.forEach((listingDoc) => {
+        return listings.push({
           id: listingDoc.id,
           data: listingDoc.data(),
-        };
-        listings.push({
-          ...listing,
         });
       });
       dispatch({

@@ -1,7 +1,6 @@
 import { AiFillEyeInvisible, AiFillEye, AiOutlineSave } from 'react-icons/ai';
-
 import { FcGoogle } from 'react-icons/fc';
-import { BsDashSquareDotted } from 'react-icons/bs';
+import { BiArea } from 'react-icons/bi';
 import { GiDesk, GiBlockHouse } from 'react-icons/gi';
 import {
   FaHome,
@@ -62,7 +61,7 @@ const icons = {
   delete: FaTrash,
   location: MdLocationOn,
   floors: FaSignal,
-  squareFeet: BsDashSquareDotted,
+  squareFeet: BiArea,
   email: MdEmail,
   info: FaInfoCircle,
   social: FaShareAlt,
