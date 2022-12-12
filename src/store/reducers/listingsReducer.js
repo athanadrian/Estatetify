@@ -2,14 +2,15 @@ import {
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
-  GET_ALL_LISTINGS_LOCATIONS_BEGIN,
-  GET_ALL_LISTINGS_LOCATIONS_SUCCESS,
+  GET_ALL_LISTINGS_DATA_BEGIN,
+  GET_ALL_LISTINGS_DATA_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
   GET_MY_LISTINGS_SUCCESS,
   GET_FILTERED_LISTINGS_BEGIN,
   GET_FILTERED_LISTINGS_SUCCESS,
+  CLEAR_FILTERED_LISTINGS,
   GET_OFFER_LISTINGS_BEGIN,
   GET_OFFER_LISTINGS_SUCCESS,
   GET_MORE_OFFER_LISTINGS_BEGIN,
@@ -61,15 +62,18 @@ const reducer = (state, action) => {
     };
   }
 
-  if (action.type === GET_ALL_LISTINGS_LOCATIONS_BEGIN) {
+  if (action.type === GET_ALL_LISTINGS_DATA_BEGIN) {
     return {
       ...state,
       isLoadingLocations: true,
     };
   }
 
-  if (action.type === GET_ALL_LISTINGS_LOCATIONS_SUCCESS) {
+  if (action.type === GET_ALL_LISTINGS_DATA_SUCCESS) {
     const listingsLocations = action.payload.listingsLocations;
+    const prices = action.payload.listingsPrices;
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
     const tmpCities = listingsLocations.filter((loc) => loc.city !== undefined);
     const cities = [...new Set(tmpCities.map((loc) => loc.city))];
     const states = listingsLocations.map((loc) => loc.state);
@@ -81,6 +85,8 @@ const reducer = (state, action) => {
       cities,
       states,
       countries,
+      minPrice,
+      maxPrice,
     };
   }
 
@@ -92,10 +98,25 @@ const reducer = (state, action) => {
   }
 
   if (action.type === GET_FILTERED_LISTINGS_SUCCESS) {
+    const price = action.payload.price;
+    const filteredListings = action.payload.filteredListings;
+    let tempListings = filteredListings;
+    if (price) {
+      tempListings = filteredListings.filter(
+        (listing) => listing.data.regularPrice <= price
+      );
+    }
     return {
       ...state,
       isLoading: false,
-      filteredListings: action.payload.filteredListings,
+      filteredListings: tempListings,
+    };
+  }
+
+  if (action.type === CLEAR_FILTERED_LISTINGS) {
+    return {
+      ...state,
+      filteredListings: [],
     };
   }
 

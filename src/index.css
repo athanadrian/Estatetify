@@ -34,3 +34,15 @@ html::-webkit-scrollbar {
 html {
   scrollbar-width: none;
 }
+
+input[type='range']::-webkit-slider-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  border: 1px solid #5e8ea2;
+  background: #fff;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 1);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -6px;
+}

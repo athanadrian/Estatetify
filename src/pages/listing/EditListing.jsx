@@ -148,6 +148,8 @@ const EditListing = () => {
       ...values,
       geolocation,
       squareFeet: Number(values.squareFeet),
+      regularPrice: Number(values.regularPrice),
+      offerPrice: Number(values.offerPrice),
     };
     delete listingData.images;
     delete listingData.latitude;

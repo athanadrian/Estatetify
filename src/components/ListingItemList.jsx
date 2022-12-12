@@ -43,7 +43,6 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
                   key={listing?.id}
                   id={listing?.id}
                   listing={listing?.data}
-                  //profile={listing?.profile}
                   editListing={() => handleEditListing(listing?.id)}
                   deleteListing={() => handleDeleteListing(listing)}
                 />

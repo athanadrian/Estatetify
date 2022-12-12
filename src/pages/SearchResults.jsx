@@ -8,8 +8,6 @@ const SearchResults = () => {
   const { filteredListings, getFilteredListings } = useListingContext();
   const location = useLocation();
 
-  console.log('filtered', filteredListings);
-
   useEffect(() => {
     getFilteredListings(location?.state?.filters, undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps

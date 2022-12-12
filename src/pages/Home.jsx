@@ -11,12 +11,14 @@ const Home = () => {
     offerListings,
     rentListings,
     saleListings,
+    clearFilteredListings,
   } = useListingContext();
 
   useEffect(() => {
     getOfferListings(4);
     getRentListings(4);
     getSaleListings(4);
+    clearFilteredListings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

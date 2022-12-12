@@ -10,8 +10,6 @@ import Modal from './elements/Modal';
 const ContactModal = ({ listing, profile }) => {
   const [message, setMessage] = useState('');
   const { showModal, closeModal } = useCommonContext();
-  console.log('listing', listing);
-  console.log('profile', profile);
   return (
     <>
       {showModal ? (

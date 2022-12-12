@@ -27,14 +27,15 @@ import {
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
-  GET_ALL_LISTINGS_LOCATIONS_BEGIN,
-  GET_ALL_LISTINGS_LOCATIONS_SUCCESS,
+  GET_ALL_LISTINGS_DATA_BEGIN,
+  GET_ALL_LISTINGS_DATA_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
   GET_MY_LISTINGS_SUCCESS,
   GET_FILTERED_LISTINGS_BEGIN,
   GET_FILTERED_LISTINGS_SUCCESS,
+  CLEAR_FILTERED_LISTINGS,
   GET_OFFER_LISTINGS_BEGIN,
   GET_OFFER_LISTINGS_SUCCESS,
   GET_MORE_OFFER_LISTINGS_BEGIN,
@@ -73,6 +74,8 @@ const initialState = {
   isLoading: false,
   isLoadingLocations: false,
   listing: undefined,
+  minPrice: null,
+  maxPrice: null,
   listings: [],
   listingsLocations: [],
   cities: [],
@@ -96,6 +99,10 @@ const ListingProvider = ({ children }) => {
 
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
+  };
+
+  const clearFilteredListings = (status) => {
+    dispatch({ type: CLEAR_FILTERED_LISTINGS });
   };
 
   const addRemoveFavorite = async ({ listing, favorite = true }) => {
@@ -161,13 +168,13 @@ const ListingProvider = ({ children }) => {
             const sq = sizes.find(
               (size) => size.enum === filters['squareFeet']
             );
-            whereConditions.push(where('squareFeet', '>=', sq.min));
-            whereConditions.push(where('squareFeet', '<=', sq.max));
+            whereConditions.push(where('squareFeet', '>=', sq.min ?? 0));
+            whereConditions.push(where('squareFeet', '<=', sq.max ?? 10000));
           } else if (key === 'city' && filters['city']) {
             whereConditions.push(
               where('geolocation.city', '==', filters['city'])
             );
-          } else if (filters[key]) {
+          } else if (filters[key] && key !== 'price') {
             whereConditions.push(where(key, '==', filters[key]));
           }
         });
@@ -175,7 +182,7 @@ const ListingProvider = ({ children }) => {
       const listingsRef = collection(db, 'listings');
       const listingQuery = query(
         listingsRef,
-        orderBy('timestamp', 'desc'),
+        //orderBy('timestamp', 'desc'),
         ...whereConditions,
         limit(lim)
       );
@@ -194,7 +201,7 @@ const ListingProvider = ({ children }) => {
         });
         dispatch({
           type: GET_FILTERED_LISTINGS_SUCCESS,
-          payload: { filteredListings },
+          payload: { filteredListings, price: +filters.price },
         });
       });
     } catch (error) {
@@ -212,43 +219,24 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  // const mapProfileToListings = async (query, dispatchObj) => {
-  //   const listingsDocs = await getDocs(query);
-  //   let listings = [];
-  //   listingsDocs.forEach(async (listingDoc) => {
-  //     const profile = await getProfileData(listingDoc.data().userRef);
-  //     let listing = {
-  //       id: listingDoc.id,
-  //       data: listingDoc.data(),
-  //       profile,
-  //     };
-  //     listing.data.profile = profile;
-  //     listings.push({
-  //       ...listing,
-  //     });
-  //     dispatchObj = {
-  //       ...dispatchObj,
-  //       payload: (dispatchObj.payload[dispatchObj.category] = listings),
-  //     };
-  //     dispatch(dispatchObj);
-  //   });
-  // };
-
-  const getListingsLocations = async () => {
-    dispatch({ type: GET_ALL_LISTINGS_LOCATIONS_BEGIN });
+  const getListingsData = async () => {
+    dispatch({ type: GET_ALL_LISTINGS_DATA_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
       const listingQuery = query(listingsRef, orderBy('timestamp', 'desc'));
       const listingsDocs = await getDocs(listingQuery);
       let listingsLocations = [];
+      let listingsPrices = [];
       listingsDocs.forEach((listingDoc) => {
-        return listingsLocations.push({
+        listingsLocations.push({
           ...listingDoc.data().geolocation,
         });
+        listingsPrices.push(listingDoc.data().regularPrice);
+        return { listingsLocations, listingsPrices };
       });
       dispatch({
-        type: GET_ALL_LISTINGS_LOCATIONS_SUCCESS,
-        payload: { listingsLocations },
+        type: GET_ALL_LISTINGS_DATA_SUCCESS,
+        payload: { listingsLocations, listingsPrices },
       });
     } catch (error) {
       console.log('😱 Error get all listings locations: ', error.message);
@@ -661,7 +649,7 @@ const ListingProvider = ({ children }) => {
         ...state,
         setLoading,
         getAllListings,
-        getListingsLocations,
+        getListingsData,
         getMyListings,
         getListingsByUser,
         getFilteredListings,
@@ -679,6 +667,7 @@ const ListingProvider = ({ children }) => {
         deleteImageFromStorage,
         addRemoveFavorite,
         removeAllFavorites,
+        clearFilteredListings,
       }}
     >
       {children}

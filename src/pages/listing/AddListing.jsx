@@ -204,6 +204,8 @@ const AddListing = () => {
       ...values,
       geolocation,
       squareFeet: Number(values.squareFeet),
+      regularPrice: Number(values.regularPrice),
+      offerPrice: Number(values.offerPrice),
     };
     delete listingData.images;
     delete listingData.latitude;
@@ -427,7 +429,6 @@ const AddListing = () => {
           type='text'
           onChange={handleChange}
           placeholder='description'
-          //className='focus:outline-none w-full min-h-max px-4 py-2 text-base placeholder:capitalize placeholder:text-light text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:text-gray-700 focus:bg-white'
           className='border border-gray-300 focus:border-dark rounded w-full p-4 h-36 text-sm text-gray-400 outline-none resize-none placeholder:capitalize placeholder:text-light placeholder:text-base'
           rows={3}
           required

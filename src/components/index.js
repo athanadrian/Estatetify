@@ -12,6 +12,7 @@ export { default as ListingItem } from './ListingItem';
 export { default as ListingItemList } from './ListingItemList';
 export { default as FormInput } from './elements/FormInput';
 export { default as FormSelect } from './elements/FormSelect';
+export { default as FormRange } from './elements/FormRange';
 export { default as FormImageInput } from './elements/FormImageInput';
 export { default as FormLookUpSelect } from './elements/FormLookUpSelect';
 export { default as AppIcon } from './elements/AppIcon';
