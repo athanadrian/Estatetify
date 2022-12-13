@@ -16,7 +16,7 @@ const Filter = () => {
     category: null,
     squareFeet: null,
     city: '',
-    price: minPrice ?? 0,
+    price: 0,
   });
   const { type, category, city, squareFeet, price } = filters;
   const handleChange = (e) => {
@@ -28,28 +28,15 @@ const Filter = () => {
   const handleFilterListings = async () => {
     navigate('/search-results', { state: { filters } });
   };
-  //const bubble = document.querySelector('.bubble');
-  // function setBubble() {
-  //   // Sorta magic numbers based on size of the native UI thumb
-  //   bubble.style.left = `calc(${0}% + (${8}px))`;
-  //   console.log('bubble f', bubble.style.left);
-  // }
 
   const handleClearFilters = () => {
     filterForm.current.reset();
-    //setBubble();
   };
 
   useEffect(() => {
     getListingsData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (minPrice) {
-      setFilters((prevFilters) => ({ ...prevFilters, price: minPrice }));
-    }
-  }, [minPrice]);
 
   return (
     <form ref={filterForm}>
@@ -114,7 +101,7 @@ const Filter = () => {
                 className='w-full'
                 maxValue={maxPrice}
                 minValue={minPrice}
-                //defaultValue={minPrice}
+                defaultValue={minPrice}
                 value={price}
                 //step={50}
                 name='price'
