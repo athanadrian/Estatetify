@@ -46,6 +46,7 @@ const AddListing = () => {
     createListing,
     isLoading,
     setLoading,
+    setUploadProgress,
   } = useListingContext();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [values, setValues] = useState(initialValues);
@@ -89,6 +90,7 @@ const AddListing = () => {
     }
 
     if (e.target.files) {
+      setUploadProgress(0);
       setValues((preValues) => ({
         ...preValues,
         images: e.target.files,

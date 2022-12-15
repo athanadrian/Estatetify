@@ -75,7 +75,6 @@ const Profile = () => {
       }));
     }
   }, [profileUser]);
-  console.log(profileUser);
   useEffect(() => {
     if (user !== undefined && user?.uid) getProfileUser(user?.uid);
     getMyListings();
@@ -349,7 +348,7 @@ const Profile = () => {
           </div>
         )}
       </>
-      <ProfileModal profileId={profileUser?.uid} />
+      <ProfileModal profileUser={profileUser} />
     </>
   );
 };

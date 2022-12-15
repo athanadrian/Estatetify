@@ -1,7 +1,8 @@
 import React from 'react';
-import { AppIcon, TempImageUrl } from 'components';
+import { AppIcon, FormProgressBar, TempImageUrl } from 'components';
 import Label from './Label';
 import defaultStyles from 'common/config';
+import { useListingContext } from 'store/contexts';
 
 const FormImageInput = ({
   onChange,
@@ -13,6 +14,8 @@ const FormImageInput = ({
   handleUpload,
   ...otherProps
 }) => {
+  const { uploadProgress } = useListingContext();
+
   return (
     <>
       <div className='flex items-center justify-between w-full'>
@@ -48,6 +51,7 @@ const FormImageInput = ({
           <AppIcon Icon={defaultStyles.icons.upload} />
         </button>
       </div>
+      <FormProgressBar uploadProgress={uploadProgress} />
       {uploadedImgUrls?.length > 0 &&
         uploadedImgUrls.map((image) => (
           <TempImageUrl

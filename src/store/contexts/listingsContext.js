@@ -67,6 +67,7 @@ import reducer from '../reducers/listingsReducer';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 import { sizes } from 'common/lookup-data';
+import { useState } from 'react';
 
 const userFavorites = localStorage.getItem('userFavorites');
 
@@ -89,6 +90,7 @@ const initialState = {
   typeListings: [],
   lastVisibleTypeListing: null,
   userFavorites: JSON.parse(userFavorites) ?? [],
+  uProgress: 0,
 };
 
 const ListingContext = createContext();
@@ -96,6 +98,7 @@ const ListingContext = createContext();
 const ListingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useAuth();
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
@@ -606,7 +609,6 @@ const ListingProvider = ({ children }) => {
   };
 
   const handleUploadImageToStorage = async (image) => {
-    console.log('ctx image', image);
     return new Promise((resolve, reject) => {
       const fileName = `${user?.uid}-${image.name}-${uuidv4()}`;
       const storageRef = ref(storage, fileName);
@@ -615,23 +617,15 @@ const ListingProvider = ({ children }) => {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          // Observe state change events such as progress, pause, and resume
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(progress);
           console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-            default:
-              return console.log('Upload is successful');
-          }
+          setTimeout(() => setUploadProgress(0), 5000);
         },
         (error) => {
+          console.log('😱 Error Uploading Image: ', error.message);
+          toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
           reject(error);
         },
         () => {
@@ -647,6 +641,8 @@ const ListingProvider = ({ children }) => {
     <ListingContext.Provider
       value={{
         ...state,
+        uploadProgress,
+        setUploadProgress,
         setLoading,
         getAllListings,
         getListingsData,
