@@ -35,7 +35,7 @@ const ProfileProvider = ({ children }) => {
         if (userDoc.exists()) {
           dispatch({
             type: GET_USER_SUCCESS,
-            payload: { profileUser: userDoc.data() },
+            payload: { profileUser: { ...userDoc.data(), uid: id } },
           });
         }
       } catch (error) {
@@ -47,7 +47,8 @@ const ProfileProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    const { fullName, mobile, avatar, call, sms, viber, whatsApp } = userData;
+    const { fullName, mobile, avatar, call, sms, viber, whatsApp, uid } =
+      userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       if (
@@ -70,6 +71,7 @@ const ProfileProvider = ({ children }) => {
           viber,
           whatsApp,
         });
+        await getProfileUser(uid);
         dispatch({ type: UPDATE_USER_SUCCESS });
         toast.success('Profile updated successfully!');
       }

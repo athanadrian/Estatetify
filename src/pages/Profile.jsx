@@ -75,7 +75,7 @@ const Profile = () => {
       }));
     }
   }, [profileUser]);
-
+  console.log(profileUser);
   useEffect(() => {
     if (user !== undefined && user?.uid) getProfileUser(user?.uid);
     getMyListings();
@@ -100,7 +100,7 @@ const Profile = () => {
     e.preventDefault();
     delete values.avatarImg;
     delete values.imgUrl;
-    await updateUser(values);
+    await updateUser({ ...values, uid: profileUser?.uid });
   };
 
   const handleEditInfo = () => {
@@ -349,7 +349,7 @@ const Profile = () => {
           </div>
         )}
       </>
-      <ProfileModal profileUser={profileUser} />
+      <ProfileModal profileId={profileUser?.uid} />
     </>
   );
 };

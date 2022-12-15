@@ -1,9 +1,15 @@
-import { useCommonContext } from 'store/contexts';
+import { useEffect } from 'react';
+import { useCommonContext, useProfileContext } from 'store/contexts';
 import Modal from './elements/Modal';
 import ProfileCard from './ProfileCard';
 
-const ProfileModal = ({ profileUser }) => {
+const ProfileModal = ({ profileId }) => {
   const { showProfileModal, closeProfileModal } = useCommonContext();
+  const { getProfileUser, profileUser } = useProfileContext();
+
+  useEffect(() => {
+    getProfileUser(profileId);
+  }, [profileId]);
 
   return (
     <>
