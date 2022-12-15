@@ -16,6 +16,7 @@ import {
   LandingPage,
   Favorites,
   SearchResults,
+  NotFound,
 } from './pages';
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
         <Footer />
       </Router>
