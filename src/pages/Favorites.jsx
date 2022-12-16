@@ -1,4 +1,4 @@
-import { ListingItemList, PageHeader } from 'components';
+import { ListingsList, PageHeader } from 'components';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useListingContext } from 'store/contexts';
@@ -21,7 +21,7 @@ const Favorites = () => {
               </h2>
             </div>
             <main>
-              <ListingItemList listings={userFavorites} />
+              <ListingsList listings={userFavorites} />
             </main>
           </>
         ) : (

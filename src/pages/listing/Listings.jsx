@@ -1,4 +1,4 @@
-import { ListingItemList, Loader, PageHeader } from 'components';
+import { ListingsList, Loader, PageHeader } from 'components';
 import React from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
@@ -29,7 +29,7 @@ const Listings = () => {
         ) : typeListings && typeListings.length > 0 ? (
           <>
             <main>
-              <ListingItemList listings={typeListings} />
+              <ListingsList listings={typeListings} />
             </main>
             {lastVisibleTypeListing ? (
               <div className='flex justify-center items-center'>

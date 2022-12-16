@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { Loader, PageHeader, ProfileCard } from 'components';
+import { Loader, PageHeader, ProfileCard, ListingsList } from 'components';
 import { useListingContext, useProfileContext } from 'store/contexts';
-import ListingItemList from 'components/ListingItemList';
 
 const OwnerProfile = () => {
   const { ownerId } = useParams();
@@ -31,7 +30,7 @@ const OwnerProfile = () => {
       <div className='mx-auto xl:mx-20 px-3 pt-6'>
         <>
           <PageHeader title={`Listings by ${profileUser?.fullName}`} />
-          <ListingItemList listings={listings} />
+          <ListingsList listings={listings} />
         </>
       </div>
     </>

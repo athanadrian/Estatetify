@@ -1,4 +1,4 @@
-import { ListingItemList, PageHeader } from 'components';
+import { ListingsList, PageHeader } from 'components';
 import React from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -31,7 +31,7 @@ const SearchResults = () => {
               <GoBack />
             </div>
             <main>
-              <ListingItemList listings={filteredListings} />
+              <ListingsList listings={filteredListings} />
             </main>
           </>
         ) : (

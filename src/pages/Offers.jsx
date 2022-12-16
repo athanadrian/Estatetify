@@ -1,4 +1,4 @@
-import { ListingItemList, Loader, PageHeader } from 'components';
+import { ListingsList, Loader, PageHeader } from 'components';
 import React from 'react';
 import { useEffect } from 'react';
 import { useListingContext } from 'store/contexts';
@@ -26,7 +26,7 @@ const Offers = () => {
         ) : offerListings && offerListings.length > 0 ? (
           <>
             <main>
-              <ListingItemList listings={offerListings} />
+              <ListingsList listings={offerListings} />
             </main>
             {lastVisibleOfferListing ? (
               <div className='flex justify-center items-center'>

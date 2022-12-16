@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { PageHeader, Slider } from 'components';
-import { ListingItemList } from 'components';
+import { ListingsList } from 'components';
 import { useListingContext } from 'store/contexts';
 
 const Home = () => {
@@ -32,19 +32,19 @@ const Home = () => {
             <PageHeader subtitle='Discover best deals for your future house' />
           </div>
         </div>
-        <ListingItemList
+        <ListingsList
           link='/offers'
           title='Recent offers'
           subtitle='Show more offers'
           listings={offerListings}
         />
-        <ListingItemList
+        <ListingsList
           link='/listings/rent'
           title='Places for rent'
           subtitle='Show more places for rent'
           listings={rentListings}
         />
-        <ListingItemList
+        <ListingsList
           link='/listings/sale'
           title='Places for sale'
           subtitle='Show more places for sale'

@@ -8,6 +8,8 @@ import {
   Label,
   PageHeader,
   TempImageUrl,
+  ListingsList,
+  ProfileModal,
 } from 'components';
 import defaultStyles from 'common/config';
 import { useAuth } from 'hooks/useAuth';
@@ -16,9 +18,7 @@ import {
   useListingContext,
   useProfileContext,
 } from 'store/contexts';
-import ListingItemList from 'components/ListingItemList';
 import { toast } from 'react-toastify';
-import ProfileModal from 'components/ProfileModal';
 
 const initialValues = {
   fullName: '',
@@ -344,7 +344,7 @@ const Profile = () => {
         {!isLoading && listings.length > 0 && (
           <div className='mx-auto xl:mx-20 px-3 pt-6'>
             <PageHeader title='My Listings' />
-            <ListingItemList listings={listings} />
+            <ListingsList listings={listings} />
           </div>
         )}
       </>

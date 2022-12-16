@@ -1,10 +1,10 @@
 import React from 'react';
 import { useListingContext } from 'store/contexts';
 import { useNavigate } from 'react-router';
-import ListingItem from './ListingItem';
+import ListingGridItem from './ListingGridItem';
 import { Link } from 'react-router-dom';
 
-const ListingItemList = ({ link, title, subtitle, listings }) => {
+const ListingsList = ({ link, title, subtitle, listings }) => {
   const navigate = useNavigate();
   const { deleteListing } = useListingContext();
 
@@ -39,7 +39,7 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
           <div>
             <ul className='sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 w-full'>
               {listings?.map((listing) => (
-                <ListingItem
+                <ListingGridItem
                   key={listing?.id}
                   id={listing?.id}
                   listing={listing?.data}
@@ -55,4 +55,4 @@ const ListingItemList = ({ link, title, subtitle, listings }) => {
   );
 };
 
-export default ListingItemList;
+export default ListingsList;

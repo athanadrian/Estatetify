@@ -12,7 +12,7 @@ import { useAuth } from 'hooks/useAuth';
 import FavoriteButton from './FavoriteButton';
 import ProfileAvatar from './ProfileAvatar';
 
-const ListingItem = ({ id, listing, editListing, deleteListing }) => {
+const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { logo, openModal } = useCommonContext();
@@ -200,4 +200,4 @@ const ListingItem = ({ id, listing, editListing, deleteListing }) => {
   );
 };
 
-export default ListingItem;
+export default ListingGridItem;
