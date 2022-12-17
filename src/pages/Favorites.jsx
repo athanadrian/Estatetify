@@ -12,7 +12,11 @@ const Favorites = () => {
         {userFavorites.length > 0 ? (
           <>
             <div className='flex flex-col items-center justify-center mb-10'>
-              <PageHeader title='Check out your Favorites' />
+              <PageHeader
+                view
+                total={userFavorites.length}
+                title='Check out your Favorites'
+              />
               <h2
                 onClick={removeAllFavorites}
                 className='text-lg text-primary hover:underline cursor-pointer'

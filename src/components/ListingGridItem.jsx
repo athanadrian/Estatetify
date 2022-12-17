@@ -41,13 +41,13 @@ const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
 
   return (
     <>
-      <li className='relative mx-auto w-80 h-fit rounded-lg border border-gray-400 m-[10px] shadow-md hover:shadow-lg transition-shadow duration-150 ease-in'>
+      <li className='relative mx-auto xs:w-full tablet:w-80 h-fit rounded-lg border border-gray-400 m-[10px] shadow-md hover:shadow-lg transition-shadow duration-150 ease-in'>
         <div
-          className='z-0 m-0 max-h-[250px] w-full overflow-hidden cursor-pointer'
+          className='z-0 m-0 tablet:max-h-[250px] h-full w-full overflow-hidden cursor-pointer my-0 mx-auto'
           onClick={() => navigate(`/listings/${listing?.type}/${id}`)}
         >
           <img
-            className=' overflow-hidden rounded-t-lg hover:scale-105 transition-scale duration-200 ease-in'
+            className='w-full max-h-full overflow-hidden rounded-t-lg hover:scale-105 transition-scale duration-200 ease-in'
             src={listing?.imgUrls.length > 0 ? listing?.imgUrls[0] : logo}
             alt={listing?.title}
             loading='lazy'
@@ -95,6 +95,7 @@ const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
         <ProfileAvatar
           avatar={listing?.profile?.avatar}
           //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
+          className='absolute w-14 h-14 bottom-60 right-3 cursor-pointer'
           onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
         />
         <div className='px-3 py-5'>

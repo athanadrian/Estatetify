@@ -19,14 +19,10 @@ const SearchResults = () => {
         {filteredListings.length > 0 ? (
           <>
             <div className='flex flex-col items-center justify-center mb-10'>
-              <PageHeader title='Your Search Results' />
               <PageHeader
-                className='mt-0'
-                title={`Found ${
-                  filteredListings.length > 1
-                    ? `${filteredListings.length} listings`
-                    : '1 listing'
-                }`}
+                title='Your Search Results'
+                view
+                total={filteredListings.length}
               />
               <GoBack />
             </div>

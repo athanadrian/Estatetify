@@ -103,7 +103,6 @@ const Filter = () => {
                 minValue={minPrice}
                 defaultValue={minPrice}
                 value={price}
-                //step={50}
                 name='price'
                 onChange={handleChange}
               />

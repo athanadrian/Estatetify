@@ -29,7 +29,11 @@ const Home = () => {
         <div className='flex flex-col mx-20 my-10 space-y-6'>
           <div className='flex flex-col items-center justify-center mb-10'>
             <PageHeader title='Discover Our Featured Properties' />
-            <PageHeader subtitle='Discover best deals for your future house' />
+            <PageHeader
+              view
+              total='???'
+              subtitle='Discover best deals for your future house'
+            />
           </div>
         </div>
         <ListingsList

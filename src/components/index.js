@@ -10,6 +10,7 @@ export { default as FavoriteButton } from './FavoriteButton';
 export { default as ProfileCard } from './ProfileCard';
 export { default as ProfileModal } from './ProfileModal';
 export { default as ListingGridItem } from './ListingGridItem';
+export { default as ListingRowItem } from './ListingRowItem';
 export { default as ListingsList } from './ListingsList';
 export { default as FormInput } from './elements/FormInput';
 export { default as FormSelect } from './elements/FormSelect';

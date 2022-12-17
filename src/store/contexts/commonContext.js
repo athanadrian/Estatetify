@@ -5,12 +5,14 @@ import {
   CLOSE_MODAL,
   OPEN_PROFILE_MODAL,
   CLOSE_PROFILE_MODAL,
+  SHOW_GRID_VIEW,
 } from '../actions/commonActions';
 import reducer from '../reducers/commonReducer';
 
 const initialState = {
   showModal: false,
   showProfileModal: false,
+  showGrid: true,
   logo: 'https://firebasestorage.googleapis.com/v0/b/estatetify-db.appspot.com/o/logo512.png?alt=media&token=008a2f5b-86b5-4334-95c4-bf48071260b8',
 };
 
@@ -34,6 +36,10 @@ const CommonProvider = ({ children }) => {
     dispatch({ type: CLOSE_PROFILE_MODAL });
   };
 
+  const showGridView = (status) => {
+    dispatch({ type: SHOW_GRID_VIEW, payload: { status } });
+  };
+
   return (
     <CommonContext.Provider
       value={{
@@ -42,6 +48,7 @@ const CommonProvider = ({ children }) => {
         closeModal,
         openProfileModal,
         closeProfileModal,
+        showGridView,
       }}
     >
       {children}

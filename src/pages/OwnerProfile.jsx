@@ -29,7 +29,11 @@ const OwnerProfile = () => {
       </section>
       <div className='mx-auto xl:mx-20 px-3 pt-6'>
         <>
-          <PageHeader title={`Listings by ${profileUser?.fullName}`} />
+          <PageHeader
+            title={`Listings by ${profileUser?.fullName}`}
+            view
+            total={listings.length}
+          />
           <ListingsList listings={listings} />
         </>
       </div>

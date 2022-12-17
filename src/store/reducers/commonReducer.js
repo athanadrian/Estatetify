@@ -3,6 +3,7 @@ import {
   CLOSE_MODAL,
   OPEN_PROFILE_MODAL,
   CLOSE_PROFILE_MODAL,
+  SHOW_GRID_VIEW,
 } from '../actions/commonActions';
 
 const reducer = (state, action) => {
@@ -28,6 +29,13 @@ const reducer = (state, action) => {
     return {
       ...state,
       showProfileModal: false,
+    };
+  }
+  if (action.type === SHOW_GRID_VIEW) {
+    const showGrid = action.payload.status;
+    return {
+      ...state,
+      showGrid,
     };
   }
 

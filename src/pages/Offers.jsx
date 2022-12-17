@@ -20,7 +20,11 @@ const Offers = () => {
   return (
     <>
       <div className='mx-auto xl:mx-20 px-3'>
-        <PageHeader title='Our recent offers' />
+        <PageHeader
+          view
+          total={offerListings.length}
+          title='Our recent offers'
+        />
         {isLoading ? (
           <Loader />
         ) : offerListings && offerListings.length > 0 ? (

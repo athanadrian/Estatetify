@@ -23,7 +23,11 @@ const Listings = () => {
   return (
     <>
       <div className='mx-auto xl:mx-20 px-3'>
-        <PageHeader title={`Places for ${type}`} />
+        <PageHeader
+          title={`Places for ${type}`}
+          view
+          total={typeListings.length}
+        />
         {isLoading ? (
           <Loader />
         ) : typeListings && typeListings.length > 0 ? (

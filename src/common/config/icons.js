@@ -24,8 +24,10 @@ import {
   FaSms,
   FaViber,
   FaWhatsapp,
+  FaListAlt,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
+import { BsFillGridFill } from 'react-icons/bs';
 import {
   MdOutlineAddBusiness,
   MdBedroomParent,
@@ -35,7 +37,6 @@ import {
   MdOutlineCancel,
   MdCall,
 } from 'react-icons/md';
-
 import { LogoIcon } from './svgIcons';
 
 const icons = {
@@ -77,6 +78,8 @@ const icons = {
   call: MdCall,
   viber: FaViber,
   whatsApp: FaWhatsapp,
+  gridView: BsFillGridFill,
+  listView: FaListAlt,
 };
 
 export default icons;

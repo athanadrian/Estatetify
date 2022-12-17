@@ -343,7 +343,7 @@ const Profile = () => {
       <>
         {!isLoading && listings.length > 0 && (
           <div className='mx-auto xl:mx-20 px-3 pt-6'>
-            <PageHeader title='My Listings' />
+            <PageHeader title='My Listings' view total={listings.length} />
             <ListingsList listings={listings} />
           </div>
         )}
