@@ -1,5 +1,5 @@
 import { categories, sizes } from 'common/lookup-data';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useListingContext } from 'store/contexts';
 import AppButton from './elements/AppButton';
 import { FormLookUpSelect, FormRange, FormSelect } from 'components';
@@ -31,6 +31,10 @@ const Filter = () => {
   const handleClearFilters = () => {
     filterForm.current.reset();
   };
+
+  useEffect(() => {
+    setFilters((prevFilters) => ({ ...prevFilters, price: 0 }));
+  }, []);
 
   return (
     <form ref={filterForm}>
@@ -95,7 +99,7 @@ const Filter = () => {
                 className='w-full'
                 maxValue={maxPrice}
                 minValue={minPrice}
-                defaultValue={minPrice}
+                defaultValue={price}
                 value={price}
                 name='price'
                 onChange={handleChange}
