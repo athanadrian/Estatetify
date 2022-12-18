@@ -44,10 +44,7 @@ const SearchResults = () => {
 export default SearchResults;
 
 const GoBack = () => (
-  <h2 className='text-gray-400 text-base font-medium'>
-    Go back to
-    <Link to='/home' className='text-lg text-primary hover:underline ml-2'>
-      home page...
-    </Link>
-  </h2>
+  <button className='bg-gray-200 text-darker text-lg font-normal py-1.5 px-2 my-1 mr-1.5 ml-0 border-[1px] border-solid border-transparent rounded-[3px] cursor-pointer flex items-center justify-center transition-all duration-300 ease-in-out'>
+    <Link to='/home'>&larr; Back To Home</Link>
+  </button>
 );

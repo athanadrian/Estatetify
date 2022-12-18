@@ -9,11 +9,17 @@ const FavoriteButton = ({ listing, id }) => {
     userFavorites.filter((fav) => fav.id === id).length > 0;
 
   const handleAddToFavorite = () => {
-    addRemoveFavorite({ listing: { id, data: listing }, favorite: true });
+    addRemoveFavorite({
+      listing: { id, ...listing, timestamp: undefined },
+      favorite: true,
+    });
   };
 
   const handleRemoveFromFavorite = () => {
-    addRemoveFavorite({ listing: { id, data: listing }, favorite: false });
+    addRemoveFavorite({
+      listing: { id, ...listing },
+      favorite: false,
+    });
   };
 
   return (

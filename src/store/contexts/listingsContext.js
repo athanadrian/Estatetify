@@ -1,5 +1,7 @@
-import { useAuth } from 'hooks/useAuth';
+import { useState, useContext, createContext, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import { useAuth } from 'hooks/useAuth';
 import {
   storage,
   ref,
@@ -7,6 +9,7 @@ import {
   deleteObject,
   getDownloadURL,
   db,
+  onSnapshot,
   doc,
   addDoc,
   getDoc,
@@ -22,13 +25,12 @@ import {
   serverTimestamp,
 } from 'firebase.config';
 
-import { useContext, createContext, useReducer } from 'react';
 import {
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
+  GET_HOME_LISTINGS_SUCCESS,
+  GET_HOME_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
-  GET_ALL_LISTINGS_DATA_BEGIN,
-  GET_ALL_LISTINGS_DATA_SUCCESS,
   GET_LISTINGS_BY_USER_BEGIN,
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
@@ -44,10 +46,6 @@ import {
   GET_MORE_TYPE_LISTINGS_SUCCESS,
   GET_TYPE_LISTINGS_BEGIN,
   GET_TYPE_LISTINGS_SUCCESS,
-  GET_RENT_LISTINGS_BEGIN,
-  GET_RENT_LISTINGS_SUCCESS,
-  GET_SALE_LISTINGS_BEGIN,
-  GET_SALE_LISTINGS_SUCCESS,
   GET_LISTING_BEGIN,
   GET_LISTING_SUCCESS,
   CREATE_LISTING_BEGIN,
@@ -64,10 +62,8 @@ import {
   REMOVE_ALL_FAVORITES,
 } from '../actions/listingsActions';
 import reducer from '../reducers/listingsReducer';
-import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 import { sizes } from 'common/lookup-data';
-import { useState } from 'react';
 
 const userFavorites = localStorage.getItem('userFavorites');
 
@@ -91,6 +87,7 @@ const initialState = {
   lastVisibleTypeListing: null,
   userFavorites: JSON.parse(userFavorites) ?? [],
   uProgress: 0,
+  totalListings: null,
 };
 
 const ListingContext = createContext();
@@ -104,7 +101,7 @@ const ListingProvider = ({ children }) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
 
-  const clearFilteredListings = (status) => {
+  const clearFilteredListings = () => {
     dispatch({ type: CLEAR_FILTERED_LISTINGS });
   };
 
@@ -149,12 +146,48 @@ const ListingProvider = ({ children }) => {
       listingsDocs.forEach((listingDoc) => {
         return listings.push({
           id: listingDoc.id,
-          data: listingDoc.data(),
+          ...listingDoc.data(),
         });
       });
       dispatch({
         type: GET_ALL_LISTINGS_SUCCESS,
         payload: { listings },
+      });
+    } catch (error) {
+      console.log('😱 Error get all listings: ', error.message);
+    }
+  };
+
+  const getHomeData = async (lim) => {
+    dispatch({ type: GET_HOME_LISTINGS_BEGIN });
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(listingsRef, orderBy('timestamp', 'desc'));
+      let listings = [];
+      let locations = [];
+      let prices = [];
+      onSnapshot(listingQuery, (snapshot) => {
+        snapshot.docs.map((doc) => {
+          listings.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+          locations.push(doc.data().geolocation);
+          prices.push(doc.data().regularPrice);
+          return {
+            locations,
+            prices,
+          };
+        });
+        dispatch({
+          type: GET_HOME_LISTINGS_SUCCESS,
+          payload: {
+            totalListings: snapshot.docs.length,
+            listings,
+            locations,
+            prices,
+          },
+        });
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -192,13 +225,10 @@ const ListingProvider = ({ children }) => {
       const listingsDocs = await getDocs(listingQuery);
       let filteredListings = [];
       listingsDocs.forEach(async (listingDoc) => {
-        const profile = await getProfileData(listingDoc.data().userRef);
         let listing = {
           id: listingDoc.id,
-          data: listingDoc.data(),
-          profile,
+          ...listingDoc.data(),
         };
-        listing.data.profile = profile;
         filteredListings.push({
           ...listing,
         });
@@ -212,40 +242,6 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getProfileData = async (id) => {
-    if (id) {
-      const userRef = doc(db, 'users', id);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        return { id: userDoc.id, ...userDoc.data() };
-      }
-    }
-  };
-
-  const getListingsData = async () => {
-    dispatch({ type: GET_ALL_LISTINGS_DATA_BEGIN });
-    try {
-      const listingsRef = collection(db, 'listings');
-      const listingQuery = query(listingsRef, orderBy('timestamp', 'desc'));
-      const listingsDocs = await getDocs(listingQuery);
-      let listingsLocations = [];
-      let listingsPrices = [];
-      listingsDocs.forEach((listingDoc) => {
-        listingsLocations.push({
-          ...listingDoc.data().geolocation,
-        });
-        listingsPrices.push(listingDoc.data().regularPrice);
-        return { listingsLocations, listingsPrices };
-      });
-      dispatch({
-        type: GET_ALL_LISTINGS_DATA_SUCCESS,
-        payload: { listingsLocations, listingsPrices },
-      });
-    } catch (error) {
-      console.log('😱 Error get all listings locations: ', error.message);
-    }
-  };
-
   const getOfferListings = async (lim) => {
     dispatch({ type: GET_OFFER_LISTINGS_BEGIN });
     try {
@@ -256,29 +252,19 @@ const ListingProvider = ({ children }) => {
         //orderBy('timestamp', 'desc'),
         limit(lim)
       );
-      const listingsDocs = await getDocs(listingQuery);
-      const lastVisibleOfferListing =
-        listingsDocs.docs[listingsDocs.docs.length - 1];
-      let listings = [];
-
-      listingsDocs.forEach(async (listingDoc) => {
-        const profile = await getProfileData(listingDoc.data().userRef);
-        let listing = {
-          id: listingDoc.id,
-          data: listingDoc.data(),
-          profile,
-        };
-        listing.data.profile = profile;
-        listings.push({
-          ...listing,
-        });
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const lastVisibleOfferListing = snapshot.docs[snapshot.docs.length - 1];
         dispatch({
           type: GET_OFFER_LISTINGS_SUCCESS,
           payload: { listings, lastVisibleOfferListing },
         });
       });
     } catch (error) {
-      console.log('😱 Error get all listings: ', error.message);
+      console.log('😱 Error get offer listings: ', error.message);
     }
   };
 
@@ -301,7 +287,7 @@ const ListingProvider = ({ children }) => {
       listingsDocs.forEach((listingDoc) => {
         return listings.push({
           id: listingDoc.id,
-          data: listingDoc.data(),
+          ...listingDoc.data(),
         });
       });
       dispatch({
@@ -309,73 +295,7 @@ const ListingProvider = ({ children }) => {
         payload: { listings, lastVisibleOfferListing },
       });
     } catch (error) {
-      console.log('😱 Error get all listings: ', error.message);
-    }
-  };
-
-  const getRentListings = async (lim) => {
-    dispatch({ type: GET_RENT_LISTINGS_BEGIN });
-    try {
-      const listingsRef = collection(db, 'listings');
-      const listingQuery = query(
-        listingsRef,
-        where('type', '==', 'rent'),
-        orderBy('timestamp', 'desc'),
-        limit(lim)
-      );
-      const listingsDocs = await getDocs(listingQuery);
-      let rentListings = [];
-      listingsDocs.forEach(async (listingDoc) => {
-        const profile = await getProfileData(listingDoc.data().userRef);
-        let listing = {
-          id: listingDoc.id,
-          data: listingDoc.data(),
-          profile,
-        };
-        listing.data.profile = profile;
-        rentListings.push({
-          ...listing,
-        });
-        dispatch({
-          type: GET_RENT_LISTINGS_SUCCESS,
-          payload: { rentListings },
-        });
-      });
-    } catch (error) {
-      console.log('😱 Error get all listings: ', error.message);
-    }
-  };
-
-  const getSaleListings = async (lim) => {
-    dispatch({ type: GET_SALE_LISTINGS_BEGIN });
-    try {
-      const listingsRef = collection(db, 'listings');
-      const listingQuery = query(
-        listingsRef,
-        where('type', '==', 'sale'),
-        orderBy('timestamp', 'desc'),
-        limit(lim)
-      );
-      const listingsDocs = await getDocs(listingQuery);
-      let saleListings = [];
-      listingsDocs.forEach(async (listingDoc) => {
-        const profile = await getProfileData(listingDoc.data().userRef);
-        let listing = {
-          id: listingDoc.id,
-          data: listingDoc.data(),
-          profile,
-        };
-        listing.data.profile = profile;
-        saleListings.push({
-          ...listing,
-        });
-        dispatch({
-          type: GET_SALE_LISTINGS_SUCCESS,
-          payload: { saleListings },
-        });
-      });
-    } catch (error) {
-      console.log('😱 Error get all listings: ', error.message);
+      console.log('😱 Error get more offer listings: ', error.message);
     }
   };
 
@@ -389,24 +309,15 @@ const ListingProvider = ({ children }) => {
         orderBy('timestamp', 'desc'),
         limit(lim)
       );
-      const listingsDocs = await getDocs(listingQuery);
-      const lastVisibleTypeListing =
-        listingsDocs.docs[listingsDocs.docs.length - 1];
-      let typeListings = [];
-      listingsDocs.forEach(async (listingDoc) => {
-        const profile = await getProfileData(listingDoc.data().userRef);
-        let listing = {
-          id: listingDoc.id,
-          data: listingDoc.data(),
-          profile,
-        };
-        listing.data.profile = profile;
-        typeListings.push({
-          ...listing,
-        });
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const lastVisibleTypeListing = snapshot.docs[snapshot.docs.length - 1];
         dispatch({
           type: GET_TYPE_LISTINGS_SUCCESS,
-          payload: { type, typeListings, lastVisibleTypeListing },
+          payload: { listings, lastVisibleTypeListing },
         });
       });
     } catch (error) {
@@ -428,16 +339,16 @@ const ListingProvider = ({ children }) => {
       const listingsDocs = await getDocs(listingQuery);
       const lastVisibleTypeListing =
         listingsDocs.docs[listingsDocs.docs.length - 1];
-      let typeListings = [];
+      let listings = [];
       listingsDocs.forEach((listingDoc) => {
-        return typeListings.push({
+        return listings.push({
           id: listingDoc.id,
-          data: listingDoc.data(),
+          ...listingDoc.data(),
         });
       });
       dispatch({
         type: GET_MORE_TYPE_LISTINGS_SUCCESS,
-        payload: { type, typeListings, lastVisibleTypeListing },
+        payload: { type, listings, lastVisibleTypeListing },
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
@@ -457,13 +368,10 @@ const ListingProvider = ({ children }) => {
 
       let listings = [];
       listingsDocs.forEach(async (listingDoc) => {
-        const profile = await getProfileData(listingDoc.data().userRef);
         let listing = {
           id: listingDoc.id,
-          data: listingDoc.data(),
-          profile,
+          ...listingDoc.data(),
         };
-        listing.data.profile = profile;
         listings.push({
           ...listing,
         });
@@ -489,13 +397,10 @@ const ListingProvider = ({ children }) => {
     const listingsDocs = await getDocs(listingQuery);
     let listings = [];
     listingsDocs.forEach(async (listingDoc) => {
-      const profile = await getProfileData(listingDoc.data().userRef);
       let listing = {
         id: listingDoc.id,
-        data: listingDoc.data(),
-        profile,
+        ...listingDoc.data(),
       };
-      listing.data.profile = profile;
       listings.push({
         ...listing,
       });
@@ -645,7 +550,7 @@ const ListingProvider = ({ children }) => {
         setUploadProgress,
         setLoading,
         getAllListings,
-        getListingsData,
+        getHomeData,
         getMyListings,
         getListingsByUser,
         getFilteredListings,
@@ -653,8 +558,6 @@ const ListingProvider = ({ children }) => {
         getMoreOfferListings,
         getTypeListings,
         getMoreTypeListings,
-        getRentListings,
-        getSaleListings,
         getListing,
         createListing,
         editListing,

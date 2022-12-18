@@ -44,32 +44,34 @@ const Slider = () => {
           modules={[EffectFade]}
           autoplay={{ delay: 3000 }}
         >
-          {listings.map(({ id, data }) => (
+          {listings.map((listing) => (
             <SwiperSlide
-              onClick={() => navigate(`/listings/${data?.type}/${id}`)}
-              key={id}
+              onClick={() =>
+                navigate(`/listings/${listing?.type}/${listing?.id}`)
+              }
+              key={listing?.id}
             >
               <div
                 style={{
-                  background: `url(${data?.imgUrls[0]}) center no-repeat`,
+                  background: `url(${listing?.imgUrls[0]}) center no-repeat`,
                   backgroundSize: 'cover',
                 }}
                 className='relative w-full h-[300px] overflow-hidden'
               />
               <p className='absolute text-white bg-darker px-4 py-2 text-base rounded-br-2xl top-3 left-2'>
-                {data?.title}
+                {listing?.title}
               </p>
               <div className='flex justify-center max-w-[90%] absolute text-white bg-red-500 px-4 py-2 text-base rounded-tr-3xl top-16 left-2'>
-                <p className={`${data.offer ? offerStyle : regularStyle}`}>
-                  €{displayPrice(data.regularPrice)}
+                <p className={`${listing?.offer ? offerStyle : regularStyle}`}>
+                  €{displayPrice(listing?.regularPrice)}
                 </p>
-                {data.offer && (
+                {listing?.offer && (
                   <p className={`text-light text-base mx-2 font-semibold`}>
-                    €{displayPrice(data.offerPrice)}
+                    €{displayPrice(listing?.offerPrice)}
                   </p>
                 )}
                 <span className='text-light text-base font-semibold'>
-                  {data.type === 'rent' && ' / month'}
+                  {listing?.type === 'rent' && ' / month'}
                 </span>
               </div>
             </SwiperSlide>

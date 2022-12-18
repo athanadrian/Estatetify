@@ -1,6 +1,5 @@
 import { categories, sizes } from 'common/lookup-data';
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import { useListingContext } from 'store/contexts';
 import AppButton from './elements/AppButton';
 import { FormLookUpSelect, FormRange, FormSelect } from 'components';
@@ -10,7 +9,7 @@ import { useRef } from 'react';
 const Filter = () => {
   const navigate = useNavigate();
   const filterForm = useRef();
-  const { getListingsData, cities, minPrice, maxPrice } = useListingContext();
+  const { cities, minPrice, maxPrice } = useListingContext();
   const [filters, setFilters] = useState({
     type: 'rent',
     category: null,
@@ -32,11 +31,6 @@ const Filter = () => {
   const handleClearFilters = () => {
     filterForm.current.reset();
   };
-
-  useEffect(() => {
-    getListingsData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <form ref={filterForm}>

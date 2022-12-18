@@ -2,8 +2,8 @@ import {
   SET_LOADING,
   GET_ALL_LISTINGS_BEGIN,
   GET_ALL_LISTINGS_SUCCESS,
-  GET_ALL_LISTINGS_DATA_BEGIN,
-  GET_ALL_LISTINGS_DATA_SUCCESS,
+  GET_HOME_LISTINGS_SUCCESS,
+  GET_HOME_LISTINGS_BEGIN,
   GET_LISTINGS_BY_USER_BEGIN,
   GET_LISTINGS_BY_USER_SUCCESS,
   GET_MY_LISTINGS_BEGIN,
@@ -19,10 +19,6 @@ import {
   GET_TYPE_LISTINGS_SUCCESS,
   GET_MORE_TYPE_LISTINGS_BEGIN,
   GET_MORE_TYPE_LISTINGS_SUCCESS,
-  GET_RENT_LISTINGS_BEGIN,
-  GET_RENT_LISTINGS_SUCCESS,
-  GET_SALE_LISTINGS_BEGIN,
-  GET_SALE_LISTINGS_SUCCESS,
   GET_LISTING_BEGIN,
   GET_LISTING_SUCCESS,
   CREATE_LISTING_BEGIN,
@@ -62,16 +58,25 @@ const reducer = (state, action) => {
     };
   }
 
-  if (action.type === GET_ALL_LISTINGS_DATA_BEGIN) {
+  if (action.type === GET_HOME_LISTINGS_BEGIN) {
     return {
       ...state,
-      isLoadingLocations: true,
+      isLoading: true,
     };
   }
 
-  if (action.type === GET_ALL_LISTINGS_DATA_SUCCESS) {
-    const listingsLocations = action.payload.listingsLocations;
-    const prices = action.payload.listingsPrices;
+  if (action.type === GET_HOME_LISTINGS_SUCCESS) {
+    const listingsLocations = action.payload.locations;
+    const prices = action.payload.prices;
+    const offerListings = action.payload.listings
+      .filter((listing) => listing.offer)
+      .slice(0, 4);
+    const rentListings = action.payload.listings
+      .filter((listing) => listing.type === 'rent')
+      .slice(0, 4);
+    const saleListings = action.payload.listings
+      .filter((listing) => listing.type === 'sale')
+      .slice(0, 4);
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
     const tmpCities = listingsLocations.filter((loc) => loc.city !== undefined);
@@ -80,13 +85,16 @@ const reducer = (state, action) => {
     const countries = listingsLocations.map((loc) => loc.country);
     return {
       ...state,
-      isLoadingLocations: false,
-      listingsLocations,
+      isLoading: false,
+      offerListings,
+      rentListings,
+      saleListings,
+      minPrice,
+      maxPrice,
+      tmpCities,
       cities,
       states,
       countries,
-      minPrice,
-      maxPrice,
     };
   }
 
@@ -103,7 +111,7 @@ const reducer = (state, action) => {
     let tempListings = filteredListings;
     if (price) {
       tempListings = filteredListings.filter(
-        (listing) => listing.data.regularPrice <= price
+        (listing) => listing.regularPrice <= price
       );
     }
     return {
@@ -126,6 +134,7 @@ const reducer = (state, action) => {
       isLoading: true,
     };
   }
+
   if (action.type === GET_OFFER_LISTINGS_SUCCESS) {
     return {
       ...state,
@@ -134,12 +143,14 @@ const reducer = (state, action) => {
       lastVisibleOfferListing: action.payload.lastVisibleOfferListing,
     };
   }
+
   if (action.type === GET_MORE_OFFER_LISTINGS_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
+
   if (action.type === GET_MORE_OFFER_LISTINGS_SUCCESS) {
     const offerListings = [...state.offerListings, ...action.payload.listings];
     return {
@@ -149,49 +160,21 @@ const reducer = (state, action) => {
       lastVisibleOfferListing: action.payload.lastVisibleOfferListing,
     };
   }
-  if (action.type === GET_RENT_LISTINGS_BEGIN) {
-    return {
-      ...state,
-      isLoading: true,
-    };
-  }
-  if (action.type === GET_RENT_LISTINGS_SUCCESS) {
-    const rentListings = action.payload.rentListings;
-    return {
-      ...state,
-      isLoading: false,
-      rentListings,
-      lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
-    };
-  }
-  if (action.type === GET_SALE_LISTINGS_BEGIN) {
-    return {
-      ...state,
-      isLoading: true,
-    };
-  }
-  if (action.type === GET_SALE_LISTINGS_SUCCESS) {
-    const saleListings = action.payload.saleListings;
-    return {
-      ...state,
-      isLoading: false,
-      saleListings,
-      lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
-    };
-  }
+
   if (action.type === GET_TYPE_LISTINGS_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
+
   if (action.type === GET_TYPE_LISTINGS_SUCCESS) {
     let typeListings = [];
     const type = action.payload.type;
     if (type === 'rent') {
-      typeListings = action.payload.typeListings;
+      typeListings = action.payload.listings;
     } else {
-      typeListings = action.payload.typeListings;
+      typeListings = action.payload.listings;
     }
     return {
       ...state,
@@ -200,19 +183,21 @@ const reducer = (state, action) => {
       lastVisibleTypeListing: action.payload.lastVisibleTypeListing,
     };
   }
+
   if (action.type === GET_MORE_TYPE_LISTINGS_BEGIN) {
     return {
       ...state,
       isLoading: true,
     };
   }
+
   if (action.type === GET_MORE_TYPE_LISTINGS_SUCCESS) {
-    let typeListings = [];
+    let typeListings = [...state.typeListings];
     const type = action.payload.type;
     if (type === 'rent') {
-      typeListings = [...state.typeListings, ...action.payload.typeListings];
+      typeListings = [...typeListings, ...action.payload.listings];
     } else {
-      typeListings = [...state.typeListings, ...action.payload.typeListings];
+      typeListings = [...typeListings, ...action.payload.listings];
     }
     return {
       ...state,

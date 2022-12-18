@@ -1,14 +1,21 @@
 import React from 'react';
-import { useCommonContext, useListingContext } from 'store/contexts';
+import {
+  useCommonContext,
+  useListingContext,
+  useProfileContext,
+} from 'store/contexts';
 import { useNavigate } from 'react-router';
 import ListingGridItem from './ListingGridItem';
 import { Link } from 'react-router-dom';
 import ListingRowItem from './ListingRowItem';
+import { useEffect } from 'react';
 
 const ListingsList = ({ link, title, subtitle, listings }) => {
   const navigate = useNavigate();
   const { deleteListing } = useListingContext();
   const { showGrid } = useCommonContext();
+  const { getAllProfiles, profiles } = useProfileContext();
+
   const handleEditListing = (id) => {
     navigate(`/listings/edit/${id}`);
   };
@@ -16,7 +23,7 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
   const handleDeleteListing = async (listing) => {
     if (
       window.confirm(
-        `Are you sure you want to delete listing ${listing?.data?.title}`
+        `Are you sure you want to delete listing ${listing?.title}`
       )
     ) {
       await deleteListing(listing);
@@ -24,6 +31,11 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
   };
 
   let ListingIcon = showGrid ? ListingGridItem : ListingRowItem;
+
+  useEffect(() => {
+    getAllProfiles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -50,7 +62,10 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
               <ListingIcon
                 key={listing?.id}
                 id={listing?.id}
-                listing={listing?.data}
+                listing={listing}
+                profile={profiles?.find(
+                  (profile) => profile.id === listing.userRef
+                )}
                 editListing={() => handleEditListing(listing?.id)}
                 deleteListing={() => handleDeleteListing(listing)}
               />

@@ -12,7 +12,13 @@ import { useAuth } from 'hooks/useAuth';
 import FavoriteButton from './FavoriteButton';
 import ProfileAvatar from './ProfileAvatar';
 
-const ListingRowItem = ({ id, listing, editListing, deleteListing }) => {
+const ListingRowItem = ({
+  id,
+  listing,
+  profile,
+  editListing,
+  deleteListing,
+}) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { logo, openModal } = useCommonContext();
@@ -50,12 +56,14 @@ const ListingRowItem = ({ id, listing, editListing, deleteListing }) => {
               alt={listing?.title}
             />
           </div>
-          <Moment
-            fromNow
-            className='uppercase text-white bg-primary px-4 py-1 text-xs rounded-tl-lg rounded-br-xl absolute z-10 shadow-lg'
-          >
-            {listing?.timestamp.toDate()}
-          </Moment>
+          {listing?.timestamp && (
+            <Moment
+              fromNow
+              className='uppercase text-white bg-primary  px-4 py-1 text-xs rounded absolute top-3 left-3 z-10 shadow-lg'
+            >
+              {listing?.timestamp.toDate()}
+            </Moment>
+          )}
           <div className='uppercase text-white bg-darker px-3.5 py-1 text-xs rounded-tr-lg absolute xs:top-0 tablet:top-[14.5rem] tablet:left-0 xs:left-[298.5px] z-10 shadow-lg'>
             FOR {listing?.type}
           </div>
@@ -91,7 +99,7 @@ const ListingRowItem = ({ id, listing, editListing, deleteListing }) => {
           )}
           <ProfileAvatar
             className='absolute w-14 h-14 xs:top-56 xs:right-3 tablet:top-2 tablet:right-2 cursor-pointer'
-            avatar={listing?.profile?.avatar}
+            avatar={profile?.avatar}
             //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
             onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
           />

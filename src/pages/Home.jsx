@@ -5,20 +5,17 @@ import { useListingContext } from 'store/contexts';
 
 const Home = () => {
   const {
-    getRentListings,
-    getSaleListings,
-    getOfferListings,
+    getHomeData,
     offerListings,
     rentListings,
     saleListings,
     clearFilteredListings,
+    totalListings,
   } = useListingContext();
 
   useEffect(() => {
-    getOfferListings(4);
-    getRentListings(4);
-    getSaleListings(4);
     clearFilteredListings();
+    getHomeData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -31,7 +28,7 @@ const Home = () => {
             <PageHeader title='Discover Our Featured Properties' />
             <PageHeader
               view
-              total='???'
+              total={totalListings}
               subtitle='Discover best deals for your future house'
             />
           </div>

@@ -1,4 +1,6 @@
 import {
+  GET_ALL_PROFILES_BEGIN,
+  GET_ALL_PROFILES_SUCCESS,
   GET_USER_BEGIN,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
@@ -8,6 +10,21 @@ import {
 } from '../actions/profileActions';
 
 const reducer = (state, action) => {
+  if (action.type === GET_ALL_PROFILES_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_ALL_PROFILES_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      profiles: action.payload.profiles,
+    };
+  }
+
   if (action.type === GET_USER_BEGIN) {
     return {
       ...state,

@@ -12,7 +12,13 @@ import { useAuth } from 'hooks/useAuth';
 import FavoriteButton from './FavoriteButton';
 import ProfileAvatar from './ProfileAvatar';
 
-const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
+const ListingGridItem = ({
+  id,
+  listing,
+  editListing,
+  deleteListing,
+  profile,
+}) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { logo, openModal } = useCommonContext();
@@ -53,12 +59,14 @@ const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
             loading='lazy'
           />
         </div>
-        <Moment
-          fromNow
-          className='uppercase text-white bg-primary  px-4 py-1 text-xs rounded absolute top-3 left-3 z-10 shadow-lg'
-        >
-          {listing?.timestamp.toDate()}
-        </Moment>
+        {listing?.timestamp && (
+          <Moment
+            fromNow
+            className='uppercase text-white bg-primary  px-4 py-1 text-xs rounded absolute top-3 left-3 z-10 shadow-lg'
+          >
+            {listing?.timestamp.toDate()}
+          </Moment>
+        )}
         <div className='uppercase text-white bg-darker px-4 py-1 text-xs rounded absolute top-3 right-3 z-10 shadow-lg'>
           FOR {listing?.type}
         </div>
@@ -93,7 +101,7 @@ const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
           </div>
         )}
         <ProfileAvatar
-          avatar={listing?.profile?.avatar}
+          avatar={profile?.avatar}
           //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
           className='absolute w-14 h-14 bottom-60 right-3 cursor-pointer'
           onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
@@ -193,8 +201,8 @@ const ListingGridItem = ({ id, listing, editListing, deleteListing }) => {
         </div>
       </li>
       {/* <ContactModal
-        fullName={listing?.profile?.fullName}
-        email={listing?.profile?.email}
+        fullName={profile?.fullName}
+        email={profile?.email}
         title={listing?.title}
       /> */}
     </>

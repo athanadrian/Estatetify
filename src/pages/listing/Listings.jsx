@@ -38,7 +38,7 @@ const Listings = () => {
             {lastVisibleTypeListing ? (
               <div className='flex justify-center items-center'>
                 <button
-                  onClick={() => getMoreTypeListings(4)}
+                  onClick={() => getMoreTypeListings(type, 4)}
                   className='bg-white px-3 py-1.5 text-gray-700 border border-gray-300 mb-6 mt-6 hover:border-slate-600 rounded transition duration-150 ease-in-out'
                 >
                   Load more

@@ -16,7 +16,6 @@ const Offers = () => {
     getOfferListings(4);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <>
       <div className='mx-auto xl:mx-20 px-3'>
