@@ -107,7 +107,7 @@ const reducer = (state, action) => {
 
   if (action.type === GET_FILTERED_LISTINGS_SUCCESS) {
     const price = action.payload.price;
-    const filteredListings = action.payload.filteredListings;
+    const filteredListings = action.payload.listings;
     let tempListings = filteredListings;
     if (price) {
       tempListings = filteredListings.filter(

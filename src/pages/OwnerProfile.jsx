@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { Loader, PageHeader, ProfileCard, ListingsList } from 'components';
+import {
+  Loader,
+  PageHeader,
+  ProfileCard,
+  ListingsList,
+  ContactModal,
+} from 'components';
 import { useListingContext, useProfileContext } from 'store/contexts';
 
 const OwnerProfile = () => {
@@ -37,6 +43,10 @@ const OwnerProfile = () => {
           <ListingsList listings={listings} />
         </>
       </div>
+      <ContactModal
+        listing={{ title: 'in your listings' }}
+        profile={profileUser}
+      />
     </>
   );
 };

@@ -15,7 +15,6 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
-  getDocs,
   collection,
   query,
   limit,
@@ -132,7 +131,7 @@ const ListingProvider = ({ children }) => {
     toast.success('All favorites removed successfully!');
   };
 
-  const getAllListings = async (lim) => {
+  const getAllListings = (lim) => {
     dispatch({ type: GET_ALL_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -141,24 +140,22 @@ const ListingProvider = ({ children }) => {
         orderBy('timestamp', 'desc'),
         limit(lim)
       );
-      let listings = [];
-      const listingsDocs = await getDocs(listingQuery);
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
-          id: listingDoc.id,
-          ...listingDoc.data(),
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        dispatch({
+          type: GET_ALL_LISTINGS_SUCCESS,
+          payload: { listings },
         });
-      });
-      dispatch({
-        type: GET_ALL_LISTINGS_SUCCESS,
-        payload: { listings },
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
     }
   };
 
-  const getHomeData = async (lim) => {
+  const getHomeData = (lim) => {
     dispatch({ type: GET_HOME_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -194,7 +191,7 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getFilteredListings = async (filters, lim) => {
+  const getFilteredListings = (filters, lim) => {
     dispatch({ type: GET_FILTERED_LISTINGS_BEGIN });
     try {
       let whereConditions = [];
@@ -222,19 +219,14 @@ const ListingProvider = ({ children }) => {
         ...whereConditions,
         limit(lim)
       );
-      const listingsDocs = await getDocs(listingQuery);
-      let filteredListings = [];
-      listingsDocs.forEach(async (listingDoc) => {
-        let listing = {
-          id: listingDoc.id,
-          ...listingDoc.data(),
-        };
-        filteredListings.push({
-          ...listing,
-        });
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         dispatch({
           type: GET_FILTERED_LISTINGS_SUCCESS,
-          payload: { filteredListings, price: +filters.price },
+          payload: { listings, price: +filters.price },
         });
       });
     } catch (error) {
@@ -242,7 +234,7 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getOfferListings = async (lim) => {
+  const getOfferListings = (lim) => {
     dispatch({ type: GET_OFFER_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -268,7 +260,7 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getMoreOfferListings = async (lim) => {
+  const getMoreOfferListings = (lim) => {
     dispatch({ type: GET_MORE_OFFER_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -279,27 +271,23 @@ const ListingProvider = ({ children }) => {
         startAfter(state.lastVisibleOfferListing),
         limit(lim)
       );
-      const listingsDocs = await getDocs(listingQuery);
-
-      const lastVisibleOfferListing =
-        listingsDocs.docs[listingsDocs.docs.length - 1];
-      let listings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
-          id: listingDoc.id,
-          ...listingDoc.data(),
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const lastVisibleOfferListing = snapshot.docs[snapshot.docs.length - 1];
+        dispatch({
+          type: GET_MORE_OFFER_LISTINGS_SUCCESS,
+          payload: { listings, lastVisibleOfferListing },
         });
-      });
-      dispatch({
-        type: GET_MORE_OFFER_LISTINGS_SUCCESS,
-        payload: { listings, lastVisibleOfferListing },
       });
     } catch (error) {
       console.log('😱 Error get more offer listings: ', error.message);
     }
   };
 
-  const getTypeListings = async (type, lim) => {
+  const getTypeListings = (type, lim) => {
     dispatch({ type: GET_TYPE_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -325,7 +313,7 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getMoreTypeListings = async (type, lim) => {
+  const getMoreTypeListings = (type, lim) => {
     dispatch({ type: GET_MORE_TYPE_LISTINGS_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -336,26 +324,23 @@ const ListingProvider = ({ children }) => {
         startAfter(state.lastVisibleTypeListing),
         limit(lim)
       );
-      const listingsDocs = await getDocs(listingQuery);
-      const lastVisibleTypeListing =
-        listingsDocs.docs[listingsDocs.docs.length - 1];
-      let listings = [];
-      listingsDocs.forEach((listingDoc) => {
-        return listings.push({
-          id: listingDoc.id,
-          ...listingDoc.data(),
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const lastVisibleTypeListing = snapshot.docs[snapshot.docs.length - 1];
+        dispatch({
+          type: GET_MORE_TYPE_LISTINGS_SUCCESS,
+          payload: { listings, lastVisibleTypeListing },
         });
-      });
-      dispatch({
-        type: GET_MORE_TYPE_LISTINGS_SUCCESS,
-        payload: { type, listings, lastVisibleTypeListing },
       });
     } catch (error) {
       console.log('😱 Error get all listings: ', error.message);
     }
   };
 
-  const getListingsByUser = async (userId) => {
+  const getListingsByUser = (userId) => {
     dispatch({ type: GET_LISTINGS_BY_USER_BEGIN });
     try {
       const listingsRef = collection(db, 'listings');
@@ -364,17 +349,11 @@ const ListingProvider = ({ children }) => {
         where('userRef', '==', userId),
         orderBy('timestamp', 'desc')
       );
-      const listingsDocs = await getDocs(listingQuery);
-
-      let listings = [];
-      listingsDocs.forEach(async (listingDoc) => {
-        let listing = {
-          id: listingDoc.id,
-          ...listingDoc.data(),
-        };
-        listings.push({
-          ...listing,
-        });
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         dispatch({
           type: GET_LISTINGS_BY_USER_SUCCESS,
           payload: { listings },
@@ -385,30 +364,28 @@ const ListingProvider = ({ children }) => {
     }
   };
 
-  const getMyListings = async () => {
+  const getMyListings = () => {
     dispatch({ type: GET_MY_LISTINGS_BEGIN });
-    const listingsRef = collection(db, 'listings');
-    const listingQuery = query(
-      listingsRef,
-      where('userRef', '==', user.uid),
-      orderBy('timestamp', 'desc')
-    );
-
-    const listingsDocs = await getDocs(listingQuery);
-    let listings = [];
-    listingsDocs.forEach(async (listingDoc) => {
-      let listing = {
-        id: listingDoc.id,
-        ...listingDoc.data(),
-      };
-      listings.push({
-        ...listing,
+    try {
+      const listingsRef = collection(db, 'listings');
+      const listingQuery = query(
+        listingsRef,
+        where('userRef', '==', user.uid),
+        orderBy('timestamp', 'desc')
+      );
+      onSnapshot(listingQuery, (snapshot) => {
+        const listings = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        dispatch({
+          type: GET_MY_LISTINGS_SUCCESS,
+          payload: { listings },
+        });
       });
-      dispatch({
-        type: GET_MY_LISTINGS_SUCCESS,
-        payload: { listings },
-      });
-    });
+    } catch (error) {
+      console.log('😱 Error get My listing: ', error.message);
+    }
   };
 
   const getListing = async (listingId) => {
@@ -549,8 +526,8 @@ const ListingProvider = ({ children }) => {
         uploadProgress,
         setUploadProgress,
         setLoading,
-        getAllListings,
         getHomeData,
+        getAllListings,
         getMyListings,
         getListingsByUser,
         getFilteredListings,

@@ -348,7 +348,7 @@ const Profile = () => {
           </div>
         )}
       </>
-      <ProfileModal profileUser={profileUser} />
+      <ProfileModal owner profileUser={profileUser} />
     </>
   );
 };

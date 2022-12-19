@@ -5,7 +5,9 @@ import defaultStyles from 'common/config';
 
 import AppIcon from './elements/AppIcon';
 import { normalizeMobile } from 'common/helpers';
-const ProfileCard = ({ className, profileUser }) => {
+import { useCommonContext } from 'store/contexts';
+const ProfileCard = ({ className, profileUser, owner }) => {
+  const { openModal } = useCommonContext();
   return (
     <>
       <div className={`mx-auto  ${className} px-4`}>
@@ -36,80 +38,14 @@ const ProfileCard = ({ className, profileUser }) => {
                 <h1 className='w-full text-2xl font-bold text-primary'>
                   Contact via
                 </h1>
-                <ul className='flex justify-end gap-3.5 my-3 text-gray-300 tablet:pb-4'>
-                  <li className='w-7 h-7 p-4 rounded bg-primary text-light flex items-center justify-center text-2xl'>
-                    <a
-                      href={`mailto:${profileUser?.email}`}
-                      target='_blank'
-                      rel='noreferrer noopener'
-                    >
-                      <AppIcon
-                        tooltip='Email ©'
-                        Icon={defaultStyles.icons.email}
-                      />
-                    </a>
-                  </li>
-                  {profileUser?.call && (
-                    <li className='w-7 h-7 p-4 rounded bg-yellow-700 text-light flex items-center justify-center text-2xl'>
-                      <a
-                        href={`tel://${normalizeMobile(profileUser?.mobile)}`}
-                        target='_blank'
-                        rel='noreferrer noopener'
-                      >
-                        <AppIcon
-                          tooltip='Mobile ©'
-                          Icon={defaultStyles.icons.call}
-                        />
-                      </a>
-                    </li>
-                  )}
-                  {profileUser?.sms && (
-                    <li className='w-7 h-7 p-4 rounded bg-black text-light flex items-center justify-center text-2xl'>
-                      <a
-                        href={`sms://${normalizeMobile(profileUser?.mobile)}`}
-                        target='_blank'
-                        rel='noreferrer noopener'
-                      >
-                        <AppIcon
-                          tooltip='SMS ©'
-                          Icon={defaultStyles.icons.sms}
-                        />
-                      </a>
-                    </li>
-                  )}
-                  {profileUser?.viber && (
-                    <li className='w-7 h-7 p-4 rounded bg-purple-700 text-light flex items-center justify-center text-2xl'>
-                      <a
-                        href={`viber://chat?number=${normalizeMobile(
-                          profileUser?.mobile
-                        )}`}
-                        target='_blank'
-                        rel='noreferrer noopener'
-                      >
-                        <AppIcon
-                          tooltip='Viber ©'
-                          Icon={defaultStyles.icons.viber}
-                        />
-                      </a>
-                    </li>
-                  )}
-                  {profileUser?.whatsApp && (
-                    <li className='w-7 h-7 p-4 rounded bg-green-700 text-light flex items-center justify-center text-2xl'>
-                      <a
-                        href={`https://api.whatsapp.com/send?phone=${normalizeMobile(
-                          profileUser?.mobile
-                        )}`}
-                        target='_blank'
-                        rel='noreferrer noopener'
-                      >
-                        <AppIcon
-                          tooltip='WhatsApp ©'
-                          Icon={defaultStyles.icons.whatsApp}
-                        />
-                      </a>
-                    </li>
-                  )}
-                </ul>
+                {owner ? (
+                  <SocialOwnerButtons profileUser={profileUser} />
+                ) : (
+                  <SocialUserButtons
+                    profileUser={profileUser}
+                    openModal={openModal}
+                  />
+                )}
               </div>
               <div className='text-sm text-gray-300 md:absolute pt-3 md:pt-0 bottom-0 right-0'>
                 Member since:
@@ -129,3 +65,92 @@ const ProfileCard = ({ className, profileUser }) => {
 };
 
 export default ProfileCard;
+
+const SocialUserButtons = ({ openModal, profileUser }) => {
+  return (
+    <ul className='flex justify-end gap-3.5 my-3 text-gray-300 tablet:pb-4'>
+      <li className='w-7 h-7 p-4 rounded bg-primary text-light flex items-center justify-center text-2xl'>
+        <AppIcon
+          tooltip='Email ©'
+          onClick={openModal}
+          Icon={defaultStyles.icons.email}
+        />
+      </li>
+      {profileUser?.call && (
+        <li className='w-7 h-7 p-4 rounded bg-yellow-700 text-light flex items-center justify-center text-2xl'>
+          <a
+            href={`tel://${normalizeMobile(profileUser?.mobile)}`}
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <AppIcon tooltip='Mobile ©' Icon={defaultStyles.icons.call} />
+          </a>
+        </li>
+      )}
+      {profileUser?.sms && (
+        <li className='w-7 h-7 p-4 rounded bg-black text-light flex items-center justify-center text-2xl'>
+          <a
+            href={`sms://${normalizeMobile(profileUser?.mobile)}`}
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <AppIcon tooltip='SMS ©' Icon={defaultStyles.icons.sms} />
+          </a>
+        </li>
+      )}
+      {profileUser?.viber && (
+        <li className='w-7 h-7 p-4 rounded bg-purple-700 text-light flex items-center justify-center text-2xl'>
+          <a
+            href={`viber://chat?number=${normalizeMobile(profileUser?.mobile)}`}
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <AppIcon tooltip='Viber ©' Icon={defaultStyles.icons.viber} />
+          </a>
+        </li>
+      )}
+      {profileUser?.whatsApp && (
+        <li className='w-7 h-7 p-4 rounded bg-green-700 text-light flex items-center justify-center text-2xl'>
+          <a
+            href={`https://api.whatsapp.com/send?phone=${normalizeMobile(
+              profileUser?.mobile
+            )}`}
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <AppIcon tooltip='WhatsApp ©' Icon={defaultStyles.icons.whatsApp} />
+          </a>
+        </li>
+      )}
+    </ul>
+  );
+};
+const SocialOwnerButtons = ({ profileUser }) => {
+  return (
+    <ul className='flex justify-end gap-3.5 my-3 text-gray-300 tablet:pb-4'>
+      <li className='w-7 h-7 p-4 rounded bg-primary text-light flex items-center justify-center text-2xl'>
+        <AppIcon tooltip='Email ©' Icon={defaultStyles.icons.email} />
+      </li>
+      {profileUser?.call && (
+        <li className='w-7 h-7 p-4 rounded bg-yellow-700 text-light flex items-center justify-center text-2xl'>
+          <AppIcon tooltip='Mobile ©' Icon={defaultStyles.icons.call} />
+        </li>
+      )}
+      {profileUser?.sms && (
+        <li className='w-7 h-7 p-4 rounded bg-black text-light flex items-center justify-center text-2xl'>
+          <AppIcon tooltip='SMS ©' Icon={defaultStyles.icons.sms} />
+        </li>
+      )}
+      {profileUser?.viber && (
+        <li className='w-7 h-7 p-4 rounded bg-purple-700 text-light flex items-center justify-center text-2xl'>
+          <AppIcon tooltip='Viber ©' Icon={defaultStyles.icons.viber} />
+        </li>
+      )}
+      {profileUser?.whatsApp && (
+        <li className='w-7 h-7 p-4 rounded bg-green-700 text-light flex items-center justify-center text-2xl'>
+          <AppIcon tooltip='WhatsApp ©' Icon={defaultStyles.icons.whatsApp} />
+        </li>
+      )}
+    </ul>
+  );
+};
