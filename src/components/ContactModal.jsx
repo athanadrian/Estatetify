@@ -5,11 +5,18 @@ import { useCommonContext } from 'store/contexts';
 import Modal from './elements/Modal';
 import Loader from './Loader';
 import { toast } from 'react-toastify';
+import { useAuth } from 'hooks/useAuth';
 
-const ContactModal = ({ listing, profile }) => {
+const ContactModal = ({ app, listing, profile }) => {
   const [isLoading, setLoading] = useState(false);
   const contactForm = useRef();
   const { showModal, logo, closeModal } = useCommonContext();
+  const { isAuthenticated, user } = useAuth();
+
+  const toEmail = app ? 'estatetify.app@gmail.com' : profile?.email;
+  const defaultMessage = app ? '' : `I am interested in ${listing?.title}`;
+  const toFullName = app ? 'Estatetify' : profile?.fullName;
+  const listingName = app ? 'Estatetify' : listing?.title;
 
   const clearForm = () => {
     contactForm.current.reset();
@@ -20,7 +27,7 @@ const ContactModal = ({ listing, profile }) => {
     setLoading(true);
     emailjs
       .sendForm(
-        'service_csp466a',
+        process.env.REACT_APP_EMAIL_SERVICE_API_KEY,
         'template_toabvtw',
         contactForm.current,
         'Qhq-u8uot2rRgOK9q'
@@ -28,7 +35,11 @@ const ContactModal = ({ listing, profile }) => {
       .then(
         (result) => {
           setLoading(false);
-          toast.success('Email was send to the owner successfully.');
+          toast.success(
+            `Email was send to ${
+              app ? ' Estatetify' : ' the owner successfully.'
+            }`
+          );
           closeModal();
           console.log(result.text);
         },
@@ -50,8 +61,8 @@ const ContactModal = ({ listing, profile }) => {
                   <img src={logo} alt='atana'></img>
                 </div>
                 <div>
-                  <div className='font-bold text-lg'>{profile?.fullName}</div>
-                  <span className='text-primary text-sm'>{profile?.email}</span>
+                  <div className='font-bold text-lg'>{toFullName}</div>
+                  <span className='text-primary text-sm'>{toEmail}</span>
                 </div>
               </div>
               {!isLoading ? (
@@ -66,6 +77,7 @@ const ContactModal = ({ listing, profile }) => {
                     placeholder='Name*'
                     name='user_name'
                     required
+                    defaultValue={isAuthenticated ? user?.fullName : ''}
                   />
                   <input
                     className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'
@@ -73,6 +85,7 @@ const ContactModal = ({ listing, profile }) => {
                     placeholder='Email*'
                     name='user_email'
                     required
+                    defaultValue={isAuthenticated ? user?.email : ''}
                   />
                   <input
                     className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'
@@ -80,27 +93,19 @@ const ContactModal = ({ listing, profile }) => {
                     placeholder='Phone'
                     name='user_phone'
                   />
-                  <input
-                    type='hidden'
-                    name='owner_email'
-                    value={`${profile?.email}`}
-                  />
+                  <input type='hidden' name='owner_email' value={toEmail} />
                   <input
                     type='hidden'
                     name='listing_title'
-                    value={listing?.title}
+                    value={listingName}
                   />
-                  <input
-                    type='hidden'
-                    name='owner_name'
-                    value={profile?.fullName}
-                  />
+                  <input type='hidden' name='owner_name' value={toFullName} />
                   <textarea
                     className='border border-gray-300 focus:border-dark rounded w-full p-4 h-36 text-sm text-gray-400 outline-none resize-none'
                     type='text'
                     name='message'
                     placeholder='Message*'
-                    defaultValue={`I am interested in ${listing?.title}`}
+                    defaultValue={defaultMessage}
                   />
                   <div className='flex gap-x-2'>
                     <button

@@ -101,9 +101,9 @@ const ListingGridItem = ({
           </div>
         )}
         <ProfileAvatar
-          avatar={profile?.avatar}
+          profile={profile}
           //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
-          className='absolute w-14 h-14 bottom-60 right-3 cursor-pointer'
+          className='absolute w-[50px] h-[50px] bottom-60 right-3 cursor-pointer'
           onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
         />
         <div className='px-3 py-5'>

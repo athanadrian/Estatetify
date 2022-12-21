@@ -1,5 +1,6 @@
 import { AiFillEyeInvisible, AiFillEye, AiOutlineSave } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
+import { TfiUser } from 'react-icons/tfi';
 import { BiArea } from 'react-icons/bi';
 import { GiDesk, GiBlockHouse } from 'react-icons/gi';
 import {
@@ -29,6 +30,7 @@ import {
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import { BsFillGridFill } from 'react-icons/bs';
 import {
+  MdMenu,
   MdOutlineAddBusiness,
   MdBedroomParent,
   MdLocationOn,
@@ -80,6 +82,8 @@ const icons = {
   whatsApp: FaWhatsapp,
   gridView: BsFillGridFill,
   listView: FaListAlt,
+  burger_menu: MdMenu,
+  profile: TfiUser,
 };
 
 export default icons;

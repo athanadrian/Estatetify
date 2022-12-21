@@ -1,4 +1,4 @@
-export { default as Header } from './Header';
+export { default as Navbar } from './navbar/Navbar';
 export { default as Loader } from './Loader';
 export { default as ContactModal } from './ContactModal';
 export { default as PageHeader } from './PageHeader';

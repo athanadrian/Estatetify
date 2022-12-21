@@ -1,9 +1,11 @@
+import ReactDOM from 'react-dom';
+
 const Modal = ({ open, close, children }) => {
-  return (
+  return ReactDOM.createPortal(
     <>
       {open ? (
         <>
-          <div className='fixed inset-0 z-10 overflow-y-auto'>
+          <div className='fixed inset-0 z-[99999] overflow-y-auto'>
             <div
               className='fixed inset-0 w-full h-full bg-black opacity-70'
               onClick={close}
@@ -14,7 +16,8 @@ const Modal = ({ open, close, children }) => {
           </div>
         </>
       ) : null}
-    </>
+    </>,
+    document.getElementById('app-modal')
   );
 };
 
