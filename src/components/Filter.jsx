@@ -38,7 +38,7 @@ const Filter = () => {
 
   return (
     <form ref={filterForm}>
-      <div className='relative flex flex-col mx-20 bottom-20 z-20 lg:gap-x-3'>
+      <div className='relative flex flex-col mx-5 tablet:mx-20 bottom-20 z-20 lg:gap-x-3'>
         <div className='flex flex-row bg-light box-content w-fit rounded-t-xl cursor-pointer'>
           <button
             name='type'

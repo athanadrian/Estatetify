@@ -4,7 +4,7 @@ import defaultStyles from 'common/config';
 import logo from 'images/estatetify-app.svg';
 import { NavButton } from './NavButton';
 import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'hooks/useAuth';
 import {
   useCommonContext,
@@ -152,20 +152,17 @@ const renderAuthSection = (
 ) => {
   return (
     <>
-      {userFavorites.length && !showMenu > 0 && (
-        <NavLink
-          to='/favorites'
-          onClick={!showMenu && toggleMenu}
-          className='relative'
-        >
+      {userFavorites.length > 0 && !showMenu && (
+        <Link to='/favorites' onClick={toggleMenu} className='relative'>
           <AppIcon
             Icon={defaultStyles.icons.favorite}
             className='text-red-500 text-xl'
+            link
           />
           <div className='absolute -right-2 -top-2 p-0.5 w-[14px] h-[14px] bg-darker text-[10px] text-white rounded-full text-center flex items-center justify-center'>
             {userFavorites.length}
           </div>
-        </NavLink>
+        </Link>
       )}
       {isAuthenticated ? (
         <div className='flex items-center cursor-pointer'>

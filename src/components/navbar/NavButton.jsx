@@ -24,7 +24,7 @@ export const NavButton = ({ sidebar, link, name, onClick }) => {
           <NavLink
             to={link}
             className={({ isActive }) =>
-              `capitalize cursor-pointer py-4 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
+              `capitalize cursor-pointer py-4 text-[15px] font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
                 isActive && 'text-black border-b-primary'
               }`
             }
@@ -32,7 +32,6 @@ export const NavButton = ({ sidebar, link, name, onClick }) => {
             {name}
           </NavLink>
           <div className='absolute group-hover:flex -bottom-[18px] hidden h-1 w-full bg-primary' />
-          {/* <button className='py-2'>{name}</button> */}
         </li>
       )}
     </div>
