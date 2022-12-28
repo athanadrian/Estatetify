@@ -1,8 +1,9 @@
-import { useAuth } from 'hooks/useAuth';
-import { SignIn } from 'pages';
 import React from 'react';
 import { Outlet } from 'react-router';
-import Loader from './Loader';
+
+import { useAuth } from 'hooks/useAuth';
+import { SignIn } from 'pages';
+import Loader from '../Loader';
 
 const UserRoute = () => {
   const { loggedIn, isLoading } = useAuth();

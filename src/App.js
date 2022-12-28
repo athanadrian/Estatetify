@@ -1,6 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { Navbar, Footer, UserRoute } from './components';
+import {
+  Navbar,
+  Footer,
+  UserRoute,
+  AdminRoute,
+  RealEstaterRoute,
+} from './components';
 import {
   Profile,
   Home,
@@ -17,6 +23,8 @@ import {
   Favorites,
   SearchResults,
   NotFound,
+  AdminDashboard,
+  RealEstaterDashboard,
 } from './pages';
 
 const App = () => {
@@ -31,6 +39,15 @@ const App = () => {
             <Route path='/profile' element={<Profile />} />
             <Route path='/listings/add' element={<AddListing />} />
             <Route path='/listings/edit/:listingId' element={<EditListing />} />
+          </Route>
+          <Route element={<AdminRoute />}>
+            <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          </Route>
+          <Route element={<RealEstaterRoute />}>
+            <Route
+              path='/real-estater/dashboard'
+              element={<RealEstaterDashboard />}
+            />
           </Route>
           <Route path='/owner-profile/:ownerId' element={<OwnerProfile />} />
           <Route path='/offers' element={<Offers />} />

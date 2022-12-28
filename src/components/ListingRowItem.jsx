@@ -100,7 +100,7 @@ const ListingRowItem = ({
           <ProfileAvatar
             profile={profile}
             //onClick={() => setShowOwnerInfo(!showOwnerInfo)}
-            className='absolute w-[50px] h-[50px] bottom-60 right-3 cursor-pointer'
+            className='absolute w-[50px] h-[50px] bottom-48 right-3 cursor-pointer'
             onClick={() => navigate(`/owner-profile/${listing?.userRef}`)}
           />
           <div className='w-full px-6 text-gray-800 flex flex-col justify-between'>

@@ -25,6 +25,7 @@ const initialValues = {
   email: '',
   mobile: '',
   avatar: '',
+  role: '',
   avatarImg: null,
   imgUrl: '',
   call: false,
@@ -68,6 +69,7 @@ const Profile = () => {
         mobile: profileUser?.mobile,
         email: profileUser?.email,
         avatar: profileUser?.avatar,
+        role: profileUser?.role,
         sms: profileUser?.sms,
         call: profileUser?.call,
         viber: profileUser?.viber,
@@ -203,17 +205,17 @@ const Profile = () => {
                 placeholder='Full Name'
                 value={fullName}
                 onChange={handleChange}
-                className='placeholder:text-primary w-full'
+                className='placeholder:text-gray-500 w-full'
                 disabled={!isEditable}
               />
               {isEditable && <Label text='Mobile' className='mt-0' />}
               <FormInput
                 type='text'
                 name='mobile'
-                placeholder='+country code-mobile'
+                placeholder='mobile (+country code)'
                 value={mobile}
                 onChange={handleChange}
-                className='placeholder:text-primary w-full'
+                className='placeholder:text-gray-500 w-full'
                 disabled={!isEditable}
               />
               {isEditable && (

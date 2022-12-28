@@ -86,14 +86,15 @@ const ProfileProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    const { fullName, mobile, avatar, call, sms, viber, whatsApp, uid } =
+    console.log('userData', userData);
+    const { fullName, mobile, avatar, call, sms, viber, whatsApp, role, uid } =
       userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
       if (
         user?.displayName !== fullName ||
         user?.mobile !== mobile ||
-        user?.avatar !== mobile
+        user?.avatar !== avatar
       ) {
         // update data firebase/auth
         await updateProfile(user, {
@@ -109,6 +110,7 @@ const ProfileProvider = ({ children }) => {
           sms,
           viber,
           whatsApp,
+          role,
         });
         await getProfileUser(uid);
         dispatch({ type: UPDATE_USER_SUCCESS });

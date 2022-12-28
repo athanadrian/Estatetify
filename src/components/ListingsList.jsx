@@ -9,6 +9,12 @@ import ListingGridItem from './ListingGridItem';
 import { Link } from 'react-router-dom';
 import ListingRowItem from './ListingRowItem';
 import { useEffect } from 'react';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+
+Confirm.init({
+  titleColor: '#5E8EA2',
+  okButtonBackground: '#5E8EA2',
+});
 
 const ListingsList = ({ link, title, subtitle, listings }) => {
   const navigate = useNavigate();
@@ -21,13 +27,15 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
   };
 
   const handleDeleteListing = async (listing) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete listing ${listing?.title}`
-      )
-    ) {
-      await deleteListing(listing);
-    }
+    Confirm.show(
+      'Delete Listing',
+      'Are you sure  you want to delete listing?',
+      'Confirm',
+      'Cancel',
+      async () => {
+        await deleteListing(listing);
+      }
+    );
   };
 
   let ListingIcon = showGrid ? ListingGridItem : ListingRowItem;

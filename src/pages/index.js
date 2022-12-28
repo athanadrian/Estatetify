@@ -13,3 +13,5 @@ export { default as Listing } from './listing/Listing';
 export { default as Listings } from './listing/Listings';
 export { default as AddListing } from './listing/AddListing';
 export { default as EditListing } from './listing/EditListing';
+export { default as AdminDashboard } from './admin/Dashboard';
+export { default as RealEstaterDashboard } from './real-estater/Dashboard';

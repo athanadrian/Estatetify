@@ -51,6 +51,10 @@ const AuthProvider = ({ children }) => {
       delete userData.password;
       userData.mobile = '';
       userData.avatar = '';
+      userData.call = false;
+      userData.sms = false;
+      userData.viber = false;
+      userData.whatsApp = false;
       userData.timestamp = serverTimestamp();
 
       await setDoc(doc(db, 'users', user.uid), userData);

@@ -67,6 +67,7 @@ const reducer = (state, action) => {
 
   if (action.type === GET_HOME_LISTINGS_SUCCESS) {
     const listingsLocations = action.payload.locations;
+    const totalListings = action.payload.totalListings;
     const prices = action.payload.prices;
     const offerListings = action.payload.listings
       .filter((listing) => listing.offer)
@@ -95,6 +96,7 @@ const reducer = (state, action) => {
       cities,
       states,
       countries,
+      totalListings,
     };
   }
 

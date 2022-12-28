@@ -16,6 +16,7 @@ const initialState = {
   fullName: '',
   email: '',
   password: '',
+  role: 'user',
 };
 
 const singImage =

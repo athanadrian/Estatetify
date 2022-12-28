@@ -10,9 +10,9 @@ export const NavButton = ({ sidebar, link, name, onClick }) => {
             to={link}
             onClick={onClick}
             className={({ isActive }) =>
-              ` inline-block text-center text-lg capitalize cursor-pointer font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
+              ` inline-block text-center text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
                 isActive &&
-                'text-black bg-gray-200 rounded-xl w-full px-2 py-3 '
+                'text-darker bg-gray-200 rounded-xl w-full px-2 py-3 '
               }`
             }
           >
@@ -24,14 +24,14 @@ export const NavButton = ({ sidebar, link, name, onClick }) => {
           <NavLink
             to={link}
             className={({ isActive }) =>
-              `capitalize cursor-pointer py-4 text-[15px] font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                isActive && 'text-black border-b-primary'
+              `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
+                isActive && 'text-darker border-b-primary'
               }`
             }
           >
             {name}
           </NavLink>
-          <div className='absolute group-hover:flex -bottom-[18px] hidden h-1 w-full bg-primary' />
+          <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
         </li>
       )}
     </div>

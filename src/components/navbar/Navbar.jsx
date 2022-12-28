@@ -4,7 +4,7 @@ import defaultStyles from 'common/config';
 import logo from 'images/estatetify-app.svg';
 import { NavButton } from './NavButton';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from 'hooks/useAuth';
 import {
   useCommonContext,
@@ -14,14 +14,6 @@ import {
 import { useEffect } from 'react';
 
 const Navbar = () => {
-  const links = [
-    { name: 'home', link: '/home' },
-    { name: 'buy', link: '/listings/sale' },
-    { name: 'sell', link: '/listings/add' },
-    { name: 'rent', link: '/listings/rent' },
-    { name: 'offers', link: '/offers' },
-    { name: 'dashboard', link: '/admin/dashboard' },
-  ];
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { userFavorites } = useListingContext();
@@ -29,6 +21,20 @@ const Navbar = () => {
   const { openModal } = useCommonContext();
   const [userData, setUserData] = useState(null);
   const [showMenu, setMenu] = useState(false);
+
+  const links = [
+    { name: 'home', link: '/home' },
+    { name: 'buy', link: '/listings/sale' },
+    { name: 'sell', link: '/listings/add' },
+    { name: 'rent', link: '/listings/rent' },
+    { name: 'offers', link: '/offers' },
+  ];
+
+  const showDashboard = userData?.role !== 'user';
+
+  let path = '';
+  if (userData?.role === 'admin') path = '/admin/dashboard';
+  if (userData?.role === 'real-estater') path = '/real-estater/dashboard';
 
   const toggleMenu = () => {
     setMenu((prevState) => !prevState);
@@ -67,7 +73,22 @@ const Navbar = () => {
             {links.map((link) => (
               <NavButton key={link.name} name={link.name} link={link.link} />
             ))}
-
+            {showDashboard && (
+              <li className='relative group'>
+                <NavLink
+                  to={path}
+                  onClick={toggleMenu}
+                  className={({ isActive }) =>
+                    `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
+                      isActive && 'text-darker border-b-primary'
+                    }`
+                  }
+                >
+                  dashboard
+                </NavLink>
+                <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
+              </li>
+            )}
             <li className='relative group'>
               <button
                 onClick={handleContactUs}
@@ -75,7 +96,7 @@ const Navbar = () => {
               >
                 Contact us
               </button>
-              <div className='absolute group-hover:flex -bottom-[13px] hidden h-1 w-full bg-primary' />
+              <div className='absolute group-hover:flex -bottom-[17px] hidden h-1 w-full bg-primary' />
             </li>
           </ul>
         </div>
@@ -96,6 +117,22 @@ const Navbar = () => {
                 onClick={toggleMenu}
               />
             ))}
+            {showDashboard && (
+              <li className='relative group w-48'>
+                <NavLink
+                  to={path}
+                  onClick={toggleMenu}
+                  className={({ isActive }) =>
+                    `inline-block text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
+                      isActive &&
+                      'text-darker text-center bg-gray-200 rounded-xl w-full px-2 py-3'
+                    }`
+                  }
+                >
+                  dashboard
+                </NavLink>
+              </li>
+            )}
             <li className='relative group'>
               <button
                 onClick={handleContactUs}
@@ -103,7 +140,6 @@ const Navbar = () => {
               >
                 Contact us
               </button>
-              <div className='absolute group-hover:flex -bottom-[13px] hidden h-1 w-full bg-primary' />
             </li>
             <div className='absolute -top-2 left-8 text-red-700'>
               <AppIcon
@@ -114,7 +150,7 @@ const Navbar = () => {
               />
             </div>
             <div className='absolute top-7 w-full h-1 border-b shadow-sm' />
-            <div className='absolute -top-4 right-8 flex items-center justify-center space-x-5'>
+            <div className='absolute -top-6 right-8 flex items-center justify-center space-x-5'>
               {renderAuthSection(
                 userFavorites,
                 !showMenu,
