@@ -30,7 +30,7 @@ const Navbar = () => {
     { name: 'offers', link: '/offers' },
   ];
 
-  const showDashboard = userData?.role !== 'user';
+  const showDashboard = user && userData?.role !== 'user';
 
   let path = '';
   if (userData?.role === 'admin') path = '/admin/dashboard';
