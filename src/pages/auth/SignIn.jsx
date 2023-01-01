@@ -13,8 +13,8 @@ import { useAuth } from 'hooks/useAuth';
 import { useAuthContext } from 'store/contexts';
 
 const initialState = {
-  email: '',
-  password: '',
+  email: '@gmail.com',
+  password: '123456',
 };
 
 const singImage =
