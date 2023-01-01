@@ -25,6 +25,11 @@ import {
   NotFound,
   AdminDashboard,
   RealEstaterDashboard,
+  RealEstaterListings,
+  RealEstaterAddListing,
+  RealEstaterEditListing,
+  RealEstaterManage,
+  RealEstaterSubscriptions,
 } from './pages';
 
 const App = () => {
@@ -40,14 +45,34 @@ const App = () => {
             <Route path='/listings/add' element={<AddListing />} />
             <Route path='/listings/edit/:listingId' element={<EditListing />} />
           </Route>
-          <Route element={<AdminRoute />}>
-            <Route path='/admin/dashboard' element={<AdminDashboard />} />
-          </Route>
           <Route element={<RealEstaterRoute />}>
             <Route
               path='/real-estater/dashboard'
               element={<RealEstaterDashboard />}
             />
+            <Route
+              path='/real-estater/listings'
+              element={<RealEstaterListings />}
+            />
+            <Route
+              path='/real-estater/add-listing'
+              element={<RealEstaterAddListing />}
+            />
+            <Route
+              path='/real-estater/edit-listing/:listingId'
+              element={<RealEstaterEditListing />}
+            />
+            <Route
+              path='/real-estater/manage'
+              element={<RealEstaterManage />}
+            />
+            <Route
+              path='/real-estater/subscriptions'
+              element={<RealEstaterSubscriptions />}
+            />
+          </Route>
+          <Route element={<AdminRoute />}>
+            <Route path='/admin/dashboard' element={<AdminDashboard />} />
           </Route>
           <Route path='/owner-profile/:ownerId' element={<OwnerProfile />} />
           <Route path='/offers' element={<Offers />} />

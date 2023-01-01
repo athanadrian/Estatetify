@@ -1,5 +1,13 @@
-import { AiFillEyeInvisible, AiFillEye, AiOutlineSave } from 'react-icons/ai';
+import {
+  AiFillEyeInvisible,
+  AiFillEye,
+  AiOutlineSave,
+  AiFillSetting,
+  AiOutlineMenuUnfold,
+  AiOutlineMenuFold,
+} from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
+import { HiBell, HiCheck, HiChevronDown } from 'react-icons/hi';
 import { TfiUser } from 'react-icons/tfi';
 import { BiArea } from 'react-icons/bi';
 import { GiDesk, GiBlockHouse } from 'react-icons/gi';
@@ -28,7 +36,7 @@ import {
   FaListAlt,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
-import { BsFillGridFill } from 'react-icons/bs';
+import { BsFillGridFill, BsBuilding } from 'react-icons/bs';
 import {
   MdMenu,
   MdOutlineAddBusiness,
@@ -38,6 +46,8 @@ import {
   MdEmail,
   MdOutlineCancel,
   MdCall,
+  MdDashboard,
+  MdSubscriptions,
 } from 'react-icons/md';
 import { LogoIcon } from './svgIcons';
 
@@ -84,6 +94,15 @@ const icons = {
   listView: FaListAlt,
   burger_menu: MdMenu,
   profile: TfiUser,
+  dashboard: MdDashboard,
+  subscriptions: MdSubscriptions,
+  manage: AiFillSetting,
+  listings: BsBuilding,
+  closeDashboard: AiOutlineMenuFold,
+  openDashboard: AiOutlineMenuUnfold,
+  notification: HiBell,
+  checkIcon: HiCheck,
+  arrow_down: HiChevronDown,
 };
 
 export default icons;

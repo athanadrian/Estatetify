@@ -30,3 +30,4 @@ export { default as LandView } from './home/LandView';
 export { default as Features } from './home/Features';
 export { default as Footer } from './home/Footer';
 export { default as Slider } from './home/Slider';
+export { default as Layout } from './dashboard-layout/Layout';

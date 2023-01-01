@@ -1,21 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Layout } from 'components';
 
 const Dashboard = () => {
   return (
-    <div className='flex justify-center items-center h-[80vh]'>
-      <div className='flex justify-center items-center flex-col'>
-        <h2 className='laptop:text-[8rem] text-[4rem] text-primary'>
-          R-Dashboard
-        </h2>
-        <p className='mb-8 text-center'>
-          You must have an active subscription to access your management panel!{' '}
-        </p>
-        <button className='bg-gray-200 text-primary text-2xl font-normal py-1.5 px-2 my-0 mr-1.5 ml-0 border-[1px] border-solid border-transparent rounded-[3px] cursor-pointer flex items-center justify-center transition-all duration-300 ease-in-out'>
-          <Link to='/home'>&larr; Back To Home</Link>
-        </button>
+    <Layout>
+      <div className='grid lg:grid-cols-3 gap-5 mb-16'>
+        <div className='rounded bg-white h-40 shadow-sm'></div>
+        <div className='rounded bg-white h-40 shadow-sm'></div>
+        <div className='rounded bg-white h-40 shadow-sm'></div>
       </div>
-    </div>
+      <div className='grid col-1 bg-white h-96 shadow-sm'></div>
+    </Layout>
   );
 };
 

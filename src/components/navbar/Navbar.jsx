@@ -17,9 +17,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const { userFavorites } = useListingContext();
-  const { profiles } = useProfileContext();
+  const { getProfileUser, profileUser } = useProfileContext();
   const { openModal } = useCommonContext();
-  const [userData, setUserData] = useState(null);
+  const [path, setPath] = useState('');
   const [showMenu, setMenu] = useState(false);
 
   const links = [
@@ -30,11 +30,13 @@ const Navbar = () => {
     { name: 'offers', link: '/offers' },
   ];
 
-  const showDashboard = user && userData?.role !== 'user';
+  const showDashboard = user && profileUser?.role !== 'user';
 
-  let path = '';
-  if (userData?.role === 'admin') path = '/admin/dashboard';
-  if (userData?.role === 'real-estater') path = '/real-estater/dashboard';
+  useEffect(() => {
+    if (profileUser?.role === 'admin') setPath('/admin/dashboard');
+    if (profileUser?.role === 'real-estater')
+      setPath('/real-estater/dashboard');
+  }, [profileUser]);
 
   const toggleMenu = () => {
     setMenu((prevState) => !prevState);
@@ -46,8 +48,9 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    setUserData(profiles?.find((profileUser) => profileUser.id === user?.uid));
-  }, [user, profiles]);
+    getProfileUser(user?.uid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <>
@@ -155,7 +158,7 @@ const Navbar = () => {
                 userFavorites,
                 !showMenu,
                 isAuthenticated,
-                userData,
+                profileUser,
                 toggleMenu,
                 navigate
               )}
@@ -167,7 +170,7 @@ const Navbar = () => {
             userFavorites,
             showMenu,
             isAuthenticated,
-            userData,
+            profileUser,
             navigate
           )}
         </div>
@@ -182,7 +185,7 @@ const renderAuthSection = (
   userFavorites,
   showMenu,
   isAuthenticated,
-  userData,
+  profileUser,
   navigate,
   toggleMenu
 ) => {
@@ -203,7 +206,7 @@ const renderAuthSection = (
       {isAuthenticated ? (
         <div className='flex items-center cursor-pointer'>
           <ProfileAvatar
-            profile={userData}
+            profile={profileUser}
             className='w-[50px] h-[50px] text-white flex justify-center items-center rounded-full'
             onClick={() => navigate('/profile')}
           />
