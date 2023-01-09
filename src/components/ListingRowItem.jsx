@@ -49,7 +49,7 @@ const ListingRowItem = ({
     <>
       <div className='container w-100 lg:w-4/5 mx-auto flex flex-col'>
         <div className='relative flex flex-col md:flex-row overflow-hidden bg-white rounded-lg shadow-xl  mt-4 w-100 mx-2'>
-          <div className='relative h-64 w-auto md:w-1/2'>
+          <div className='relative h-64 w-auto md:w-1/2 overflow-hidden cursor-pointer'>
             <img
               className='inset-0 h-full w-full object-cover object-center hover:scale-105 transition-scale duration-200 ease-in'
               src={listing?.imgUrls.length > 0 ? listing?.imgUrls[0] : logo}

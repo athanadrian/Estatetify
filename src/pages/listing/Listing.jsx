@@ -170,7 +170,7 @@ const Listing = () => {
                 </li>
               )}
             </ul>
-            <ul className='flex flex-row mt-3 px-3 pb-5 border-gray-400 border-b justify-start space-x-6 text-darker'>
+            <ul className='flex flex-row mt-3 px-3 pb-5 justify-start space-x-6 text-darker'>
               <li className='flex items-center justify-center font-medium whitespace-nowrap'>
                 <AppIcon Icon={defaultStyles.icons.rooms} />
                 <p className='ml-1 capitalize'>

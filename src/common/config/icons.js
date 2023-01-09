@@ -10,6 +10,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { HiBell, HiCheck, HiChevronDown } from 'react-icons/hi';
 import { TfiUser } from 'react-icons/tfi';
 import { BiArea } from 'react-icons/bi';
+import { SlPieChart, SlPaperPlane } from 'react-icons/sl';
 import { GiDesk, GiBlockHouse } from 'react-icons/gi';
 import {
   FaHome,
@@ -25,10 +26,7 @@ import {
   FaShareAlt,
   FaChair,
   FaHeart,
-  FaPaperPlane,
-  FaBuilding,
-  FaShieldAlt,
-  FaFileInvoiceDollar,
+  FaRegMoneyBillAlt,
   FaCloudUploadAlt,
   FaSms,
   FaViber,
@@ -36,7 +34,12 @@ import {
   FaListAlt,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
-import { BsFillGridFill, BsBuilding } from 'react-icons/bs';
+import {
+  BsFillGridFill,
+  BsBuilding,
+  BsSearch,
+  BsShieldCheck,
+} from 'react-icons/bs';
 import {
   MdMenu,
   MdOutlineAddBusiness,
@@ -80,10 +83,12 @@ const icons = {
   social: FaShareAlt,
   furnished: FaChair,
   favorite: FaHeart,
-  feature_quality: FaShieldAlt,
-  feature_find: FaPaperPlane,
-  feature_update: FaBuilding,
-  feature_low_cost: FaFileInvoiceDollar,
+  feature_quality: BsShieldCheck,
+  feature_find: SlPaperPlane,
+  feature_update: BsBuilding,
+  feature_low_cost: FaRegMoneyBillAlt,
+  feature_result: SlPieChart,
+  feature_search: BsSearch,
   upload: FaCloudUploadAlt,
   cancel: MdOutlineCancel,
   sms: FaSms,
@@ -103,6 +108,8 @@ const icons = {
   notification: HiBell,
   checkIcon: HiCheck,
   arrow_down: HiChevronDown,
+
+  //FEATURES
 };
 
 export default icons;

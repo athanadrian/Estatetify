@@ -1,9 +1,9 @@
-import { Features, LandView } from 'components';
 import React from 'react';
+import { Features, LandView } from 'components';
 
 const LandingPage = () => {
   return (
-    <div className='w-screen h-screen'>
+    <div className='w-full'>
       <LandView />
       <Features />
     </div>
