@@ -28,17 +28,16 @@ import {
 import reducer from '../reducers/authReducer';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage } from 'common/helpers';
-import { useSubscriptionContext } from './subscriptionsContext';
 
 const initialState = {
   isLoading: false,
+  user: null,
 };
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  //const { createSubscription } = useSubscriptionContext();
   const signUpUser = async (signUpData) => {
     const { fullName, email, password } = signUpData;
     dispatch({ type: SIGN_UP_USER_BEGIN });
@@ -68,15 +67,7 @@ const AuthProvider = ({ children }) => {
             plan: 'free',
             isActive: true,
           })
-        // async () =>
-        //   await createSubscription({
-        //     userRef: user.uid,
-        //     startDate: serverTimestamp(),
-        //     plan: 'free',
-        //     isActive: true,
-        //   })
       );
-      //.catch((error) => console.log('sub error', error));
       dispatch({ type: SIGN_UP_USER_SUCCESS });
       toast.success('Sign up was successful!');
     } catch (error) {
@@ -95,7 +86,10 @@ const AuthProvider = ({ children }) => {
         password
       );
       if (userCredential.user) {
-        dispatch({ type: SIGN_IN_USER_SUCCESS });
+        dispatch({
+          type: SIGN_IN_USER_SUCCESS,
+          payload: { user: userCredential.user },
+        });
         toast.success(
           `${userCredential.user.displayName} successfully logged in!`
         );

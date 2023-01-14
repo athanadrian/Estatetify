@@ -39,8 +39,10 @@ const reducer = (state, action) => {
   }
 
   if (action.type === SIGN_IN_USER_SUCCESS) {
+    const user = action.payload.user;
     return {
       ...state,
+      user,
       isLoading: false,
     };
   }

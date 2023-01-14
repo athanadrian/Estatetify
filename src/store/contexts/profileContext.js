@@ -86,7 +86,6 @@ const ProfileProvider = ({ children }) => {
   };
 
   const updateUser = async (userData) => {
-    console.log('userData', userData);
     const { fullName, mobile, avatar, call, sms, viber, whatsApp, role, uid } =
       userData;
     dispatch({ type: UPDATE_USER_BEGIN });

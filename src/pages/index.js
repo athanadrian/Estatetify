@@ -6,6 +6,7 @@ export { default as SearchResults } from './SearchResults';
 export { default as NotFound } from './NotFound';
 export { default as Profile } from './Profile';
 export { default as Subscription } from './Subscription';
+export { default as Checkout } from './Checkout';
 export { default as OwnerProfile } from './OwnerProfile';
 export { default as SignIn } from './auth/SignIn';
 export { default as SignUp } from './auth/SignUp';

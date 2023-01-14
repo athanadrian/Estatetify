@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppButton, AppIcon, PageHeader } from 'components';
 
-const SubscriptionDetails = ({ subscription }) => {
+const SubscriptionDetails = ({ subscription, handleProceedPayment }) => {
   const { plan, price, tax, list } = subscription;
   const features = list.filter((feat) => feat.isFeature);
   return (
@@ -84,7 +84,7 @@ const SubscriptionDetails = ({ subscription }) => {
               <div className='flex justify-start items-center font-extralight mt-12'>
                 <AppButton
                   type='button'
-                  onClick={() => {}}
+                  onClick={handleProceedPayment}
                   label='Proceed Payment'
                   className='mb-0'
                 />

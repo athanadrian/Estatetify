@@ -4,6 +4,7 @@ export { default as ContactModal } from './ContactModal';
 export { default as PageHeader } from './PageHeader';
 export { default as SubscribedRoute } from './protected-routes/SubscribedRoute';
 export { default as RealEstaterRoute } from './protected-routes/RealEstaterRoute';
+export { default as LoggedInRoute } from './protected-routes/LoggedInRoute';
 export { default as AdminRoute } from './protected-routes/AdminRoute';
 export { default as Filter } from './home/Filter';
 export { default as ProfileAvatar } from './profile/ProfileAvatar';

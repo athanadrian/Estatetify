@@ -4,6 +4,7 @@ import {
   OPEN_PROFILE_MODAL,
   CLOSE_PROFILE_MODAL,
   SHOW_GRID_VIEW,
+  SAVE_URL,
 } from '../actions/commonActions';
 
 const reducer = (state, action) => {
@@ -36,6 +37,13 @@ const reducer = (state, action) => {
     return {
       ...state,
       showGrid,
+    };
+  }
+  if (action.type === SAVE_URL) {
+    const previousURL = action.payload.url;
+    return {
+      ...state,
+      previousURL,
     };
   }
 

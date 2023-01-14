@@ -6,6 +6,7 @@ import {
   SubscribedRoute,
   AdminRoute,
   RealEstaterRoute,
+  LoggedInRoute,
 } from './components';
 import {
   Profile,
@@ -31,6 +32,7 @@ import {
   RealEstaterManage,
   RealEstaterSubscriptions,
   Subscription,
+  Checkout,
 } from './pages';
 
 const App = () => {
@@ -45,6 +47,9 @@ const App = () => {
           <Route element={<SubscribedRoute />}>
             <Route path='/listings/add' element={<AddListing />} />
             <Route path='/listings/edit/:listingId' element={<EditListing />} />
+          </Route>
+          <Route element={<LoggedInRoute />}>
+            <Route path='/checkout' element={<Checkout />} />
           </Route>
           <Route element={<RealEstaterRoute />}>
             <Route
