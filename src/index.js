@@ -7,6 +7,7 @@ import { ListingProvider } from 'store/contexts/listingsContext';
 import { ProfileProvider } from 'store/contexts/profileContext';
 import { AuthProvider } from 'store/contexts/authContext';
 import { CommonProvider } from 'store/contexts/commonContext';
+import { SubscriptionProvider } from 'store/contexts/subscriptionsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       <ProfileProvider>
         <ListingProvider>
           <CommonProvider>
-            <App />
+            <SubscriptionProvider>
+              <App />
+            </SubscriptionProvider>
           </CommonProvider>
         </ListingProvider>
       </ProfileProvider>

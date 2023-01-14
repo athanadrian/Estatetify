@@ -6,6 +6,8 @@ import {
   updateProfile,
   db,
   doc,
+  addDoc,
+  collection,
   setDoc,
   serverTimestamp,
 } from 'firebase.config';
@@ -26,6 +28,7 @@ import {
 import reducer from '../reducers/authReducer';
 import { toast } from 'react-toastify';
 import { getFirebaseErrorMessage } from 'common/helpers';
+import { useSubscriptionContext } from './subscriptionsContext';
 
 const initialState = {
   isLoading: false,
@@ -35,7 +38,7 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  //const { createSubscription } = useSubscriptionContext();
   const signUpUser = async (signUpData) => {
     const { fullName, email, password } = signUpData;
     dispatch({ type: SIGN_UP_USER_BEGIN });
@@ -57,7 +60,23 @@ const AuthProvider = ({ children }) => {
       userData.whatsApp = false;
       userData.timestamp = serverTimestamp();
 
-      await setDoc(doc(db, 'users', user.uid), userData);
+      await setDoc(doc(db, 'users', user.uid), userData).then(
+        async () =>
+          await addDoc(collection(db, 'subscriptions'), {
+            userRef: user.uid,
+            startDate: serverTimestamp(),
+            plan: 'free',
+            isActive: true,
+          })
+        // async () =>
+        //   await createSubscription({
+        //     userRef: user.uid,
+        //     startDate: serverTimestamp(),
+        //     plan: 'free',
+        //     isActive: true,
+        //   })
+      );
+      //.catch((error) => console.log('sub error', error));
       dispatch({ type: SIGN_UP_USER_SUCCESS });
       toast.success('Sign up was successful!');
     } catch (error) {

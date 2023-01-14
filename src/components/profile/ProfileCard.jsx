@@ -3,9 +3,9 @@ import logo from 'images/estatetify-app.svg';
 import Moment from 'react-moment';
 import defaultStyles from 'common/config';
 
-import AppIcon from './elements/AppIcon';
 import { normalizeMobile } from 'common/helpers';
 import { useCommonContext } from 'store/contexts';
+import { AppIcon } from 'components';
 const ProfileCard = ({ className, profileUser, owner }) => {
   const { openModal } = useCommonContext();
   return (

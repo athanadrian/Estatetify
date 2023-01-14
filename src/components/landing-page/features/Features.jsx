@@ -15,7 +15,6 @@ const Features = () => {
             Our expert support are always available.
           </p>
         </div>
-
         <div className='grid grid-cols-1 mt-10 text-center sm:mt-16 sm:grid-cols-2 sm:gap-x-12 gap-y-12 md:grid-cols-3 md:gap-0 xl:mt-24'>
           {features.map(({ id, icon, title, description, border }) => (
             <FeatureItem

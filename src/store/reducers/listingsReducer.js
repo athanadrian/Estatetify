@@ -171,13 +171,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === GET_TYPE_LISTINGS_SUCCESS) {
-    let typeListings = [];
-    const type = action.payload.type;
-    if (type === 'rent') {
-      typeListings = action.payload.listings;
-    } else {
-      typeListings = action.payload.listings;
-    }
+    let typeListings = action.payload.listings; // [];
     return {
       ...state,
       isLoading: false,
@@ -194,13 +188,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === GET_MORE_TYPE_LISTINGS_SUCCESS) {
-    let typeListings = [...state.typeListings];
-    const type = action.payload.type;
-    if (type === 'rent') {
-      typeListings = [...typeListings, ...action.payload.listings];
-    } else {
-      typeListings = [...typeListings, ...action.payload.listings];
-    }
+    let typeListings = [...state.typeListings, ...action.payload.listings];
     return {
       ...state,
       isLoading: false,

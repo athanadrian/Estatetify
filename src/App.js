@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import {
   Navbar,
   Footer,
-  UserRoute,
+  SubscribedRoute,
   AdminRoute,
   RealEstaterRoute,
 } from './components';
@@ -30,6 +30,7 @@ import {
   RealEstaterEditListing,
   RealEstaterManage,
   RealEstaterSubscriptions,
+  Subscription,
 } from './pages';
 
 const App = () => {
@@ -40,8 +41,8 @@ const App = () => {
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/home' element={<Home />} />
-          <Route element={<UserRoute />}>
-            <Route path='/profile' element={<Profile />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route element={<SubscribedRoute />}>
             <Route path='/listings/add' element={<AddListing />} />
             <Route path='/listings/edit/:listingId' element={<EditListing />} />
           </Route>
@@ -76,6 +77,7 @@ const App = () => {
           </Route>
           <Route path='/owner-profile/:ownerId' element={<OwnerProfile />} />
           <Route path='/offers' element={<Offers />} />
+          <Route path='/subscription/:plan' element={<Subscription />} />
           <Route path='/favorites' element={<Favorites />} />
           <Route path='/search-results' element={<SearchResults />} />
           <Route path='/listings/:type' element={<Listings />} />

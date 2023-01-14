@@ -1,5 +1,5 @@
+import { Modal } from 'components';
 import { useCommonContext } from 'store/contexts';
-import Modal from './elements/Modal';
 import ProfileCard from './ProfileCard';
 
 const ProfileModal = ({ profileUser, owner }) => {

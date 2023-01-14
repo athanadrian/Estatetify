@@ -23,7 +23,7 @@ const Home = () => {
     <>
       <Slider />
       <div className='px-5 w-full'>
-        <div className='flex flex-col mx-20 my-10 space-y-6'>
+        <div className='flex flex-col mx-5 my-10 space-y-6'>
           <div className='flex flex-col items-center justify-center mb-10'>
             <PageHeader title='Discover Our Featured Properties' />
             <PageHeader

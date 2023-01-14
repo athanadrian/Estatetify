@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AppIcon from './elements/AppIcon';
+import { AppIcon, FavoriteButton, ProfileAvatar } from 'components';
 import defaultStyles from 'common/config';
 import { useCommonContext } from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
@@ -9,8 +9,6 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 //import ContactModal from './ContactModal';
 import { useAuth } from 'hooks/useAuth';
-import FavoriteButton from './FavoriteButton';
-import ProfileAvatar from './ProfileAvatar';
 
 const ListingGridItem = ({
   id,

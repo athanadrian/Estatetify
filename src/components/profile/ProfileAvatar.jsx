@@ -1,5 +1,5 @@
 import React from 'react';
-import AppIcon from './elements/AppIcon';
+import AppIcon from '../elements/AppIcon';
 import defaultStyles from 'common/config';
 const ProfileAvatar = ({ profile, className, onClick, size = 24 }) => {
   return (

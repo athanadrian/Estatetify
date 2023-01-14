@@ -19,24 +19,17 @@ const Navbar = () => {
   const { userFavorites } = useListingContext();
   const { getProfileUser, profileUser } = useProfileContext();
   const { openModal } = useCommonContext();
-  const [path, setPath] = useState('');
   const [showMenu, setMenu] = useState(false);
 
   const links = [
     { name: 'home', link: '/home' },
     { name: 'buy', link: '/listings/sale' },
-    { name: 'sell', link: '/listings/add' },
+    //{ name: 'sell', link: '/listings/add' },
     { name: 'rent', link: '/listings/rent' },
     { name: 'offers', link: '/offers' },
   ];
 
-  const showDashboard = user && profileUser?.role !== 'user';
-
-  useEffect(() => {
-    if (profileUser?.role === 'admin') setPath('/admin/dashboard');
-    if (profileUser?.role === 'real-estater')
-      setPath('/real-estater/dashboard');
-  }, [profileUser]);
+  const showDashboard = user && profileUser?.role !== 'owner';
 
   const toggleMenu = () => {
     setMenu((prevState) => !prevState);
@@ -76,10 +69,23 @@ const Navbar = () => {
             {links.map((link) => (
               <NavButton key={link.name} name={link.name} link={link.link} />
             ))}
+            <li className='relative group'>
+              <NavLink
+                to='/listings/add'
+                className={({ isActive }) =>
+                  `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
+                    isActive && 'text-darker border-b-primary'
+                  }`
+                }
+              >
+                sell
+              </NavLink>
+              <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
+            </li>
             {showDashboard && (
               <li className='relative group'>
                 <NavLink
-                  to={path}
+                  to={`/${profileUser?.role}/dashboard`}
                   onClick={toggleMenu}
                   className={({ isActive }) =>
                     `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
@@ -120,10 +126,24 @@ const Navbar = () => {
                 onClick={toggleMenu}
               />
             ))}
+            <li className='relative group w-48'>
+              <NavLink
+                to='/listings/add'
+                onClick={toggleMenu}
+                className={({ isActive }) =>
+                  `inline-block text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
+                    isActive &&
+                    'text-darker text-center bg-gray-200 rounded-xl w-full px-2 py-3'
+                  }`
+                }
+              >
+                sell
+              </NavLink>
+            </li>
             {showDashboard && (
               <li className='relative group w-48'>
                 <NavLink
-                  to={path}
+                  to={`/${profileUser?.role}/dashboard`}
                   onClick={toggleMenu}
                   className={({ isActive }) =>
                     `inline-block text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${

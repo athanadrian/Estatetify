@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AppIcon from './elements/AppIcon';
+import { AppIcon, FavoriteButton, ProfileAvatar } from 'components';
 import defaultStyles from 'common/config';
 import { useCommonContext } from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
@@ -9,8 +9,6 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 //import ContactModal from './ContactModal';
 import { useAuth } from 'hooks/useAuth';
-import FavoriteButton from './FavoriteButton';
-import ProfileAvatar from './ProfileAvatar';
 
 const ListingRowItem = ({
   id,
@@ -49,7 +47,10 @@ const ListingRowItem = ({
     <>
       <div className='container w-100 lg:w-4/5 mx-auto flex flex-col'>
         <div className='relative flex flex-col md:flex-row overflow-hidden bg-white rounded-lg shadow-xl  mt-4 w-100 mx-2'>
-          <div className='relative h-64 w-auto md:w-1/2 overflow-hidden cursor-pointer'>
+          <div
+            className='relative h-64 w-auto md:w-1/2 overflow-hidden cursor-pointer'
+            onClick={() => navigate(`/listings/${listing?.type}/${id}`)}
+          >
             <img
               className='inset-0 h-full w-full object-cover object-center hover:scale-105 transition-scale duration-200 ease-in'
               src={listing?.imgUrls.length > 0 ? listing?.imgUrls[0] : logo}

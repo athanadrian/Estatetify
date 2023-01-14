@@ -51,6 +51,9 @@ import {
   MdCall,
   MdDashboard,
   MdSubscriptions,
+  MdOutlineStorage,
+  MdOutlineSupportAgent,
+  MdOutlineBusinessCenter,
 } from 'react-icons/md';
 import { LogoIcon } from './svgIcons';
 
@@ -108,7 +111,9 @@ const icons = {
   notification: HiBell,
   checkIcon: HiCheck,
   arrow_down: HiChevronDown,
-
+  storage: MdOutlineStorage,
+  support: MdOutlineSupportAgent,
+  business: MdOutlineBusinessCenter,
   //FEATURES
 };
 
