@@ -2,7 +2,7 @@ const roles = [
   {
     id: '1',
     title: 'user',
-    color: 'text-#',
+    color: 'text-user',
     border: 'border-user',
     bg: 'bg-user',
     shadow: '',
