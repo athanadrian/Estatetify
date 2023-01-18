@@ -53,6 +53,8 @@ import { useAuthContext } from './authContext';
 const initialState = {
   isLoading: false,
   hasActiveSubscriptionPlans: false,
+  isEnrolled: false,
+  isSubscriptionPlanEnrolled: false,
   currentTopActiveSubscription: undefined,
   subscription: undefined,
   purchase: undefined,
@@ -69,6 +71,7 @@ const SubscriptionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useAuthContext();
   const { getMyListings, listings } = useListingContext();
+  const { loggedIn } = useAuthContext();
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
@@ -286,7 +289,8 @@ const SubscriptionProvider = ({ children }) => {
     });
   };
 
-  const checkForMyActiveSubscriptions = (plan) => {
+  const checkForMyActiveSubscriptions = () => {
+    console.log('ctx enrolled');
     getMySubscriptions();
     getMyListings();
     const activeSubscriptions = state.subscriptions
@@ -310,14 +314,28 @@ const SubscriptionProvider = ({ children }) => {
     );
 
     const hasActiveSubscriptionPlans = Boolean(currentTopActiveSubscription);
+    const isEnrolled = loggedIn && hasActiveSubscriptionPlans;
     dispatch({
       type: CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
       payload: {
         hasActiveSubscriptionPlans,
+        isEnrolled,
         currentTopActiveSubscription,
         activeSubscriptions,
       },
     });
+  };
+
+  const checkIsEnrolledSubscription = (plan) => {
+    getMySubscriptions();
+    let activeSub = null;
+    const activeSubscriptions = state.subscriptions.filter(
+      (sub) => sub.isActive
+    );
+    activeSubscriptions.forEach((sub) => {
+      if (sub.plan.toLowerCase() === plan.toLowerCase()) activeSub = sub;
+    });
+    if (activeSub && loggedIn) return true;
   };
 
   return (
@@ -337,6 +355,7 @@ const SubscriptionProvider = ({ children }) => {
         saveShippingAddressToState,
         saveBillingAddressToState,
         checkForMyActiveSubscriptions,
+        checkIsEnrolledSubscription,
       }}
     >
       {children}

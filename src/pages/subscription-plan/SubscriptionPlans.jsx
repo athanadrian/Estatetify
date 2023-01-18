@@ -6,11 +6,16 @@ import { mapEnumObject } from 'common/helpers';
 import { useSubscriptionContext } from 'store/contexts';
 
 const SubscriptionPlans = () => {
-  const { checkForMyActiveSubscriptions, hasActiveSubscriptionPlans } =
-    useSubscriptionContext();
+  const {
+    checkForMyActiveSubscriptions,
+    getMySubscriptions,
+    hasActiveSubscriptionPlans,
+  } = useSubscriptionContext();
 
   useEffect(() => {
-    checkForMyActiveSubscriptions('basic');
+    getMySubscriptions();
+    checkForMyActiveSubscriptions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -29,6 +34,7 @@ const SubscriptionPlans = () => {
               role={role}
               plan={plan}
               color={mapEnumObject(role, roles).color}
+              border={mapEnumObject(role, roles).border}
               shadow={mapEnumObject(role, roles).shadow}
               listings={listings}
             />
@@ -41,7 +47,7 @@ const SubscriptionPlans = () => {
           >
             <PageHeader
               title={`${plan} Plan`}
-              className={`mb-1 font-normal text-left text-${
+              className={`mb-1 font-normal text-left ${
                 mapEnumObject(role, roles).color
               }`}
             />
@@ -55,7 +61,14 @@ const SubscriptionPlans = () => {
 
 export default SubscriptionPlans;
 
-const SubscriptionFeature = ({ color, shadow, role, plan, listings }) => {
+const SubscriptionFeature = ({
+  color,
+  border,
+  shadow,
+  role,
+  plan,
+  listings,
+}) => {
   return (
     <div
       className={`md:w-[31%] w-[90%] mb-12 p-6 bg-white rounded-xl ${shadow} hover:scale-105`}
@@ -63,13 +76,13 @@ const SubscriptionFeature = ({ color, shadow, role, plan, listings }) => {
       <div className='flex md:flex-col md:gap-3 desktop:flex-row justify-between items-center'>
         <div className='flex flex-col gap-2 items-center'>
           <div
-            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border border-${color}`}
+            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border ${border}`}
           >
-            <span className={`absolute text-${color} top-0 -right-1`}>
+            <span className={`absolute ${color} top-0 -right-1`}>
               <AppIcon Icon={defaultStyles.icons.star} />
             </span>
             <div
-              className={`bg-light w-full h-full text-${color} flex justify-center items-center rounded-full`}
+              className={`bg-light w-full h-full ${color} flex justify-center items-center rounded-full`}
             >
               <AppIcon
                 size={24}
@@ -78,14 +91,12 @@ const SubscriptionFeature = ({ color, shadow, role, plan, listings }) => {
               />
             </div>
           </div>
-          <p
-            className={`capitalize font-bold text-xl text-${color} tracking-wider`}
-          >
+          <p className={`capitalize font-bold text-xl ${color} tracking-wider`}>
             {role}
           </p>
         </div>
         <div className='flex flex-col gap-2'>
-          <p className={`capitalize text-xl text-${color} tracking-wider`}>
+          <p className={`capitalize text-xl ${color} tracking-wider`}>
             {plan} Plan
           </p>
           <p className='text-sm tracking-wide text-gray-500'>

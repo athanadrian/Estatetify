@@ -7,6 +7,13 @@ import { mapEnumObject } from 'common/helpers';
 import { roles } from 'common/lookup-data';
 
 const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
+  const { isEnrolled } = useSubscriptionContext();
+
+  // useEffect(() => {
+  //   checkForMyActiveSubscriptions();
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   return (
     <>
       <div className='md:w-[31%] w-[90%] mb-12 p-8 bg-white rounded-xl shadow-[0_0_10px_0_rgba(0,0,0,0.2)]'>
@@ -18,7 +25,7 @@ const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
           </div>
         )}
         <h3
-          className={`text-[22px] font-bold text-${
+          className={`text-[22px] font-bold ${
             mapEnumObject(role, roles).color
           }`}
         >
@@ -55,7 +62,7 @@ const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
           // isEnrolled={isEnrolled}
           // handlePlan={handlePlan}
           className={`py-5 border-4 border-[#27ae601f] px-10 text-[#27ae60] rounded-[50px] text-xl font-[400] bg-white w-full 
-          ${true && 'cursor-default'}
+          ${isEnrolled && 'cursor-default'}
           `}
           style={{
             background: plan === 'Basic' ? '#27ae60' : '#fff',

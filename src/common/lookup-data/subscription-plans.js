@@ -14,7 +14,7 @@ const subscriptionPlans = [
       <span>
         Register and you are an{' '}
         <span
-          className={`text-${
+          className={`${
             mapEnumObject('owner', roles).color
           } text-3xl tracking-wide`}
         >
@@ -94,7 +94,7 @@ const subscriptionPlans = [
       <span>
         Become a{' '}
         <span
-          className={`text-${
+          className={`${
             mapEnumObject('real-estater', roles).color
           } text-3xl tracking-wide`}
         >
@@ -165,7 +165,7 @@ const subscriptionPlans = [
       <span>
         Be an{' '}
         <span
-          className={`text-${
+          className={`${
             mapEnumObject('agent', roles).color
           } text-3xl tracking-wide`}
         >

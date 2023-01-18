@@ -218,12 +218,14 @@ const reducer = (state, action) => {
   if (action.type === CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS) {
     const hasActiveSubscriptionPlans =
       action.payload.hasActiveSubscriptionPlans;
+    const isEnrolled = action.payload.isEnrolled;
     const currentTopActiveSubscription =
       action.payload.currentTopActiveSubscription;
     const activeSubscriptions = action.payload.activeSubscriptions;
     return {
       ...state,
       hasActiveSubscriptionPlans,
+      isEnrolled,
       currentTopActiveSubscription,
       activeSubscriptions,
     };
