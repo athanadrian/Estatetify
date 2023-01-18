@@ -8,7 +8,6 @@ const SideBarButton = ({ link, name, icon }) => {
     <li className='relative'>
       <NavLink
         to={link}
-        //onClick={onClick}
         className={({
           isActive,
         }) => `pl-6 py-3 mx-5 capitalize rounded text-center cursor-pointer mb-3 flex items-center transition-colors

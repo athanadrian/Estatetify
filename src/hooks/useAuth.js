@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { auth, onAuthStateChanged } from 'firebase.config';
 
+//TODO
+//DELETE This Hook
 export const useAuth = () => {
   const [user, setUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -18,6 +20,7 @@ export const useAuth = () => {
         setUser(user);
       } else {
         setUser(undefined);
+        setLoggedIn(false);
       }
       setLoading(false);
     });
@@ -30,5 +33,5 @@ export const useAuth = () => {
     });
   }, []);
 
-  return { user, loggedIn, isAuthenticated, isLoading, logOut };
+  return { user, setUser, loggedIn, isAuthenticated, isLoading, logOut };
 };

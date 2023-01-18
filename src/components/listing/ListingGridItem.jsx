@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { AppIcon, FavoriteButton, ProfileAvatar } from 'components';
 import defaultStyles from 'common/config';
-import { useCommonContext } from 'store/contexts';
+import { useAuthContext, useCommonContext } from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
 import { floors } from 'common/lookup-data';
 import { useNavigate } from 'react-router';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 //import ContactModal from './ContactModal';
-import { useAuth } from 'hooks/useAuth';
 
 const ListingGridItem = ({
   id,
@@ -18,7 +17,7 @@ const ListingGridItem = ({
   profile,
 }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const { logo, openModal } = useCommonContext();
   //const { getProfile, profile } = useProfileContext();
   const [showOwnerInfo, setShowOwnerInfo] = useState(false);

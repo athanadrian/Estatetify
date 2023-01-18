@@ -5,8 +5,8 @@ import logo from 'images/estatetify-app.svg';
 import { NavButton } from './NavButton';
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from 'hooks/useAuth';
 import {
+  useAuthContext,
   useCommonContext,
   useListingContext,
   useProfileContext,
@@ -15,21 +15,23 @@ import { useEffect } from 'react';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { loggedIn } = useAuthContext();
   const { userFavorites } = useListingContext();
-  const { getProfileUser, profileUser } = useProfileContext();
+  const { getMyProfile, myProfile } = useProfileContext();
   const { openModal } = useCommonContext();
   const [showMenu, setMenu] = useState(false);
 
   const links = [
     { name: 'home', link: '/home' },
     { name: 'buy', link: '/listings/sale' },
-    //{ name: 'sell', link: '/listings/add' },
     { name: 'rent', link: '/listings/rent' },
     { name: 'offers', link: '/offers' },
   ];
-
-  const showDashboard = user && profileUser?.role !== 'owner';
+  const showDashboard =
+    loggedIn &&
+    (myProfile?.role === 'real-estater' ||
+      myProfile?.role === 'agent' ||
+      myProfile?.role === 'admin');
 
   const toggleMenu = () => {
     setMenu((prevState) => !prevState);
@@ -41,9 +43,9 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    getProfileUser(user?.uid);
+    if (loggedIn) getMyProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [loggedIn]);
 
   return (
     <>
@@ -85,7 +87,7 @@ const Navbar = () => {
             {showDashboard && (
               <li className='relative group'>
                 <NavLink
-                  to={`/${profileUser?.role}/dashboard`}
+                  to={`/${myProfile?.role}/dashboard`}
                   onClick={toggleMenu}
                   className={({ isActive }) =>
                     `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
@@ -143,7 +145,7 @@ const Navbar = () => {
             {showDashboard && (
               <li className='relative group w-48'>
                 <NavLink
-                  to={`/${profileUser?.role}/dashboard`}
+                  to={`/${myProfile?.role}/dashboard`}
                   onClick={toggleMenu}
                   className={({ isActive }) =>
                     `inline-block text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
@@ -177,8 +179,8 @@ const Navbar = () => {
               {renderAuthSection(
                 userFavorites,
                 !showMenu,
-                isAuthenticated,
-                profileUser,
+                loggedIn,
+                myProfile,
                 toggleMenu,
                 navigate
               )}
@@ -189,8 +191,8 @@ const Navbar = () => {
           {renderAuthSection(
             userFavorites,
             showMenu,
-            isAuthenticated,
-            profileUser,
+            loggedIn,
+            myProfile,
             navigate
           )}
         </div>
@@ -204,8 +206,8 @@ export default Navbar;
 const renderAuthSection = (
   userFavorites,
   showMenu,
-  isAuthenticated,
-  profileUser,
+  loggedIn,
+  myProfile,
   navigate,
   toggleMenu
 ) => {
@@ -223,11 +225,11 @@ const renderAuthSection = (
           </div>
         </Link>
       )}
-      {isAuthenticated ? (
+      {loggedIn ? (
         <div className='flex items-center cursor-pointer'>
           <ProfileAvatar
-            profile={profileUser}
-            className='w-[50px] h-[50px] text-white flex justify-center items-center rounded-full'
+            profile={myProfile}
+            className='relative w-[50px] h-[50px] text-white flex justify-center items-center rounded-full'
             onClick={() => navigate('/profile')}
           />
         </div>

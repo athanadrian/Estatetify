@@ -9,7 +9,6 @@ import {
   PageHeader,
 } from 'components';
 import defaultStyles from 'common/config';
-import { useAuth } from 'hooks/useAuth';
 import { useAuthContext, useCommonContext } from 'store/contexts';
 
 const initialState = {
@@ -21,8 +20,7 @@ const singImage =
   'https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80';
 
 const SignIn = () => {
-  const { loggedIn } = useAuth();
-  const { signInUser, user } = useAuthContext();
+  const { signInUser, loggedIn, user } = useAuthContext();
   const { previousURL } = useCommonContext();
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);

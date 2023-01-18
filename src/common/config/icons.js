@@ -5,6 +5,7 @@ import {
   AiFillSetting,
   AiOutlineMenuUnfold,
   AiOutlineMenuFold,
+  AiFillStar,
 } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { HiBell, HiCheck, HiChevronDown } from 'react-icons/hi';
@@ -114,7 +115,7 @@ const icons = {
   storage: MdOutlineStorage,
   support: MdOutlineSupportAgent,
   business: MdOutlineBusinessCenter,
-  //FEATURES
+  star: AiFillStar,
 };
 
 export default icons;

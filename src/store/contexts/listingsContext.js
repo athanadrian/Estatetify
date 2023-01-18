@@ -1,7 +1,6 @@
 import { useState, useContext, createContext, useReducer } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { useAuth } from 'hooks/useAuth';
 import {
   storage,
   ref,
@@ -63,6 +62,7 @@ import {
 import reducer from '../reducers/listingsReducer';
 import { getFirebaseErrorMessage, getFirestoreImage } from 'common/helpers';
 import { sizes } from 'common/lookup-data';
+import { useAuthContext } from './authContext';
 
 const userFavorites = localStorage.getItem('userFavorites');
 
@@ -93,7 +93,7 @@ const ListingContext = createContext();
 
 const ListingProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const setLoading = (status) => {
@@ -367,22 +367,24 @@ const ListingProvider = ({ children }) => {
   const getMyListings = () => {
     dispatch({ type: GET_MY_LISTINGS_BEGIN });
     try {
-      const listingsRef = collection(db, 'listings');
-      const listingQuery = query(
-        listingsRef,
-        where('userRef', '==', user.uid),
-        orderBy('timestamp', 'desc')
-      );
-      onSnapshot(listingQuery, (snapshot) => {
-        const listings = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        dispatch({
-          type: GET_MY_LISTINGS_SUCCESS,
-          payload: { listings },
+      if (user) {
+        const listingsRef = collection(db, 'listings');
+        const listingQuery = query(
+          listingsRef,
+          where('userRef', '==', user?.uid),
+          orderBy('timestamp', 'desc')
+        );
+        onSnapshot(listingQuery, (snapshot) => {
+          const listings = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          dispatch({
+            type: GET_MY_LISTINGS_SUCCESS,
+            payload: { listings },
+          });
         });
-      });
+      }
     } catch (error) {
       console.log('😱 Error get My listing: ', error.message);
     }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+
 import logo from 'images/estatetify-app.svg';
 import {
   AppIcon,
@@ -12,13 +14,12 @@ import {
   ProfileModal,
 } from 'components';
 import defaultStyles from 'common/config';
-import { useAuth } from 'hooks/useAuth';
 import {
+  useAuthContext,
   useCommonContext,
   useListingContext,
   useProfileContext,
 } from 'store/contexts';
-import { toast } from 'react-toastify';
 
 const initialValues = {
   fullName: '',
@@ -36,8 +37,8 @@ const initialValues = {
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, logOut } = useAuth();
-  const { getProfileUser, updateUser, profileUser } = useProfileContext();
+  const { logOut } = useAuthContext();
+  const { getMyProfile, updateUser, myProfile } = useProfileContext();
   const {
     handleUploadImageToStorage,
     deleteImageFromStorage,
@@ -62,26 +63,26 @@ const Profile = () => {
     whatsApp,
   } = values;
   useEffect(() => {
-    if (profileUser !== undefined) {
+    if (myProfile !== undefined) {
       setValues((preValues) => ({
         ...preValues,
-        fullName: profileUser?.fullName,
-        mobile: profileUser?.mobile,
-        email: profileUser?.email,
-        avatar: profileUser?.avatar,
-        role: profileUser?.role,
-        sms: profileUser?.sms,
-        call: profileUser?.call,
-        viber: profileUser?.viber,
-        whatsApp: profileUser?.whatsApp,
+        fullName: myProfile?.fullName,
+        mobile: myProfile?.mobile,
+        email: myProfile?.email,
+        avatar: myProfile?.avatar,
+        role: myProfile?.role,
+        sms: myProfile?.sms,
+        call: myProfile?.call,
+        viber: myProfile?.viber,
+        whatsApp: myProfile?.whatsApp,
       }));
     }
-  }, [profileUser]);
+  }, [myProfile]);
   useEffect(() => {
-    if (user !== undefined && user?.uid) getProfileUser(user?.uid);
+    getMyProfile();
     getMyListings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -101,15 +102,15 @@ const Profile = () => {
     e.preventDefault();
     delete values.avatarImg;
     delete values.imgUrl;
-    await updateUser({ ...values, uid: profileUser?.uid });
+    await updateUser({ ...values, uid: myProfile?.uid });
   };
 
   const handleEditInfo = () => {
     setEditable((preVal) => !preVal);
   };
 
-  const handleLogout = () => {
-    logOut();
+  const handleLogout = async () => {
+    await logOut();
     navigate('/home');
   };
 
@@ -350,7 +351,7 @@ const Profile = () => {
           </div>
         )}
       </>
-      <ProfileModal owner profileUser={profileUser} />
+      <ProfileModal owner profileUser={myProfile} />
     </>
   );
 };

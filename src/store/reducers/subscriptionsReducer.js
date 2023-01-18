@@ -13,12 +13,18 @@ import {
   CREATE_SUBSCRIPTION_BEGIN,
   CREATE_SUBSCRIPTION_SUCCESS,
   CREATE_SUBSCRIPTION_ERROR,
+  CREATE_PURCHASE_BEGIN,
+  CREATE_PURCHASE_SUCCESS,
+  CREATE_PURCHASE_ERROR,
   EDIT_SUBSCRIPTION_BEGIN,
   EDIT_SUBSCRIPTION_SUCCESS,
   EDIT_SUBSCRIPTION_ERROR,
   DELETE_SUBSCRIPTION_BEGIN,
   DELETE_SUBSCRIPTION_SUCCESS,
   DELETE_SUBSCRIPTION_ERROR,
+  SET_SHIPPING_ADDRESS,
+  SET_BILLING_ADDRESS,
+  CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
 } from '../actions/subscriptionsActions';
 
 const reducer = (state, action) => {
@@ -106,7 +112,7 @@ const reducer = (state, action) => {
     };
   }
 
-  if (action.type === EDIT_SUBSCRIPTION_BEGIN) {
+  if (action.type === CREATE_SUBSCRIPTION_BEGIN) {
     return {
       ...state,
       isLoading: true,
@@ -126,8 +132,28 @@ const reducer = (state, action) => {
       isLoading: false,
     };
   }
+  if (action.type === CREATE_PURCHASE_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
 
-  if (action.type === CREATE_SUBSCRIPTION_BEGIN) {
+  if (action.type === CREATE_PURCHASE_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }
+
+  if (action.type === CREATE_PURCHASE_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }
+
+  if (action.type === EDIT_SUBSCRIPTION_BEGIN) {
     return {
       ...state,
       isLoading: true,
@@ -170,6 +196,36 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
+    };
+  }
+
+  if (action.type === SET_SHIPPING_ADDRESS) {
+    const shippingAddress = action.payload.shippingAddress;
+    return {
+      ...state,
+      shippingAddress,
+    };
+  }
+
+  if (action.type === SET_BILLING_ADDRESS) {
+    const billingAddress = action.payload.billingAddress;
+    return {
+      ...state,
+      billingAddress,
+    };
+  }
+
+  if (action.type === CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS) {
+    const hasActiveSubscriptionPlans =
+      action.payload.hasActiveSubscriptionPlans;
+    const currentTopActiveSubscription =
+      action.payload.currentTopActiveSubscription;
+    const activeSubscriptions = action.payload.activeSubscriptions;
+    return {
+      ...state,
+      hasActiveSubscriptionPlans,
+      currentTopActiveSubscription,
+      activeSubscriptions,
     };
   }
 

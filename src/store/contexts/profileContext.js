@@ -1,4 +1,3 @@
-import { useAuth } from 'hooks/useAuth';
 import {
   updateProfile,
   db,
@@ -8,8 +7,9 @@ import {
   limit,
   getDocs,
   doc,
-  getDoc,
   updateDoc,
+  onSnapshot,
+  getDoc,
 } from 'firebase.config';
 
 import { useContext, createContext, useReducer } from 'react';
@@ -17,18 +17,26 @@ import { useContext, createContext, useReducer } from 'react';
 import {
   GET_ALL_PROFILES_BEGIN,
   GET_ALL_PROFILES_SUCCESS,
-  GET_USER_BEGIN,
-  GET_USER_SUCCESS,
-  GET_USER_ERROR,
+  GET_USER_PROFILE_BEGIN,
+  GET_USER_PROFILE_SUCCESS,
+  GET_USER_PROFILE_ERROR,
+  GET_MY_PROFILE_BEGIN,
+  GET_MY_PROFILE_SUCCESS,
+  GET_MY_PROFILE_ERROR,
   UPDATE_USER_BEGIN,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  CHANGE_USER_ROLE_BEGIN,
+  CHANGE_USER_ROLE_SUCCESS,
+  CHANGE_USER_ROLE_ERROR,
 } from '../actions/profileActions';
 import reducer from '../reducers/profileReducer';
 import { toast } from 'react-toastify';
+import { useAuthContext } from './authContext';
 
 const initialState = {
   isLoading: false,
+  myProfile: undefined,
   profileUser: undefined,
   users: [],
 };
@@ -37,7 +45,7 @@ const ProfileContext = createContext();
 
 const ProfileProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user } = useAuth();
+  const { user } = useAuthContext();
 
   const getAllProfiles = async (lim) => {
     dispatch({ type: GET_ALL_PROFILES_BEGIN });
@@ -65,28 +73,68 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
+  // const getProfileUser = async (id) => {
+  //   if (id) {
+  //     dispatch({ type: GET_USER_BEGIN });
+  //     try {
+  //       const userRef = doc(db, 'users', id);
+  //       onSnapshot(userRef, (userDoc) => {
+  //         if (userDoc.exists()) {
+  //           dispatch({
+  //             type: GET_USER_SUCCESS,
+  //             payload: { profileUser: { ...userDoc.data(), uid: id } },
+  //           });
+  //         }
+  //       });
+  //     } catch (error) {
+  //       console.log('😱 Error Get User: ', error.message);
+  //       dispatch({ type: GET_USER_ERROR });
+  //       toast.error('😱 Error: Could not get user data');
+  //     }
+  //   }
+  // };
+
+  const getMyProfile = async () => {
+    if (user) {
+      dispatch({ type: GET_MY_PROFILE_BEGIN });
+      try {
+        const userRef = doc(db, 'users', user?.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          dispatch({
+            type: GET_MY_PROFILE_SUCCESS,
+            payload: { myProfile: { ...userDoc.data(), uid: user?.uid } },
+          });
+        }
+      } catch (error) {
+        console.log('😱 Error Get User: ', error.message);
+        dispatch({ type: GET_MY_PROFILE_ERROR });
+        toast.error('😱 Error: Could not get user data');
+      }
+    }
+  };
   const getProfileUser = async (id) => {
     if (id) {
-      dispatch({ type: GET_USER_BEGIN });
+      dispatch({ type: GET_USER_PROFILE_BEGIN });
       try {
         const userRef = doc(db, 'users', id);
         const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
           dispatch({
-            type: GET_USER_SUCCESS,
+            type: GET_USER_PROFILE_SUCCESS,
             payload: { profileUser: { ...userDoc.data(), uid: id } },
           });
         }
       } catch (error) {
         console.log('😱 Error Get User: ', error.message);
-        dispatch({ type: GET_USER_ERROR });
+        dispatch({ type: GET_USER_PROFILE_ERROR });
         toast.error('😱 Error: Could not get user data');
       }
     }
   };
 
   const updateUser = async (userData) => {
-    const { fullName, mobile, avatar, call, sms, viber, whatsApp, role, uid } =
+    const { fullName, mobile, avatar, call, sms, viber, whatsApp, role } =
       userData;
     dispatch({ type: UPDATE_USER_BEGIN });
     try {
@@ -100,7 +148,7 @@ const ProfileProvider = ({ children }) => {
           displayName: fullName,
         });
         // update data in firestore
-        const userRef = doc(db, 'users', user.uid);
+        const userRef = doc(db, 'users', user?.uid);
         await updateDoc(userRef, {
           fullName,
           avatar,
@@ -111,7 +159,9 @@ const ProfileProvider = ({ children }) => {
           whatsApp,
           role,
         });
-        await getProfileUser(uid);
+        //TODO
+        //Check if onSnapshot does the update job
+        await getMyProfile();
         dispatch({ type: UPDATE_USER_SUCCESS });
         toast.success('Profile updated successfully!');
       }
@@ -122,13 +172,31 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
+  const changeUserRole = async (userId, role) => {
+    dispatch({ type: CHANGE_USER_ROLE_BEGIN });
+    try {
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, {
+        role,
+      });
+      dispatch({ type: CHANGE_USER_ROLE_SUCCESS });
+      toast.success(`User role updated to ${role} successfully!`);
+    } catch (error) {
+      console.log('😱 Error Change User Role: ', error.message);
+      dispatch({ type: CHANGE_USER_ROLE_ERROR });
+      toast.error('😱 Error: ', error.message);
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
         ...state,
         getAllProfiles,
         getProfileUser,
+        getMyProfile,
         updateUser,
+        changeUserRole,
       }}
     >
       {children}

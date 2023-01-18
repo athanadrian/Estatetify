@@ -1,17 +1,16 @@
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-import { useCommonContext } from 'store/contexts';
+import { useAuthContext, useCommonContext } from 'store/contexts';
 import Modal from './elements/Modal';
 import Loader from './Loader';
 import { toast } from 'react-toastify';
-import { useAuth } from 'hooks/useAuth';
 
 const ContactModal = ({ app, listing, profile }) => {
   const [isLoading, setLoading] = useState(false);
   const contactForm = useRef();
   const { showModal, logo, closeModal } = useCommonContext();
-  const { isAuthenticated, user } = useAuth();
+  const { loggedIn, user } = useAuthContext();
 
   const toEmail = app ? 'estatetify.app@gmail.com' : profile?.email;
   const defaultMessage = app ? '' : `I am interested in ${listing?.title}`;
@@ -77,7 +76,7 @@ const ContactModal = ({ app, listing, profile }) => {
                     placeholder='Name*'
                     name='user_name'
                     required
-                    defaultValue={isAuthenticated ? user?.fullName : ''}
+                    defaultValue={loggedIn ? user?.displayName : ''}
                   />
                   <input
                     className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'
@@ -85,7 +84,7 @@ const ContactModal = ({ app, listing, profile }) => {
                     placeholder='Email*'
                     name='user_email'
                     required
-                    defaultValue={isAuthenticated ? user?.email : ''}
+                    defaultValue={loggedIn ? user?.email : ''}
                   />
                   <input
                     className='border border-gray-300 focus:border-dark rounded w-full px-4 h-14 text-sm outline-none'

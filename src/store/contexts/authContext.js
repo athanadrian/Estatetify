@@ -1,20 +1,21 @@
 import {
   auth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   updateProfile,
   db,
   doc,
-  addDoc,
-  collection,
   setDoc,
   serverTimestamp,
 } from 'firebase.config';
 
-import { useContext, createContext, useReducer } from 'react';
+import { useContext, createContext, useReducer, useEffect } from 'react';
 
 import {
+  GET_USER_LOGIN_STATE,
+  GET_USER_LOGOUT_STATE,
   SIGN_UP_USER_BEGIN,
   SIGN_UP_USER_SUCCESS,
   SIGN_UP_USER_ERROR,
@@ -31,6 +32,7 @@ import { getFirebaseErrorMessage } from 'common/helpers';
 
 const initialState = {
   isLoading: false,
+  loggedIn: false,
   user: null,
 };
 
@@ -38,6 +40,22 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch({ type: GET_USER_LOGIN_STATE, payload: { user } });
+      } else {
+        dispatch({ type: GET_USER_LOGOUT_STATE });
+      }
+    });
+  }, []);
+
+  const logOut = async () => {
+    await auth.signOut();
+    // dispatch({ type: SET_LOGOUT_USER });
+  };
+
   const signUpUser = async (signUpData) => {
     const { fullName, email, password } = signUpData;
     dispatch({ type: SIGN_UP_USER_BEGIN });
@@ -59,15 +77,7 @@ const AuthProvider = ({ children }) => {
       userData.whatsApp = false;
       userData.timestamp = serverTimestamp();
 
-      await setDoc(doc(db, 'users', user.uid), userData).then(
-        async () =>
-          await addDoc(collection(db, 'subscriptions'), {
-            userRef: user.uid,
-            startDate: serverTimestamp(),
-            plan: 'free',
-            isActive: true,
-          })
-      );
+      await setDoc(doc(db, 'users', user.uid), userData);
       dispatch({ type: SIGN_UP_USER_SUCCESS });
       toast.success('Sign up was successful!');
     } catch (error) {
@@ -85,13 +95,12 @@ const AuthProvider = ({ children }) => {
         email,
         password
       );
-      if (userCredential.user) {
+      if (userCredential?.user) {
         dispatch({
           type: SIGN_IN_USER_SUCCESS,
-          payload: { user: userCredential.user },
         });
         toast.success(
-          `${userCredential.user.displayName} successfully logged in!`
+          `${userCredential?.user?.displayName} successfully logged in!`
         );
       }
     } catch (error) {
@@ -118,6 +127,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         ...state,
+        logOut,
         signUpUser,
         signInUser,
         resetPassword,

@@ -29,6 +29,13 @@ const GoogleButton = () => {
         await setDoc(userRef, {
           fullName: user.displayName,
           email: user.email,
+          role: 'user',
+          mobile: '',
+          avatar: '',
+          call: false,
+          sms: false,
+          viber: false,
+          whatsApp: false,
           timestamp: serverTimestamp(),
         });
         return toast.success(`User signed-up successfully!`);

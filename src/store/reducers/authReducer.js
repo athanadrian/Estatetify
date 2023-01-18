@@ -1,4 +1,7 @@
 import {
+  GET_USER_LOGIN_STATE,
+  GET_USER_LOGOUT_STATE,
+  SET_LOGOUT_USER,
   SIGN_UP_USER_BEGIN,
   SIGN_UP_USER_SUCCESS,
   SIGN_UP_USER_ERROR,
@@ -11,6 +14,23 @@ import {
 } from '../actions/authActions';
 
 const reducer = (state, action) => {
+  if (action.type === GET_USER_LOGIN_STATE) {
+    const user = action.payload.user;
+    return {
+      ...state,
+      user,
+      loggedIn: true,
+    };
+  }
+
+  if (action.type === GET_USER_LOGOUT_STATE) {
+    return {
+      ...state,
+      loggedIn: false,
+      user: null,
+    };
+  }
+
   if (action.type === SIGN_UP_USER_BEGIN) {
     return {
       ...state,
@@ -39,10 +59,8 @@ const reducer = (state, action) => {
   }
 
   if (action.type === SIGN_IN_USER_SUCCESS) {
-    const user = action.payload.user;
     return {
       ...state,
-      user,
       isLoading: false,
     };
   }

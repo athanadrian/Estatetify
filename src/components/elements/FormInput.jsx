@@ -24,5 +24,3 @@ const FormInput = ({
 };
 
 export default FormInput;
-
-// focus:border-dark outline-none w-full px-4 py-3 rounded text-base placeholder:capitalize placeholder:text-light placeholder:text-base bg-white text-gray-700 border border-gray-300

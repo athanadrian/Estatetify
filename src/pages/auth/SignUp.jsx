@@ -10,7 +10,6 @@ import {
 } from 'components';
 import defaultStyles from 'common/config';
 import { useAuthContext } from 'store/contexts';
-import { useAuth } from 'hooks/useAuth';
 
 const initialState = {
   fullName: '',
@@ -24,8 +23,7 @@ const singImage =
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { signUpUser } = useAuthContext();
+  const { user, signUpUser } = useAuthContext();
   const [values, setValues] = useState(initialState);
   const [isHidden, setHidden] = useState(true);
 

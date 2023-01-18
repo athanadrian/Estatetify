@@ -171,7 +171,7 @@ const reducer = (state, action) => {
   }
 
   if (action.type === GET_TYPE_LISTINGS_SUCCESS) {
-    let typeListings = action.payload.listings; // [];
+    let typeListings = action.payload.listings;
     return {
       ...state,
       isLoading: false,

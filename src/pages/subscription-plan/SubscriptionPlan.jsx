@@ -1,17 +1,16 @@
-import { subscriptions } from 'common/lookup-data';
-import { SubscriptionDetails } from 'components';
-import { useAuth } from 'hooks/useAuth';
 import React, { useEffect } from 'react';
+import { subscriptionPlans } from 'common/lookup-data';
+import { SubscriptionPlanDetails } from 'components';
 import { useNavigate, useParams } from 'react-router';
-import { useCommonContext } from 'store/contexts';
+import { useAuthContext, useCommonContext } from 'store/contexts';
 
 const Subscription = () => {
   const { plan } = useParams();
   const navigate = useNavigate();
-  const { loggedIn } = useAuth();
+  const { loggedIn } = useAuthContext();
   const { saveURL } = useCommonContext();
 
-  const subscription = subscriptions.find(
+  const subscription = subscriptionPlans.find(
     (sub) => sub.plan.toLowerCase() === plan
   );
 
@@ -19,7 +18,7 @@ const Subscription = () => {
 
   const handleProceedPayment = () => {
     if (loggedIn) {
-      navigate('/checkout');
+      navigate('/checkout-details', { state: plan });
     } else {
       saveURL(url);
       navigate('/sign-in');
@@ -32,7 +31,7 @@ const Subscription = () => {
   }, []);
 
   return (
-    <SubscriptionDetails
+    <SubscriptionPlanDetails
       subscription={subscription}
       handleProceedPayment={handleProceedPayment}
     />

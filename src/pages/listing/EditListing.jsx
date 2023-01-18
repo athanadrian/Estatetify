@@ -12,8 +12,7 @@ import { toast } from 'react-toastify';
 
 import { useNavigate, useParams } from 'react-router';
 import { categories, floors } from 'common/lookup-data';
-import { useListingContext } from 'store/contexts';
-import { useAuth } from 'hooks/useAuth';
+import { useAuthContext, useListingContext } from 'store/contexts';
 import { getGeoData } from 'common/helpers';
 
 const EditListing = () => {
@@ -40,7 +39,7 @@ const EditListing = () => {
   };
   const navigate = useNavigate();
   const { listingId } = useParams();
-  const { user, logOut } = useAuth();
+  const { user, logOut } = useAuthContext();
   const {
     handleUploadImageToStorage,
     deleteImageFromStorage,

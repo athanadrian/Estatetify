@@ -1,12 +1,12 @@
 import React from 'react';
-import { Features, LandView, SubscriptionList } from 'components';
+import { Features, LandView, SubscriptionPlanList } from 'components';
 
 const LandingPage = () => {
   return (
     <div className='w-full'>
       <LandView />
       <Features />
-      <SubscriptionList />
+      <SubscriptionPlanList />
     </div>
   );
 };

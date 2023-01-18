@@ -1,14 +1,25 @@
 import defaultStyles from 'common/config';
+import { mapEnumObject } from 'common/helpers';
+import roles from './roles';
 
-const subscriptions = [
+const subscriptionPlans = [
   {
+    id: 1,
     plan: 'Free',
+    role: 'owner',
     price: '0',
     tax: '24',
+    listings: 5,
     priceText: (
       <span>
         Register and you are an{' '}
-        <span className=' text-primary text-3xl tracking-wide'>Owner</span>
+        <span
+          className={`text-${
+            mapEnumObject('owner', roles).color
+          } text-3xl tracking-wide`}
+        >
+          Owner
+        </span>
       </span>
     ),
     list: [
@@ -72,17 +83,23 @@ const subscriptions = [
     ],
   },
   {
+    id: 2,
     best: 'Best Value',
     plan: 'Basic',
+    role: 'real-estater',
     price: '49',
     tax: '24',
+    listings: 50,
     priceText: (
       <span>
         Become a{' '}
-        <span className=' text-primary text-3xl tracking-wide'>
+        <span
+          className={`text-${
+            mapEnumObject('real-estater', roles).color
+          } text-3xl tracking-wide`}
+        >
           Real-Estater
-        </span>{' '}
-        / year
+        </span>
       </span>
     ),
     list: [
@@ -138,13 +155,22 @@ const subscriptions = [
     ],
   },
   {
+    id: 3,
     plan: 'Premium',
+    role: 'agent',
     price: '79',
     tax: '24',
+    listings: 1000,
     priceText: (
       <span>
         Be an{' '}
-        <span className=' text-primary text-3xl tracking-wide'>Agent</span>
+        <span
+          className={`text-${
+            mapEnumObject('agent', roles).color
+          } text-3xl tracking-wide`}
+        >
+          Agent
+        </span>
       </span>
     ),
     list: [
@@ -200,4 +226,4 @@ const subscriptions = [
   },
 ];
 
-export default subscriptions;
+export default subscriptionPlans;

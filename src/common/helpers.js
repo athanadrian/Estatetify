@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 // get substring between 2 specific characters
 export const getFirebaseErrorMessage = (str) => {
   if (str !== '' || undefined) {
@@ -57,4 +59,16 @@ export const normalizeMobile = (mobile) => {
 
   if (mobile.charAt(0) === '+') return mobile.substring(1);
   if (mobile.slice(0, 2) === '00') return mobile.substring(2);
+};
+
+// format date
+export const formatDate = (date, dateFormat = 'DD-MM-YYYY') => {
+  if (!date || typeof date !== 'string') {
+    return '';
+  }
+  return moment(date).format(dateFormat);
+};
+
+export const getDatesLeft = (toDate, fromDate) => {
+  return moment(toDate).endOf('day').fromNow(fromDate);
 };

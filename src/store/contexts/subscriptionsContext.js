@@ -1,6 +1,5 @@
 import { useContext, createContext, useReducer } from 'react';
 import { toast } from 'react-toastify';
-import { useAuth } from 'hooks/useAuth';
 import {
   db,
   onSnapshot,
@@ -32,29 +31,44 @@ import {
   CREATE_SUBSCRIPTION_BEGIN,
   CREATE_SUBSCRIPTION_SUCCESS,
   CREATE_SUBSCRIPTION_ERROR,
+  CREATE_PURCHASE_BEGIN,
+  CREATE_PURCHASE_SUCCESS,
+  CREATE_PURCHASE_ERROR,
   EDIT_SUBSCRIPTION_BEGIN,
   EDIT_SUBSCRIPTION_SUCCESS,
   EDIT_SUBSCRIPTION_ERROR,
   DELETE_SUBSCRIPTION_BEGIN,
   DELETE_SUBSCRIPTION_SUCCESS,
   DELETE_SUBSCRIPTION_ERROR,
+  SET_SHIPPING_ADDRESS,
+  SET_BILLING_ADDRESS,
+  CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
 } from '../actions/subscriptionsActions';
 import reducer from '../reducers/subscriptionsReducer';
-import { getFirebaseErrorMessage } from 'common/helpers';
+import { getDatesLeft, getFirebaseErrorMessage } from 'common/helpers';
+import { useListingContext } from './listingsContext';
+import { subscriptionPlans } from 'common/lookup-data';
+import { useAuthContext } from './authContext';
 
 const initialState = {
   isLoading: false,
+  hasActiveSubscriptionPlans: false,
+  currentTopActiveSubscription: undefined,
   subscription: undefined,
+  purchase: undefined,
   subscriptions: [],
+  activeSubscriptions: [],
   totalSubscriptions: 0,
+  shippingAddress: null,
+  billingAddress: null,
 };
 
 const SubscriptionContext = createContext();
 
 const SubscriptionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user } = useAuth();
-
+  const { user } = useAuthContext();
+  const { getMyListings, listings } = useListingContext();
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
@@ -83,7 +97,7 @@ const SubscriptionProvider = ({ children }) => {
     }
   };
 
-  const getPlanSubscriptions = (plan, lim) => {
+  const getSubscriptionsByPlan = (plan, lim) => {
     dispatch({ plan: GET_PLAN_SUBSCRIPTIONS_BEGIN });
     try {
       const subscriptionsRef = collection(db, 'subscriptions');
@@ -133,22 +147,24 @@ const SubscriptionProvider = ({ children }) => {
   const getMySubscriptions = () => {
     dispatch({ type: GET_MY_SUBSCRIPTIONS_BEGIN });
     try {
-      const q = query(
-        collection(db, 'subscriptions'),
-        where('userRef', '==', user?.uid)
-        //orderBy('timestamp', 'desc')
-      );
+      if (user) {
+        const q = query(
+          collection(db, 'subscriptions'),
+          where('userRef', '==', user?.uid),
+          orderBy('timestamp', 'desc')
+        );
 
-      onSnapshot(q, (querySnapshot) => {
-        const subscriptions = [];
-        querySnapshot.forEach((doc) => {
-          subscriptions.push({ id: doc.id, ...doc.data() });
+        onSnapshot(q, (querySnapshot) => {
+          const subscriptions = [];
+          querySnapshot.forEach((doc) => {
+            subscriptions.push({ id: doc.id, ...doc.data() });
+          });
+          dispatch({
+            type: GET_MY_SUBSCRIPTIONS_SUCCESS,
+            payload: { subscriptions },
+          });
         });
-        dispatch({
-          type: GET_MY_SUBSCRIPTIONS_SUCCESS,
-          payload: { subscriptions },
-        });
-      });
+      }
     } catch (error) {
       console.log('😱 Error get My subscriptions: ', error.message);
     }
@@ -173,13 +189,12 @@ const SubscriptionProvider = ({ children }) => {
     }
   };
 
-  const createSubscription = async (subscription) => {
+  const createSubscription = async (subscriptionInfo) => {
     dispatch({ type: CREATE_SUBSCRIPTION_BEGIN });
     try {
       const subscriptionData = {
-        ...subscription,
+        ...subscriptionInfo,
         timestamp: serverTimestamp(),
-        userRef: user.uid,
       };
       dispatch({
         type: CREATE_SUBSCRIPTION_SUCCESS,
@@ -190,6 +205,26 @@ const SubscriptionProvider = ({ children }) => {
         type: CREATE_SUBSCRIPTION_ERROR,
       });
       console.log('😱 Error Creating subscription: ', error.message);
+      toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
+    }
+  };
+
+  const createPurchase = async (purchaseInfo) => {
+    dispatch({ type: CREATE_PURCHASE_BEGIN });
+    try {
+      const purchaseData = {
+        ...purchaseInfo,
+        timestamp: serverTimestamp(),
+      };
+      dispatch({
+        type: CREATE_PURCHASE_SUCCESS,
+      });
+      return await addDoc(collection(db, 'purchases'), purchaseData);
+    } catch (error) {
+      dispatch({
+        type: CREATE_PURCHASE_ERROR,
+      });
+      console.log('😱 Error Creating purchase: ', error.message);
       toast.error('😱 Error: ' + getFirebaseErrorMessage(error.message));
     }
   };
@@ -237,6 +272,54 @@ const SubscriptionProvider = ({ children }) => {
     }
   };
 
+  const saveShippingAddressToState = (address) => {
+    dispatch({
+      type: SET_SHIPPING_ADDRESS,
+      payload: { shippingAddress: address },
+    });
+  };
+
+  const saveBillingAddressToState = (address) => {
+    dispatch({
+      type: SET_BILLING_ADDRESS,
+      payload: { billingAddress: address },
+    });
+  };
+
+  const checkForMyActiveSubscriptions = (plan) => {
+    getMySubscriptions();
+    getMyListings();
+    const activeSubscriptions = state.subscriptions
+      .filter((sub) => sub.isActive)
+      .map((sub) => {
+        const subscriptionPlan = subscriptionPlans.find(
+          (subPlan) => subPlan.plan.toLowerCase() === sub.plan.toLowerCase()
+        );
+        return {
+          subscriptionPlanId: subscriptionPlan.id,
+          plan: subscriptionPlan.plan,
+          expiringDate: sub.expiringDate,
+          listingsLeft: subscriptionPlan.listings - listings.length,
+          daysLeft: getDatesLeft(sub.expiringDate, sub.createdDate),
+        };
+      });
+    const currentTopActiveSubscription = activeSubscriptions.find(
+      (as) =>
+        as.subscriptionPlanId ===
+        Math.max(...activeSubscriptions.map((as) => as.subscriptionPlanId))
+    );
+
+    const hasActiveSubscriptionPlans = Boolean(currentTopActiveSubscription);
+    dispatch({
+      type: CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
+      payload: {
+        hasActiveSubscriptionPlans,
+        currentTopActiveSubscription,
+        activeSubscriptions,
+      },
+    });
+  };
+
   return (
     <SubscriptionContext.Provider
       value={{
@@ -245,11 +328,15 @@ const SubscriptionProvider = ({ children }) => {
         getAllSubscriptions,
         getMySubscriptions,
         getSubscriptionsByUser,
-        getPlanSubscriptions,
+        getSubscriptionsByPlan,
         getSubscription,
         createSubscription,
+        createPurchase,
         editSubscription,
         deleteSubscription,
+        saveShippingAddressToState,
+        saveBillingAddressToState,
+        checkForMyActiveSubscriptions,
       }}
     >
       {children}

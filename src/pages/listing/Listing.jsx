@@ -12,18 +12,18 @@ import 'swiper/css/bundle';
 import defaultStyles from 'common/config';
 import { AppButton, AppIcon, ContactModal, Loader } from 'components';
 import {
+  useAuthContext,
   useCommonContext,
   useListingContext,
   useProfileContext,
 } from 'store/contexts';
 import { displayPrice, mapEnumObject } from 'common/helpers';
 import { floors } from 'common/lookup-data';
-import { useAuth } from 'hooks/useAuth';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 const Listing = () => {
   const { listingId } = useParams();
-  const { user } = useAuth();
+  const { user } = useAuthContext();
   const { openModal } = useCommonContext();
   const { getListing, listing, isLoading } = useListingContext();
   const { profileUser, getProfileUser } = useProfileContext();
