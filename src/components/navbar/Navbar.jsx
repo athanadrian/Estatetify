@@ -12,6 +12,8 @@ import {
   useProfileContext,
 } from 'store/contexts';
 import { useEffect } from 'react';
+import { mapEnumObject } from 'common/helpers';
+import { roles } from 'common/lookup-data';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -129,7 +131,16 @@ const Navbar = () => {
                     }`
                   }
                 >
-                  dashboard
+                  <div className='flex justify-start items-center'>
+                    <AppIcon
+                      Icon={defaultStyles.icons.dashboard}
+                      className={`mr-4 ${
+                        mapEnumObject(myProfile?.role, roles).color
+                      }`}
+                      size={24}
+                    />
+                    dashboard
+                  </div>
                 </NavLink>
               </li>
             )}

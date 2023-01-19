@@ -40,6 +40,7 @@ import {
   BsBuilding,
   BsSearch,
   BsShieldCheck,
+  BsFillTagsFill,
 } from 'react-icons/bs';
 import {
   MdMenu,
@@ -55,6 +56,10 @@ import {
   MdOutlineStorage,
   MdOutlineSupportAgent,
   MdOutlineBusinessCenter,
+  MdOutlineLocalOffer,
+  MdOutlineLibraryAdd,
+  MdOutlineLibraryAddCheck,
+  MdOutlineLibraryBooks,
 } from 'react-icons/md';
 import { LogoIcon } from './svgIcons';
 
@@ -116,6 +121,11 @@ const icons = {
   support: MdOutlineSupportAgent,
   business: MdOutlineBusinessCenter,
   star: AiFillStar,
+  offers: MdOutlineLocalOffer, //BsTags
+  buy: MdOutlineLibraryAdd,
+  sell: MdOutlineLibraryAddCheck,
+  rent: MdOutlineLibraryBooks,
+  pricing: BsFillTagsFill,
 };
 
 export default icons;

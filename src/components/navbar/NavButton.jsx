@@ -1,5 +1,7 @@
+import { AppIcon } from 'components';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import defaultStyles from 'common/config';
 
 export const NavButton = ({ sidebar, link, name, onClick }) => {
   return (
@@ -16,7 +18,14 @@ export const NavButton = ({ sidebar, link, name, onClick }) => {
               }`
             }
           >
-            {name}
+            <div className='flex justify-start items-center'>
+              <AppIcon
+                Icon={defaultStyles.icons[name]}
+                className='mr-4'
+                size={24}
+              />
+              {name}
+            </div>
           </NavLink>
         </li>
       ) : (
