@@ -23,9 +23,11 @@ const Navbar = () => {
 
   const links = [
     { name: 'home', link: '/home' },
+    { name: 'offers', link: '/offers' },
     { name: 'buy', link: '/listings/sale' },
     { name: 'rent', link: '/listings/rent' },
-    { name: 'offers', link: '/offers' },
+    { name: 'sell', link: '/listings/add' },
+    { name: 'pricing', link: '/subscription-plans' },
   ];
   const showDashboard =
     loggedIn &&
@@ -71,19 +73,6 @@ const Navbar = () => {
             {links.map((link) => (
               <NavButton key={link.name} name={link.name} link={link.link} />
             ))}
-            <li className='relative group'>
-              <NavLink
-                to='/listings/add'
-                className={({ isActive }) =>
-                  `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
-                    isActive && 'text-darker border-b-primary'
-                  }`
-                }
-              >
-                sell
-              </NavLink>
-              <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
-            </li>
             {showDashboard && (
               <li className='relative group'>
                 <NavLink
@@ -128,20 +117,6 @@ const Navbar = () => {
                 onClick={toggleMenu}
               />
             ))}
-            <li className='relative group w-48'>
-              <NavLink
-                to='/listings/add'
-                onClick={toggleMenu}
-                className={({ isActive }) =>
-                  `inline-block text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
-                    isActive &&
-                    'text-darker text-center bg-gray-200 rounded-xl w-full px-2 py-3'
-                  }`
-                }
-              >
-                sell
-              </NavLink>
-            </li>
             {showDashboard && (
               <li className='relative group w-48'>
                 <NavLink
@@ -227,11 +202,23 @@ const renderAuthSection = (
       )}
       {loggedIn ? (
         <div className='flex items-center cursor-pointer'>
-          <ProfileAvatar
-            profile={myProfile}
-            className='relative w-[50px] h-[50px] text-white flex justify-center items-center rounded-full'
-            onClick={() => navigate('/profile')}
-          />
+          {showMenu ? (
+            <ProfileAvatar
+              profile={myProfile}
+              className={`relative w-[50px] h-[50px] text-white flex justify-center items-center rounded-full ${
+                showMenu && 'hidden'
+              }`}
+              onClick={() => navigate('/profile')}
+            />
+          ) : (
+            <Link to='/profile'>
+              <ProfileAvatar
+                profile={myProfile}
+                className='relative w-[50px] h-[50px] text-white flex justify-center items-center rounded-full'
+                onClick={() => navigate('/profile')}
+              />
+            </Link>
+          )}
         </div>
       ) : (
         <div className='text-gray-400 items-center flex'>

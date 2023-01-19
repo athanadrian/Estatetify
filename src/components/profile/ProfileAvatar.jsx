@@ -11,7 +11,7 @@ const ProfileAvatar = ({ profile, className, onClick, size = 24 }) => {
   return (
     <div className={className} onClick={onClick}>
       {profile?.avatar ? (
-        <>
+        <div>
           <img
             className={`relative rounded-full shadow-sm w-[50px] h-[50px] p-0.5 border ${border}`}
             src={profile?.avatar}
@@ -21,7 +21,7 @@ const ProfileAvatar = ({ profile, className, onClick, size = 24 }) => {
           <span className={`absolute ${color} top-0 -right-1`}>
             <AppIcon Icon={defaultStyles.icons.star} />
           </span>
-        </>
+        </div>
       ) : (
         <div
           className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border border-${border}`}

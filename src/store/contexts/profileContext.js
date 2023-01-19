@@ -76,15 +76,17 @@ const ProfileProvider = ({ children }) => {
   const getMyProfile = async () => {
     dispatch({ type: GET_MY_PROFILE_BEGIN });
     try {
-      const userRef = doc(db, 'users', user?.uid);
-      onSnapshot(userRef, (userDoc) => {
-        if (userDoc.exists()) {
-          dispatch({
-            type: GET_MY_PROFILE_SUCCESS,
-            payload: { myProfile: { ...userDoc.data(), uid: user?.uid } },
-          });
-        }
-      });
+      if (user) {
+        const userRef = doc(db, 'users', user?.uid);
+        onSnapshot(userRef, (userDoc) => {
+          if (userDoc.exists()) {
+            dispatch({
+              type: GET_MY_PROFILE_SUCCESS,
+              payload: { myProfile: { ...userDoc.data(), uid: user?.uid } },
+            });
+          }
+        });
+      }
     } catch (error) {
       console.log('😱 Error Get My Profile: ', error.message);
       dispatch({ type: GET_MY_PROFILE_ERROR });
