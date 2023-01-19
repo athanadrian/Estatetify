@@ -10,7 +10,7 @@ module.exports = {
         darker: '#1A3D4B',
         light: '#B9D5DE',
         owner: {
-          100: '',
+          100: '#d6d6d6',
           500: '#5E8EA2',
         },
         'real-estater': {
@@ -21,7 +21,10 @@ module.exports = {
           100: '#a7efe0',
           500: '#0bb792',
         },
-        admin: '#0086bd',
+        admin: {
+          100: '#a0def7',
+          500: '#0086bd',
+        },
       },
       screens: {
         xs: '300px',

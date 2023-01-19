@@ -21,29 +21,35 @@ const SideBar = forwardRef(({ showNav }, ref) => {
       auth: ['admin'],
     },
     {
+      name: 'Plans',
+      link: `/${myProfile?.role}/plans`,
+      icon: 'users',
+      auth: ['admin', 'agent'],
+    },
+    {
       name: 'listings',
       link: `/${myProfile?.role}/listings`,
       icon: 'listings',
-      auth: ['real-estater', 'admin'],
+      auth: ['real-estater', 'agent', 'admin'],
     },
     {
       name: 'add listing',
       link: `/${myProfile?.role}/add-listing`,
       icon: 'add_property',
-      auth: ['real-estater', 'admin'],
+      auth: ['real-estater', 'agent', 'admin'],
     },
     {
       name: 'manage',
-      link: `/${myProfile?.role}manage`,
+      link: `/${myProfile?.role}/manage`,
       icon: 'manage',
-      auth: ['real-estater', 'admin'],
+      auth: ['real-estater', 'agent', 'admin'],
     },
   ];
   return (
     <>
       <div ref={ref} className='fixed w-56 h-full bg-gray-100 shadow-sm'>
         <NavLink
-          to='/real-estater/dashboard'
+          to={`/${myProfile?.role}/dashboard`}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-${
               myProfile?.role

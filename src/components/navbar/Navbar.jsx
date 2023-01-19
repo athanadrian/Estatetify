@@ -4,7 +4,7 @@ import defaultStyles from 'common/config';
 import logo from 'images/estatetify-app.svg';
 import { NavButton } from './NavButton';
 import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   useAuthContext,
   useCommonContext,
@@ -22,18 +22,42 @@ const Navbar = () => {
   const [showMenu, setMenu] = useState(false);
 
   const links = [
-    { name: 'home', link: '/home' },
-    { name: 'offers', link: '/offers' },
-    { name: 'buy', link: '/listings/sale' },
-    { name: 'rent', link: '/listings/rent' },
-    { name: 'sell', link: '/listings/add' },
-    { name: 'pricing', link: '/subscription-plans' },
+    {
+      name: 'home',
+      link: '/home',
+      auth: ['user', 'real-estater', 'agent', 'admin'],
+    },
+    {
+      name: 'offers',
+      link: '/offers',
+      auth: ['user', 'real-estater', 'agent', 'admin'],
+    },
+    {
+      name: 'buy',
+      link: '/listings/sale',
+      auth: ['user', 'real-estater', 'agent', 'admin'],
+    },
+    {
+      name: 'rent',
+      link: '/listings/rent',
+      auth: ['user', 'real-estater', 'agent', 'admin'],
+    },
+    {
+      name: 'sell',
+      link: '/listings/add',
+      auth: ['user', 'real-estater', 'agent', 'admin'],
+    },
+    {
+      name: 'pricing',
+      link: '/subscription-plans',
+      auth: ['user', 'real-estater', 'agent', 'admin'],
+    },
+    {
+      name: 'dashboard',
+      link: `/${myProfile?.role}/dashboard`,
+      auth: ['real-estater', 'agent', 'admin'],
+    },
   ];
-  const showDashboard =
-    loggedIn &&
-    (myProfile?.role === 'real-estater' ||
-      myProfile?.role === 'agent' ||
-      myProfile?.role === 'admin');
 
   const toggleMenu = () => {
     setMenu((prevState) => !prevState);
@@ -70,25 +94,11 @@ const Navbar = () => {
         </div>
         <div className='hidden laptop:flex mx-auto'>
           <ul className='flex items-center justify-around space-x-10'>
-            {links.map((link) => (
-              <NavButton key={link.name} name={link.name} link={link.link} />
-            ))}
-            {showDashboard && (
-              <li className='relative group'>
-                <NavLink
-                  to={`/${myProfile?.role}/dashboard`}
-                  onClick={toggleMenu}
-                  className={({ isActive }) =>
-                    `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
-                      isActive && 'text-darker border-b-primary'
-                    }`
-                  }
-                >
-                  dashboard
-                </NavLink>
-                <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
-              </li>
-            )}
+            {links.map(({ name, link, auth }) => {
+              if (auth.some((a) => a === myProfile?.role)) {
+                return <NavButton key={name} name={name} link={link} />;
+              } else return null;
+            })}
             <li className='relative group'>
               <button
                 onClick={handleContactUs}
@@ -108,41 +118,20 @@ const Navbar = () => {
           }`}
         >
           <ul className='relative py-24 px-8 w-[90%] h-[95vh] rounded-xl bg-white z-[9999] flex items-center flex-col space-y-8'>
-            {links.map((link) => (
-              <NavButton
-                myProfile={myProfile}
-                sidebar
-                key={link.name}
-                name={link.name}
-                link={link.link}
-                onClick={toggleMenu}
-              />
-            ))}
-            {showDashboard && (
-              <li className='relative group w-48'>
-                <NavLink
-                  to={`/${myProfile?.role}/dashboard`}
-                  onClick={toggleMenu}
-                  className={({ isActive }) =>
-                    `pl-4 py-2 mx-5 capitalize rounded-lg text-center cursor-pointer flex items-center transition-colors
-                  ${
-                    isActive
-                      ? `bg-${myProfile?.role}-100 text-${myProfile?.role}-500`
-                      : `text-gray-500 hover:bg-${myProfile?.role}-100 hover:text-${myProfile?.role}-500`
-                  }`
-                  }
-                >
-                  <div className='flex justify-start items-center text-lg'>
-                    <AppIcon
-                      Icon={defaultStyles.icons.dashboard}
-                      className={`mr-4 text-${myProfile?.role}-500`}
-                      size={24}
-                    />
-                    dashboard
-                  </div>
-                </NavLink>
-              </li>
-            )}
+            {links.map(({ name, link, auth }) => {
+              if (auth.some((a) => a === myProfile?.role)) {
+                return (
+                  <NavButton
+                    myProfile={myProfile}
+                    sidebar
+                    key={name}
+                    name={name}
+                    link={link}
+                    onClick={toggleMenu}
+                  />
+                );
+              } else return null;
+            })}
             <li className='relative group'>
               <button
                 onClick={handleContactUs}
