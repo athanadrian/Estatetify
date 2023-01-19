@@ -20,9 +20,9 @@ const roles = [
   {
     id: '3',
     title: 'real-estater',
-    color: 'text-realEstater',
+    color: 'real-stater',
     border: 'border-realEstater',
-    bg: 'bg-realEstater',
+    bg: 'real-stater',
     shadow: 'shadow-[0_0_5px_0_rgba(255,105,34,0.5)]',
     enum: 'real-estater',
   },

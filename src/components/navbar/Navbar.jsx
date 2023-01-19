@@ -12,8 +12,6 @@ import {
   useProfileContext,
 } from 'store/contexts';
 import { useEffect } from 'react';
-import { mapEnumObject } from 'common/helpers';
-import { roles } from 'common/lookup-data';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -109,9 +107,10 @@ const Navbar = () => {
               : 'hidden'
           }`}
         >
-          <ul className='relative py-24 px-8 w-[90%] h-[95vh] rounded-xl bg-white z-[9999] flex items-center flex-col space-y-10'>
+          <ul className='relative py-24 px-8 w-[90%] h-[95vh] rounded-xl bg-white z-[9999] flex items-center flex-col space-y-8'>
             {links.map((link) => (
               <NavButton
+                myProfile={myProfile}
                 sidebar
                 key={link.name}
                 name={link.name}
@@ -125,18 +124,18 @@ const Navbar = () => {
                   to={`/${myProfile?.role}/dashboard`}
                   onClick={toggleMenu}
                   className={({ isActive }) =>
-                    `inline-block text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
-                      isActive &&
-                      'text-darker text-center bg-gray-200 rounded-xl w-full px-2 py-3'
-                    }`
+                    `pl-4 py-2 mx-5 capitalize rounded-lg text-center cursor-pointer flex items-center transition-colors
+                  ${
+                    isActive
+                      ? `bg-${myProfile?.role}-100 text-${myProfile?.role}-500`
+                      : `text-gray-500 hover:bg-${myProfile?.role}-100 hover:text-${myProfile?.role}-500`
+                  }`
                   }
                 >
-                  <div className='flex justify-start items-center'>
+                  <div className='flex justify-start items-center text-lg'>
                     <AppIcon
                       Icon={defaultStyles.icons.dashboard}
-                      className={`mr-4 ${
-                        mapEnumObject(myProfile?.role, roles).color
-                      }`}
+                      className={`mr-4 text-${myProfile?.role}-500`}
                       size={24}
                     />
                     dashboard

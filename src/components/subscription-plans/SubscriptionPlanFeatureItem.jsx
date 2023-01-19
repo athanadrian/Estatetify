@@ -7,8 +7,6 @@ import { AppIcon } from 'components';
 import defaultStyles from 'common/config';
 
 const SubscriptionPlanFeatureItem = ({
-  color,
-  border,
   shadow,
   role,
   price,
@@ -80,13 +78,13 @@ const SubscriptionPlanFeatureItem = ({
       <div className='flex md:flex-col md:gap-3 desktop:flex-row justify-between items-center'>
         <div className='flex flex-col gap-2 items-center'>
           <div
-            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border ${border}`}
+            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border border-${role}-500`}
           >
-            <span className={`absolute ${color} top-0 -right-1`}>
+            <span className={`absolute text-${role}-500 top-0 -right-1`}>
               <AppIcon Icon={defaultStyles.icons.star} />
             </span>
             <div
-              className={`bg-light w-full h-full ${color} flex justify-center items-center rounded-full`}
+              className={`bg-light w-full h-full text-${role}-500 flex justify-center items-center rounded-full`}
             >
               <AppIcon
                 size={24}
@@ -95,12 +93,14 @@ const SubscriptionPlanFeatureItem = ({
               />
             </div>
           </div>
-          <p className={`capitalize font-bold text-xl ${color} tracking-wider`}>
+          <p
+            className={`capitalize font-bold text-xl text-${role}-500 tracking-wider`}
+          >
             {role}
           </p>
         </div>
         <div className='flex flex-col gap-2'>
-          <p className={`capitalize text-xl ${color} tracking-wider`}>
+          <p className={`capitalize text-xl text-${role}-500 tracking-wider`}>
             {plan} Plan
           </p>
           <p className='text-sm tracking-wide text-gray-500'>

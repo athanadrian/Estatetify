@@ -1,4 +1,4 @@
-import { useContext, createContext, useReducer } from 'react';
+import { useContext, createContext, useReducer, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import {
   db,
@@ -46,10 +46,15 @@ import {
   CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
 } from '../actions/subscriptionsActions';
 import reducer from '../reducers/subscriptionsReducer';
-import { getDatesLeft, getFirebaseErrorMessage } from 'common/helpers';
+import {
+  checkCancellingDate,
+  getDatesLeft,
+  getFirebaseErrorMessage,
+} from 'common/helpers';
 import { useListingContext } from './listingsContext';
 import { subscriptionPlans } from 'common/lookup-data';
 import { useAuthContext } from './authContext';
+import { useProfileContext } from './profileContext';
 
 const initialState = {
   isLoading: false,
@@ -67,14 +72,36 @@ const initialState = {
 };
 
 const SubscriptionContext = createContext();
-
+const DAY_MINUTES = 1000 * 60 * 60 * 24;
 const SubscriptionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user } = useAuthContext();
+  const { loggedIn, user } = useAuthContext();
   const { fetchMyListings } = useListingContext();
+  const { getProfileUser, profileUser } = useProfileContext();
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
+
+  useEffect(() => {
+    if (loggedIn) getProfileUser(user?.uid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn, user]);
+
+  useEffect(() => {
+    let interval;
+    if (profileUser?.role === 'admin') {
+      interval = setInterval(async () => {
+        await cancelSubscription();
+      }, DAY_MINUTES);
+    }
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    // const timeOut = setTimeout(async () => {
+    //   await cancelSubscription();
+    // }, 3000);
+    // return () => clearTimeout(timeOut);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileUser]);
 
   const getAllSubscriptions = async () => {
     dispatch({ type: GET_ALL_SUBSCRIPTIONS_BEGIN });
@@ -343,6 +370,52 @@ const SubscriptionProvider = ({ children }) => {
         },
       });
     }
+  };
+
+  const fetchSubscriptions = async () => {
+    try {
+      const q = query(
+        collection(db, 'subscriptions'),
+        orderBy('timestamp', 'desc')
+      );
+      const subscriptions = [];
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        subscriptions.push({ id: doc.id, ...doc.data() });
+      });
+      return subscriptions;
+    } catch (error) {
+      console.log('😱 Error get My subscriptions: ', error.message);
+    }
+  };
+
+  const cancelSubscription = async () => {
+    const subscriptions = await fetchSubscriptions();
+    // .filter(
+    //   (sub) => sub?.isActive
+    // );
+    const activeSubs = subscriptions.filter((sub) => sub?.isActive);
+    console.log('cancel subs', activeSubs);
+    let cancelledSubscriptions = 0;
+    activeSubs.forEach(async (aSub) => {
+      // check if aSub expiration date is today
+      const isCancellingDate = checkCancellingDate(aSub.expiringDate);
+      if (isCancellingDate) {
+        try {
+          console.log('sub expired', aSub.id);
+          console.log('deleted', new Date());
+          const subRef = doc(db, 'subscriptions', aSub.id);
+          await updateDoc(subRef, {
+            isActive: false,
+          });
+          cancelledSubscriptions++;
+        } catch (error) {
+          console.log('😱 Error cancelling subscriptions: ', error.message);
+        }
+      }
+      console.log('cancelled: ', cancelledSubscriptions);
+      // update aSub change isActive to false
+    });
   };
 
   return (

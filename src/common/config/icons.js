@@ -41,6 +41,7 @@ import {
   BsSearch,
   BsShieldCheck,
   BsFillTagsFill,
+  BsPeople,
 } from 'react-icons/bs';
 import {
   MdMenu,
@@ -108,6 +109,7 @@ const icons = {
   listView: FaListAlt,
   burger_menu: MdMenu,
   profile: TfiUser,
+  users: BsPeople,
   dashboard: MdDashboard,
   subscriptions: MdSubscriptions,
   manage: AiFillSetting,

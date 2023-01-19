@@ -526,7 +526,7 @@ const ListingProvider = ({ children }) => {
     if (user) {
       try {
         const q = query(
-          collection(db, 'subscriptions'),
+          collection(db, 'listings'),
           where('userRef', '==', user?.uid)
           //orderBy('timestamp', 'desc')
         );

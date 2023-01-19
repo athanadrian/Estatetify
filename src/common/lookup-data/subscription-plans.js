@@ -1,6 +1,4 @@
 import defaultStyles from 'common/config';
-import { mapEnumObject } from 'common/helpers';
-import roles from './roles';
 
 const subscriptionPlans = [
   {
@@ -13,13 +11,7 @@ const subscriptionPlans = [
     priceText: (
       <span>
         Register and you are an{' '}
-        <span
-          className={`${
-            mapEnumObject('owner', roles).color
-          } text-3xl tracking-wide`}
-        >
-          Owner
-        </span>
+        <span className={`text-owner-500 text-3xl tracking-wide`}>Owner</span>
       </span>
     ),
     list: [
@@ -93,11 +85,7 @@ const subscriptionPlans = [
     priceText: (
       <span>
         Become a{' '}
-        <span
-          className={`${
-            mapEnumObject('real-estater', roles).color
-          } text-3xl tracking-wide`}
-        >
+        <span className='text-real-estater-500 text-3xl tracking-wide'>
           Real-Estater
         </span>
       </span>
@@ -164,13 +152,7 @@ const subscriptionPlans = [
     priceText: (
       <span>
         Be an{' '}
-        <span
-          className={`${
-            mapEnumObject('agent', roles).color
-          } text-3xl tracking-wide`}
-        >
-          Agent
-        </span>
+        <span className='text-agent-500 text-3xl tracking-wide'>Agent</span>
       </span>
     ),
     list: [

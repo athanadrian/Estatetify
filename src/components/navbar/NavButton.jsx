@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import defaultStyles from 'common/config';
 
-export const NavButton = ({ sidebar, link, name, onClick }) => {
+export const NavButton = ({ sidebar, link, name, onClick, myProfile }) => {
   return (
     <div>
       {sidebar ? (
@@ -12,13 +12,15 @@ export const NavButton = ({ sidebar, link, name, onClick }) => {
             to={link}
             onClick={onClick}
             className={({ isActive }) =>
-              ` inline-block text-center text-lg capitalize cursor-pointer font-semibold text-dark border-b-[3px] border-b-transparent ${
-                isActive &&
-                'text-darker bg-gray-200 rounded-xl w-full px-2 py-3 '
-              }`
+              `pl-4 py-2 mx-5 capitalize rounded-lg text-center cursor-pointer flex items-center transition-colors
+            ${
+              isActive
+                ? `bg-${myProfile?.role}-100 text-${myProfile?.role}-500`
+                : `text-gray-500 hover:bg-${myProfile?.role}-100 hover:text-${myProfile?.role}-500`
+            }`
             }
           >
-            <div className='flex justify-start items-center'>
+            <div className='flex justify-start items-center text-lg'>
               <AppIcon
                 Icon={defaultStyles.icons[name]}
                 className='mr-4'

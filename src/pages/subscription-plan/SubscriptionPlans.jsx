@@ -34,8 +34,6 @@ const SubscriptionPlans = () => {
             role={role}
             plan={plan}
             price={price}
-            color={mapEnumObject(role, roles).color}
-            border={mapEnumObject(role, roles).border}
             shadow={mapEnumObject(role, roles).shadow}
             listings={listings}
             activeSubscriptions={activeSubscriptions}
@@ -45,17 +43,13 @@ const SubscriptionPlans = () => {
       {subscriptionPlans.map(({ id, list, plan, role }) => (
         <section
           key={id}
-          className={`sm:max-w-[98%] rounded-xl ${
-            mapEnumObject(role, roles).border
-          } ${
+          className={`sm:max-w-[98%] rounded-xl border${role}-500 ${
             mapEnumObject(role, roles).shadow
           } max-w-[90%] p-5 bg-white mx-auto my-10`}
         >
           <PageHeader
             title={`${plan} Plan`}
-            className={`mb-1 font-normal text-left ${
-              mapEnumObject(role, roles).color
-            }`}
+            className={`mb-1 font-normal text-left text-${role}-500`}
           />
           <SubscriptionSummary
             page

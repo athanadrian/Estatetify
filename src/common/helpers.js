@@ -82,3 +82,7 @@ export const getDatesLeft = (toDate, fromDate) => {
     remainingDays,
   };
 };
+
+export const checkCancellingDate = (expiringDate) => {
+  return moment() >= moment(expiringDate);
+};

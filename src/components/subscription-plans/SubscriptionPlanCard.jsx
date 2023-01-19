@@ -1,8 +1,6 @@
 import { AppIcon } from 'components';
 import { useEffect } from 'react';
 import { useAuthContext, useSubscriptionContext } from 'store/contexts';
-import { mapEnumObject } from 'common/helpers';
-import { roles } from 'common/lookup-data';
 import SubscriptionPlanButton from './SubscriptionPlanButton';
 
 const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
@@ -31,13 +29,7 @@ const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
             </button>
           </div>
         )}
-        <h3
-          className={`text-[22px] font-bold ${
-            mapEnumObject(role, roles).color
-          }`}
-        >
-          {plan}
-        </h3>
+        <h3 className={`text-[22px] font-bold text-${role}-500`}>{plan}</h3>
         <h1 className='text-6xl'>
           <span className='text-3xl font-medium'>€</span>
           {price}

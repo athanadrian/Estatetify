@@ -9,9 +9,18 @@ module.exports = {
         dark: '#31515E',
         darker: '#1A3D4B',
         light: '#B9D5DE',
-        owner: '#5E8EA2',
-        realEstater: '#ff6922',
-        agent: '#0bb792',
+        owner: {
+          100: '',
+          500: '#5E8EA2',
+        },
+        'real-estater': {
+          100: '#ffedd5',
+          500: '#ff6922',
+        },
+        agent: {
+          100: '#a7efe0',
+          500: '#0bb792',
+        },
         admin: '#0086bd',
       },
       screens: {
