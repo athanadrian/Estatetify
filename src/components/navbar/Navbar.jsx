@@ -25,32 +25,32 @@ const Navbar = () => {
     {
       name: 'home',
       link: '/home',
-      auth: ['user', 'real-estater', 'agent', 'admin'],
+      auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
     },
     {
       name: 'offers',
       link: '/offers',
-      auth: ['user', 'real-estater', 'agent', 'admin'],
+      auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
     },
     {
       name: 'buy',
       link: '/listings/sale',
-      auth: ['user', 'real-estater', 'agent', 'admin'],
+      auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
     },
     {
       name: 'rent',
       link: '/listings/rent',
-      auth: ['user', 'real-estater', 'agent', 'admin'],
+      auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
     },
     {
       name: 'sell',
       link: '/listings/add',
-      auth: ['user', 'real-estater', 'agent', 'admin'],
+      auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
     },
     {
       name: 'pricing',
       link: '/subscription-plans',
-      auth: ['user', 'real-estater', 'agent', 'admin'],
+      auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
     },
     {
       name: 'dashboard',
