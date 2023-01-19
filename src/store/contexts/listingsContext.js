@@ -21,6 +21,7 @@ import {
   orderBy,
   startAfter,
   serverTimestamp,
+  getDocs,
 } from 'firebase.config';
 
 import {
@@ -521,6 +522,26 @@ const ListingProvider = ({ children }) => {
     });
   };
 
+  const fetchMyListings = async () => {
+    if (user) {
+      try {
+        const q = query(
+          collection(db, 'subscriptions'),
+          where('userRef', '==', user?.uid)
+          //orderBy('timestamp', 'desc')
+        );
+        const listings = [];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          listings.push({ id: doc.id, ...doc.data() });
+        });
+        return listings;
+      } catch (error) {
+        console.log('😱 Error get My subscriptions: ', error.message);
+      }
+    }
+  };
+
   return (
     <ListingContext.Provider
       value={{
@@ -546,6 +567,7 @@ const ListingProvider = ({ children }) => {
         addRemoveFavorite,
         removeAllFavorites,
         clearFilteredListings,
+        fetchMyListings,
       }}
     >
       {children}

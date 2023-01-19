@@ -99,7 +99,6 @@ const SignUp = () => {
                   Sign in
                 </Link>
               </p>
-              {/* <p className='text-sm text-dark'>Forgot password?</p> */}
             </div>
             <AuthButton>Sign up</AuthButton>
           </form>

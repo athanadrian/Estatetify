@@ -27,7 +27,6 @@ const Checkout = () => {
   const userEmail = user?.email;
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
     fetch('http://localhost:3002/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

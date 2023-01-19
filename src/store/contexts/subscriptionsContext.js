@@ -14,6 +14,7 @@ import {
   where,
   orderBy,
   serverTimestamp,
+  getDocs,
 } from 'firebase.config';
 
 import {
@@ -70,8 +71,7 @@ const SubscriptionContext = createContext();
 const SubscriptionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useAuthContext();
-  const { getMyListings, listings } = useListingContext();
-  const { loggedIn } = useAuthContext();
+  const { fetchMyListings } = useListingContext();
   const setLoading = (status) => {
     dispatch({ type: SET_LOADING, payload: { status } });
   };
@@ -144,6 +144,26 @@ const SubscriptionProvider = ({ children }) => {
       });
     } catch (error) {
       console.log('😱 Error get User subscriptions: ', error.message);
+    }
+  };
+
+  const fetchMySubscriptions = async () => {
+    if (user) {
+      try {
+        const q = query(
+          collection(db, 'subscriptions'),
+          where('userRef', '==', user?.uid)
+          //orderBy('timestamp', 'desc')
+        );
+        const subscriptions = [];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          subscriptions.push({ id: doc.id, ...doc.data() });
+        });
+        return subscriptions;
+      } catch (error) {
+        console.log('😱 Error get My subscriptions: ', error.message);
+      }
     }
   };
 
@@ -289,53 +309,40 @@ const SubscriptionProvider = ({ children }) => {
     });
   };
 
-  const checkForMyActiveSubscriptions = () => {
-    console.log('ctx enrolled');
-    getMySubscriptions();
-    getMyListings();
-    const activeSubscriptions = state.subscriptions
-      .filter((sub) => sub.isActive)
-      .map((sub) => {
-        const subscriptionPlan = subscriptionPlans.find(
-          (subPlan) => subPlan.plan.toLowerCase() === sub.plan.toLowerCase()
-        );
-        return {
-          subscriptionPlanId: subscriptionPlan.id,
-          plan: subscriptionPlan.plan,
-          expiringDate: sub.expiringDate,
-          listingsLeft: subscriptionPlan.listings - listings.length,
-          daysLeft: getDatesLeft(sub.expiringDate, sub.createdDate),
-        };
+  const checkForMyActiveSubscriptions = async () => {
+    const allSubscriptions = await fetchMySubscriptions();
+    const myListings = await fetchMyListings();
+    if (allSubscriptions && myListings) {
+      const activeSubscriptions = allSubscriptions
+        .filter((sub) => sub?.isActive)
+        .map((sub) => {
+          const subscriptionPlan = subscriptionPlans.find(
+            (subPlan) => subPlan.plan.toLowerCase() === sub?.plan.toLowerCase()
+          );
+          return {
+            subscriptionPlanId: subscriptionPlan.id,
+            plan: subscriptionPlan.plan,
+            expiringDate: sub?.expiringDate,
+            listingsLeft: subscriptionPlan.listings - myListings.length,
+            relativeDays: getDatesLeft(sub?.expiringDate, sub?.createdDate),
+          };
+        });
+      const currentTopActiveSubscription = activeSubscriptions.find(
+        (as) =>
+          as.subscriptionPlanId ===
+          Math.max(...activeSubscriptions.map((as) => as.subscriptionPlanId))
+      );
+      const hasActiveSubscriptionPlans = Boolean(currentTopActiveSubscription);
+      dispatch({
+        type: CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
+        payload: {
+          allSubscriptions,
+          activeSubscriptions,
+          hasActiveSubscriptionPlans,
+          currentTopActiveSubscription,
+        },
       });
-    const currentTopActiveSubscription = activeSubscriptions.find(
-      (as) =>
-        as.subscriptionPlanId ===
-        Math.max(...activeSubscriptions.map((as) => as.subscriptionPlanId))
-    );
-
-    const hasActiveSubscriptionPlans = Boolean(currentTopActiveSubscription);
-    const isEnrolled = loggedIn && hasActiveSubscriptionPlans;
-    dispatch({
-      type: CHECK_FOR_ACTIVE_SUBSCRIPTION_PLANS,
-      payload: {
-        hasActiveSubscriptionPlans,
-        isEnrolled,
-        currentTopActiveSubscription,
-        activeSubscriptions,
-      },
-    });
-  };
-
-  const checkIsEnrolledSubscription = (plan) => {
-    getMySubscriptions();
-    let activeSub = null;
-    const activeSubscriptions = state.subscriptions.filter(
-      (sub) => sub.isActive
-    );
-    activeSubscriptions.forEach((sub) => {
-      if (sub.plan.toLowerCase() === plan.toLowerCase()) activeSub = sub;
-    });
-    if (activeSub && loggedIn) return true;
+    }
   };
 
   return (
@@ -355,7 +362,6 @@ const SubscriptionProvider = ({ children }) => {
         saveShippingAddressToState,
         saveBillingAddressToState,
         checkForMyActiveSubscriptions,
-        checkIsEnrolledSubscription,
       }}
     >
       {children}

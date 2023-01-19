@@ -70,5 +70,15 @@ export const formatDate = (date, dateFormat = 'DD-MM-YYYY') => {
 };
 
 export const getDatesLeft = (toDate, fromDate) => {
-  return moment(toDate).endOf('day').fromNow(fromDate);
+  let start = moment(fromDate);
+  let end = moment(toDate);
+  let current = moment().startOf('day');
+
+  //Difference in number of days
+  const elapsedDays = moment.duration(current.diff(start)).asDays();
+  const remainingDays = moment.duration(end.diff(current)).asDays();
+  return {
+    elapsedDays,
+    remainingDays,
+  };
 };

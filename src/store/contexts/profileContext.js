@@ -73,46 +73,25 @@ const ProfileProvider = ({ children }) => {
     }
   };
 
-  // const getProfileUser = async (id) => {
-  //   if (id) {
-  //     dispatch({ type: GET_USER_BEGIN });
-  //     try {
-  //       const userRef = doc(db, 'users', id);
-  //       onSnapshot(userRef, (userDoc) => {
-  //         if (userDoc.exists()) {
-  //           dispatch({
-  //             type: GET_USER_SUCCESS,
-  //             payload: { profileUser: { ...userDoc.data(), uid: id } },
-  //           });
-  //         }
-  //       });
-  //     } catch (error) {
-  //       console.log('😱 Error Get User: ', error.message);
-  //       dispatch({ type: GET_USER_ERROR });
-  //       toast.error('😱 Error: Could not get user data');
-  //     }
-  //   }
-  // };
-
   const getMyProfile = async () => {
-    if (user) {
-      dispatch({ type: GET_MY_PROFILE_BEGIN });
-      try {
-        const userRef = doc(db, 'users', user?.uid);
-        const userDoc = await getDoc(userRef);
+    dispatch({ type: GET_MY_PROFILE_BEGIN });
+    try {
+      const userRef = doc(db, 'users', user?.uid);
+      onSnapshot(userRef, (userDoc) => {
         if (userDoc.exists()) {
           dispatch({
             type: GET_MY_PROFILE_SUCCESS,
             payload: { myProfile: { ...userDoc.data(), uid: user?.uid } },
           });
         }
-      } catch (error) {
-        console.log('😱 Error Get User: ', error.message);
-        dispatch({ type: GET_MY_PROFILE_ERROR });
-        toast.error('😱 Error: Could not get user data');
-      }
+      });
+    } catch (error) {
+      console.log('😱 Error Get My Profile: ', error.message);
+      dispatch({ type: GET_MY_PROFILE_ERROR });
+      toast.error('😱 Error: Could not get profile');
     }
   };
+
   const getProfileUser = async (id) => {
     if (id) {
       dispatch({ type: GET_USER_PROFILE_BEGIN });

@@ -157,7 +157,6 @@ const CheckoutForm = ({ price, plan, role }) => {
                 )}
               </span>
             </button>
-            {/* Show any error or success messages */}
             {message && (
               <div
                 className='text-[rgb(105,115,134)] text-lg pt-5 text-center'

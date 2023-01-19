@@ -1,14 +1,40 @@
 import React from 'react';
-import { AppIcon } from 'components';
+import { AppIcon, SubscriptionPlanButton } from 'components';
+import { mapEnumObject } from 'common/helpers';
+import { roles } from 'common/lookup-data';
+import { useAuthContext } from 'store/contexts';
 
-const SubscriptionSummary = ({ list }) => {
+const SubscriptionSummary = ({ plan, list, role, activeSubscriptions }) => {
+  const { loggedIn } = useAuthContext();
   const features = list.filter((feat) => feat.isFeature);
+  const color = mapEnumObject(role, roles).color;
+  const border = mapEnumObject(role, roles).border;
+  const bg = mapEnumObject(role, roles).bg;
+
+  const enrolled =
+    loggedIn &&
+    activeSubscriptions.some(
+      (sub) => sub.plan.toLowerCase() === plan.toLowerCase()
+    );
   return (
     <>
       <div className='my-5 sm:mr-5 '>
-        <h1 className='border-b pb-1 text-3xl text-darker font-thin tracking-wider'>
-          Features
-        </h1>
+        <div className='flex justify-between items-center border-b'>
+          <h1 className='pb-1 text-3xl text-darker font-thin tracking-wider'>
+            Features
+          </h1>
+          <SubscriptionPlanButton
+            className={`mb-2 font-semibold py-2 px-4 border rounded-lg 
+            ${
+              enrolled
+                ? `${bg} text-white cursor-default`
+                : `${color} ${border} bg-transparent hover:border-transparent hover:${bg} hover:text-white`
+            }`}
+            plan={plan}
+            enrolled={enrolled}
+            activeSubscriptions={activeSubscriptions}
+          />
+        </div>
         <div className='mt-2 p-2'>
           <ul>
             {features.map(({ text, description, featureIcon }, index) => (

@@ -1,25 +1,26 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useSubscriptionContext } from 'store/contexts';
+import { useAuthContext } from 'store/contexts';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
-const SubscriptionPlanButton = ({ plan, className, style }) => {
+const SubscriptionPlanButton = ({
+  activeSubscriptions,
+  plan,
+  className,
+  style,
+  enrolled,
+}) => {
+  const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
-  const {
-    checkForMyActiveSubscriptions,
-    //checkIsEnrolledSubscription,
-    subscriptions: mySubscriptions,
-    isEnrolled,
-    getMySubscriptions,
-  } = useSubscriptionContext();
 
   const handlePlan = (plan) => {
     switch (plan.toLowerCase()) {
       case 'free':
         if (
-          mySubscriptions.some(
+          loggedIn &&
+          activeSubscriptions.some(
             (sub) =>
-              sub.isActive && (sub.plan === 'premium' || sub.plan === 'basic')
+              sub.plan.toLowerCase() === 'premium' ||
+              sub.plan.toLowerCase() === 'basic'
           )
         ) {
           Report.info(
@@ -33,7 +34,10 @@ const SubscriptionPlanButton = ({ plan, className, style }) => {
         break;
       case 'basic': {
         if (
-          mySubscriptions.some((sub) => sub.isActive && sub.plan === 'premium')
+          loggedIn &&
+          activeSubscriptions.some(
+            (sub) => sub.plan.toLowerCase() === 'premium'
+          )
         ) {
           Report.info(
             'Subscription Info',
@@ -53,19 +57,13 @@ const SubscriptionPlanButton = ({ plan, className, style }) => {
     }
   };
 
-  useEffect(() => {
-    getMySubscriptions();
-    checkForMyActiveSubscriptions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <button
       className={className}
       style={style}
-      onClick={!isEnrolled ? () => handlePlan(plan) : null}
+      onClick={!enrolled ? () => handlePlan(plan) : null}
     >
-      {`${isEnrolled ? 'Already enrolled' : `Start ${plan}`}`}
+      {`${enrolled ? 'Enrolled' : `Start ${plan}`}`}
     </button>
   );
 };

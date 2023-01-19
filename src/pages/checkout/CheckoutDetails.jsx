@@ -81,7 +81,6 @@ const CheckoutDetails = () => {
       <form onSubmit={handleSubmit}>
         <div className='grid sm:grid-cols-2'>
           <div className='my-5 sm:mr-5 '>
-            {/* SHIPPING ADDRESS */}
             <h1 className='border-b pb-1 text-3xl text-darker font-thin tracking-wider'>
               Shipping Address
             </h1>
@@ -173,7 +172,6 @@ const CheckoutDetails = () => {
                 />
               </div>
             </div>
-            {/* BILLING ADDRESS ON DEMAND */}
             <div className='flex justify-between items-center border-b pb-1 mt-6'>
               <h1 className='text-3xl text-darker font-thin tracking-wider'>
                 Billing Address

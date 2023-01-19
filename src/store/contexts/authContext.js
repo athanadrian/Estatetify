@@ -53,7 +53,6 @@ const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     await auth.signOut();
-    // dispatch({ type: SET_LOGOUT_USER });
   };
 
   const signUpUser = async (signUpData) => {
