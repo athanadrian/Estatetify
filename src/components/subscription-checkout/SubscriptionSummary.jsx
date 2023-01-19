@@ -13,8 +13,8 @@ const SubscriptionSummary = ({ plan, list, role, activeSubscriptions }) => {
 
   const enrolled =
     loggedIn &&
-    activeSubscriptions.some(
-      (sub) => sub.plan.toLowerCase() === plan.toLowerCase()
+    activeSubscriptions?.some(
+      (sub) => sub?.plan.toLowerCase() === plan.toLowerCase()
     );
   return (
     <>

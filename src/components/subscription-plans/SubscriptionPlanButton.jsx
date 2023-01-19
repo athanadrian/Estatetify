@@ -17,7 +17,7 @@ const SubscriptionPlanButton = ({
       case 'free':
         if (
           loggedIn &&
-          activeSubscriptions.some(
+          activeSubscriptions?.some(
             (sub) =>
               sub.plan.toLowerCase() === 'premium' ||
               sub.plan.toLowerCase() === 'basic'
@@ -35,7 +35,7 @@ const SubscriptionPlanButton = ({
       case 'basic': {
         if (
           loggedIn &&
-          activeSubscriptions.some(
+          activeSubscriptions?.some(
             (sub) => sub.plan.toLowerCase() === 'premium'
           )
         ) {

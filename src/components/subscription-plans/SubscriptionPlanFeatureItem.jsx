@@ -21,8 +21,8 @@ const SubscriptionPlanFeatureItem = ({
 
   const enrolled =
     loggedIn &&
-    activeSubscriptions.some(
-      (sub) => sub.plan.toLowerCase() === plan.toLowerCase()
+    activeSubscriptions?.some(
+      (sub) => sub?.plan.toLowerCase() === plan.toLowerCase()
     );
 
   const handlePlan = (plan) => {
@@ -30,7 +30,7 @@ const SubscriptionPlanFeatureItem = ({
       case 'free':
         if (
           loggedIn &&
-          activeSubscriptions.some(
+          activeSubscriptions?.some(
             (sub) =>
               sub.plan.toLowerCase() === 'premium' ||
               sub.plan.toLowerCase() === 'basic'
@@ -48,7 +48,7 @@ const SubscriptionPlanFeatureItem = ({
       case 'basic': {
         if (
           loggedIn &&
-          activeSubscriptions.some(
+          activeSubscriptions?.some(
             (sub) => sub.plan.toLowerCase() === 'premium'
           )
         ) {
