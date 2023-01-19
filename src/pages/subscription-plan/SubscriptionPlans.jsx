@@ -58,6 +58,7 @@ const SubscriptionPlans = () => {
             }`}
           />
           <SubscriptionSummary
+            page
             key={id}
             list={list}
             role={role}
