@@ -1,3 +1,5 @@
+import { mapEnumObject } from 'common/helpers';
+import { roles } from 'common/lookup-data';
 import { AppIcon } from 'components';
 import { useEffect } from 'react';
 import { useAuthContext, useSubscriptionContext } from 'store/contexts';
@@ -7,6 +9,7 @@ const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
   const { loggedIn } = useAuthContext();
   const { checkForMyActiveSubscriptions, activeSubscriptions } =
     useSubscriptionContext();
+  const { txtColor } = mapEnumObject(role, roles);
 
   useEffect(() => {
     checkForMyActiveSubscriptions();
@@ -29,7 +32,7 @@ const SubscriptionPlanCard = ({ best, plan, price, priceText, list, role }) => {
             </button>
           </div>
         )}
-        <h3 className={`text-[22px] font-bold text-${role}-500`}>{plan}</h3>
+        <h3 className={`text-[22px] font-bold ${txtColor}`}>{plan}</h3>
         <h1 className='text-6xl'>
           <span className='text-3xl font-medium'>€</span>
           {price}

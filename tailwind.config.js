@@ -1,6 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  safelist: [
+    'bg-owner-100',
+    'bg-owner-500',
+    'bg-real-estater-100',
+    'bg-real-estater-500',
+    'bg-agent-100',
+    'bg-agent-500',
+    'bg-admin-100',
+    'bg-admin-500',
+    {
+      pattern:
+        /(text|bg|border)-(user|owner|real-estater|agent|admin)-(500|100)/,
+    },
+  ],
   theme: {
     extend: {
       colors: {

@@ -2,8 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { AppIcon } from 'components';
 import defaultStyles from 'common/config';
+import { mapEnumObject } from 'common/helpers';
+import { roles } from 'common/lookup-data';
 
 const SideBarButton = ({ link, name, icon, role }) => {
+  const { bgColorLight, txtColor } = mapEnumObject(role, roles);
   return (
     <li className='relative'>
       <NavLink
@@ -13,8 +16,8 @@ const SideBarButton = ({ link, name, icon, role }) => {
         }) => `pl-6 py-3 mx-5 capitalize rounded text-center cursor-pointer mb-3 flex items-center transition-colors
           ${
             isActive
-              ? `bg-${role}-100 text-${role}-500`
-              : `text-gray-500 hover:bg-${role}-100 hover:text-${role}-500`
+              ? `${bgColorLight} ${txtColor}`
+              : `text-gray-500 hover:${bgColorLight} hover:${txtColor}`
           }`}
       >
         <div className='mr-2'>

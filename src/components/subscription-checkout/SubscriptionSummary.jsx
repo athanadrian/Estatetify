@@ -1,6 +1,8 @@
 import React from 'react';
 import { AppIcon, SubscriptionPlanButton } from 'components';
 import { useAuthContext } from 'store/contexts';
+import { mapEnumObject } from 'common/helpers';
+import { roles } from 'common/lookup-data';
 
 const SubscriptionSummary = ({
   page,
@@ -11,6 +13,7 @@ const SubscriptionSummary = ({
 }) => {
   const { loggedIn } = useAuthContext();
   const features = list.filter((feat) => feat.isFeature);
+  const { bgColor, brdColor, txtColor } = mapEnumObject(role, roles);
 
   const enrolled =
     loggedIn &&
@@ -28,8 +31,8 @@ const SubscriptionSummary = ({
             <SubscriptionPlanButton
               className={`mb-2 font-semibold py-2 px-4 rounded-lg ${
                 enrolled
-                  ? `bg-${role}-500 text-white cursor-default`
-                  : `text-${role}-500 border border-${role}-500 bg-transparent hover:border-transparent hover:bg-${role}-500 hover:text-white`
+                  ? `${bgColor} text-white cursor-default`
+                  : `${txtColor} border ${brdColor} bg-transparent hover:border-transparent hover:${bgColor} hover:text-white`
               }`}
               plan={plan}
               enrolled={enrolled}

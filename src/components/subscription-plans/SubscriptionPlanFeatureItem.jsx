@@ -5,6 +5,8 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 import { useAuthContext } from 'store/contexts';
 import { AppIcon } from 'components';
 import defaultStyles from 'common/config';
+import { mapEnumObject } from 'common/helpers';
+import { roles } from 'common/lookup-data';
 
 const SubscriptionPlanFeatureItem = ({
   shadow,
@@ -16,6 +18,7 @@ const SubscriptionPlanFeatureItem = ({
 }) => {
   const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
+  const { brdColor, txtColor } = mapEnumObject(role, roles);
 
   const enrolled =
     loggedIn &&
@@ -78,13 +81,13 @@ const SubscriptionPlanFeatureItem = ({
       <div className='flex md:flex-col md:gap-3 desktop:flex-row justify-between items-center'>
         <div className='flex flex-col gap-2 items-center'>
           <div
-            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border border-${role}-500`}
+            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border ${brdColor}`}
           >
-            <span className={`absolute text-${role}-500 top-0 -right-1`}>
+            <span className={`absolute ${txtColor} top-0 -right-1`}>
               <AppIcon Icon={defaultStyles.icons.star} />
             </span>
             <div
-              className={`bg-light w-full h-full text-${role}-500 flex justify-center items-center rounded-full`}
+              className={`bg-light w-full h-full ${txtColor} flex justify-center items-center rounded-full`}
             >
               <AppIcon
                 size={24}
@@ -94,13 +97,13 @@ const SubscriptionPlanFeatureItem = ({
             </div>
           </div>
           <p
-            className={`capitalize font-bold text-xl text-${role}-500 tracking-wider`}
+            className={`capitalize font-bold text-xl ${txtColor} tracking-wider`}
           >
             {role}
           </p>
         </div>
         <div className='flex flex-col gap-2'>
-          <p className={`capitalize text-xl text-${role}-500 tracking-wider`}>
+          <p className={`capitalize text-xl ${txtColor} tracking-wider`}>
             {plan} Plan
           </p>
           <p className='text-sm tracking-wide text-gray-500'>

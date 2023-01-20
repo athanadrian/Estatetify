@@ -28,39 +28,44 @@ const SubscriptionPlans = () => {
         Pick the package that suits your needs and become
       </h2>
       <div className='flex flex-col md:flex-row w-full justify-around items-center mt-8 text-center'>
-        {subscriptionPlans.map(({ id, role, plan, listings, price }) => (
-          <SubscriptionPlanFeatureItem
-            key={id}
-            role={role}
-            plan={plan}
-            price={price}
-            shadow={mapEnumObject(role, roles).shadow}
-            listings={listings}
-            activeSubscriptions={activeSubscriptions}
-          />
-        ))}
+        {subscriptionPlans.map(({ id, role, plan, listings, price }) => {
+          const { shadow } = mapEnumObject(role, roles);
+          return (
+            <SubscriptionPlanFeatureItem
+              key={id}
+              role={role}
+              plan={plan}
+              price={price}
+              shadow={shadow}
+              listings={listings}
+              activeSubscriptions={activeSubscriptions}
+            />
+          );
+        })}
       </div>
-      {subscriptionPlans.map(({ id, list, plan, role }) => (
-        <section
-          key={id}
-          className={`sm:max-w-[98%] rounded-xl border${role}-500 ${
-            mapEnumObject(role, roles).shadow
-          } max-w-[90%] p-5 bg-white mx-auto my-10`}
-        >
-          <PageHeader
-            title={`${plan} Plan`}
-            className={`mb-1 font-normal text-left text-${role}-500`}
-          />
-          <SubscriptionSummary
-            page
+      {subscriptionPlans.map(({ id, list, plan, role }) => {
+        const { txtColor, brdColor, shadow } = mapEnumObject(role, roles);
+
+        return (
+          <section
             key={id}
-            list={list}
-            role={role}
-            plan={plan}
-            activeSubscriptions={activeSubscriptions}
-          />
-        </section>
-      ))}
+            className={`sm:max-w-[98%] rounded-xl ${brdColor} ${shadow} max-w-[90%] p-5 bg-white mx-auto my-10`}
+          >
+            <PageHeader
+              title={`${plan} Plan`}
+              className={`mb-1 font-normal text-left ${txtColor}`}
+            />
+            <SubscriptionSummary
+              page
+              key={id}
+              list={list}
+              role={role}
+              plan={plan}
+              activeSubscriptions={activeSubscriptions}
+            />
+          </section>
+        );
+      })}
     </div>
   );
 };
