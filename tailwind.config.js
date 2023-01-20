@@ -10,10 +10,14 @@ module.exports = {
     'bg-agent-500',
     'bg-admin-100',
     'bg-admin-500',
-    {
-      pattern:
-        /(text|bg|border)-(user|owner|real-estater|agent|admin)-(500|100)/,
-    },
+    'hover:bg-owner-100',
+    'hover:bg-owner-500',
+    'hover:bg-real-estater-100',
+    'hover:bg-real-estater-500',
+    'hover:bg-agent-100',
+    'hover:bg-agent-500',
+    'hover:bg-admin-100',
+    'hover:bg-admin-500',
   ],
   theme: {
     extend: {
