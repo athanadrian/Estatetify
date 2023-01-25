@@ -4,5 +4,7 @@ export { default as floors } from './floors';
 export { default as features } from './features';
 export { default as subscriptionPlans } from './subscription-plans';
 export { default as roles } from './roles';
+export { default as navBarLinks } from './navBarLinks';
+export { default as dashBoardLinks } from './dashBoardLinks';
 
 export { sizes };

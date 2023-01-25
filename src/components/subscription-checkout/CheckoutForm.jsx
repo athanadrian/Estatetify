@@ -68,6 +68,7 @@ const CheckoutForm = ({ price, plan, role }) => {
       userRef: user?.uid,
       userEmail: user?.email,
       purchaseRef: newPurchase.id,
+      role,
       plan,
       isActive: true,
       createdDate: purchasedDate,

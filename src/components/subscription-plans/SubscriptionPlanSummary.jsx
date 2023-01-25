@@ -4,7 +4,7 @@ import { useAuthContext } from 'store/contexts';
 import { mapEnumObject } from 'common/helpers';
 import { roles } from 'common/lookup-data';
 
-const SubscriptionSummary = ({
+const SubscriptionPlanSummary = ({
   page,
   plan,
   list,
@@ -67,4 +67,4 @@ const SubscriptionSummary = ({
   );
 };
 
-export default SubscriptionSummary;
+export default SubscriptionPlanSummary;

@@ -1,14 +1,15 @@
 import { Layout } from 'components';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-const Purchases = () => {
+const PurchaseDetails = () => {
+  const { purchaseId } = useParams();
   return (
     <Layout>
       <div className='bg-white flex justify-center items-center h-[80vh]'>
         <div className='flex justify-center items-center flex-col'>
-          <h2 className='laptop:text-[8rem] text-[4rem] text-primary'>
-            AG-Purchases
+          <h2 className='laptop:text-[2rem] text-[2rem] text-primary'>
+            {purchaseId}
           </h2>
           <p className='mb-8 text-center'>
             You must have an active subscription to access your management
@@ -23,4 +24,4 @@ const Purchases = () => {
   );
 };
 
-export default Purchases;
+export default PurchaseDetails;

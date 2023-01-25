@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
+
 import { AppIcon } from 'components';
 import defaultStyles from 'common/config';
 

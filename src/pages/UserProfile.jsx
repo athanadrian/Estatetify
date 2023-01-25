@@ -9,7 +9,7 @@ import {
 } from 'components';
 import { useListingContext, useProfileContext } from 'store/contexts';
 
-const OwnerProfile = () => {
+const UserProfile = () => {
   const { ownerId } = useParams();
   const { getProfileUser, profileUser } = useProfileContext();
   const {
@@ -51,4 +51,4 @@ const OwnerProfile = () => {
   );
 };
 
-export default OwnerProfile;
+export default UserProfile;

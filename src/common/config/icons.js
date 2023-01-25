@@ -6,6 +6,7 @@ import {
   AiOutlineMenuUnfold,
   AiOutlineMenuFold,
   AiFillStar,
+  AiOutlineLogout,
 } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { HiBell, HiCheck, HiChevronDown } from 'react-icons/hi';
@@ -42,6 +43,7 @@ import {
   BsShieldCheck,
   BsFillTagsFill,
   BsPeople,
+  BsThreeDotsVertical,
 } from 'react-icons/bs';
 import {
   MdMenu,
@@ -128,6 +130,8 @@ const icons = {
   sell: MdOutlineLibraryAddCheck,
   rent: MdOutlineLibraryBooks,
   pricing: BsFillTagsFill,
+  actions: BsThreeDotsVertical,
+  logout: AiOutlineLogout,
 };
 
 export default icons;

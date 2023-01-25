@@ -43,7 +43,7 @@ const SignIn = () => {
   useEffect(() => {
     if (loggedIn && user) {
       if (previousURL) {
-        const url = previousURL.substr(previousURL.indexOf('subscription/'));
+        const url = previousURL.substr(previousURL.indexOf('subscriptions/'));
         return navigate(`/${url}`);
       }
       navigate('/home');

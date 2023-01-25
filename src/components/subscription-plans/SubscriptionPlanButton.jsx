@@ -30,7 +30,7 @@ const SubscriptionPlanButton = ({
           );
           break;
         }
-        navigate('/subscription/free');
+        navigate('/subscriptions/free');
         break;
       case 'basic': {
         if (
@@ -46,11 +46,11 @@ const SubscriptionPlanButton = ({
           );
           break;
         }
-        navigate('/subscription/basic');
+        navigate('/subscriptions/basic');
         break;
       }
       case 'premium':
-        navigate('/subscription/premium');
+        navigate('/subscriptions/premium');
         break;
       default:
         break;

@@ -4,7 +4,7 @@ import {
   Loader,
   PageHeader,
   SubscriptionPlanFeatureItem,
-  SubscriptionSummary,
+  SubscriptionPlanSummary,
 } from 'components';
 import { roles, subscriptionPlans } from 'common/lookup-data';
 import { mapEnumObject } from 'common/helpers';
@@ -55,7 +55,7 @@ const SubscriptionPlans = () => {
               title={`${plan} Plan`}
               className={`mb-1 font-normal text-left ${txtColor}`}
             />
-            <SubscriptionSummary
+            <SubscriptionPlanSummary
               page
               key={id}
               list={list}

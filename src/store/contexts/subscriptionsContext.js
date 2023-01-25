@@ -90,6 +90,7 @@ const SubscriptionProvider = ({ children }) => {
   useEffect(() => {
     let interval;
     if (profileUser?.role === 'admin') {
+      console.log('Admin Action');
       interval = setInterval(async () => {
         await cancelSubscription();
       }, DAY_MINUTES);
@@ -409,6 +410,8 @@ const SubscriptionProvider = ({ children }) => {
             isActive: false,
           });
           cancelledSubscriptions++;
+          //TODO
+          // send notification to user *aSub.userRef*
         } catch (error) {
           console.log('😱 Error cancelling subscriptions: ', error.message);
         }

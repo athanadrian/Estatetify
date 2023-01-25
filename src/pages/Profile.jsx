@@ -38,7 +38,7 @@ const initialValues = {
 const Profile = () => {
   const navigate = useNavigate();
   const { logOut } = useAuthContext();
-  const { getMyProfile, updateUser, myProfile } = useProfileContext();
+  const { updateUser, myProfile } = useProfileContext();
   const {
     handleUploadImageToStorage,
     deleteImageFromStorage,
@@ -79,7 +79,6 @@ const Profile = () => {
     }
   }, [myProfile]);
   useEffect(() => {
-    getMyProfile();
     getMyListings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

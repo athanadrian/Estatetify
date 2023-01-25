@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import { useAuthContext } from 'store/contexts';
-import { AppIcon } from 'components';
-import defaultStyles from 'common/config';
+import { SubscriptionPlanAvatar } from 'components';
 import { mapEnumObject } from 'common/helpers';
 import { roles } from 'common/lookup-data';
 
@@ -18,7 +17,7 @@ const SubscriptionPlanFeatureItem = ({
 }) => {
   const { loggedIn } = useAuthContext();
   const navigate = useNavigate();
-  const { brdColor, txtColor } = mapEnumObject(role, roles);
+  const { txtColor } = mapEnumObject(role, roles);
 
   const enrolled =
     loggedIn &&
@@ -44,7 +43,7 @@ const SubscriptionPlanFeatureItem = ({
           );
           break;
         }
-        navigate('/subscription/free');
+        navigate('/subscriptions/free');
         break;
       case 'basic': {
         if (
@@ -60,11 +59,11 @@ const SubscriptionPlanFeatureItem = ({
           );
           break;
         }
-        navigate('/subscription/basic');
+        navigate('/subscriptions/basic');
         break;
       }
       case 'premium':
-        navigate('/subscription/premium');
+        navigate('/subscriptions/premium');
         break;
       default:
         break;
@@ -80,22 +79,7 @@ const SubscriptionPlanFeatureItem = ({
     >
       <div className='flex md:flex-col md:gap-3 desktop:flex-row justify-between items-center'>
         <div className='flex flex-col gap-2 items-center'>
-          <div
-            className={`relative bg-transparent w-[50px] h-[50px] p-0.5 rounded-full flex justify-center items-center border ${brdColor}`}
-          >
-            <span className={`absolute ${txtColor} top-0 -right-1`}>
-              <AppIcon Icon={defaultStyles.icons.star} />
-            </span>
-            <div
-              className={`bg-light w-full h-full ${txtColor} flex justify-center items-center rounded-full`}
-            >
-              <AppIcon
-                size={24}
-                Icon={defaultStyles.icons.profile}
-                tooltip={role}
-              />
-            </div>
-          </div>
+          <SubscriptionPlanAvatar role={role} />
           <p
             className={`capitalize font-bold text-xl ${txtColor} tracking-wider`}
           >

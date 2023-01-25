@@ -69,17 +69,17 @@ export const formatDate = (date, dateFormat = 'DD-MM-YYYY') => {
   return moment(date).format(dateFormat);
 };
 
-export const getDatesLeft = (toDate, fromDate) => {
-  let start = moment(fromDate);
-  let end = moment(toDate);
+export const getDatesLeft = (expiringDate, createdDate) => {
+  let start = moment(createdDate);
+  let end = moment(expiringDate);
   let current = moment().startOf('day');
 
   //Difference in number of days
   const elapsedDays = moment.duration(current.diff(start)).asDays();
   const remainingDays = moment.duration(end.diff(current)).asDays();
   return {
-    elapsedDays,
-    remainingDays,
+    elapsedDays: elapsedDays > 366 ? 366 : elapsedDays,
+    remainingDays: remainingDays < 0 ? 0 : remainingDays,
   };
 };
 

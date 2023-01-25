@@ -3,7 +3,7 @@ import {
   AppButton,
   PageHeader,
   PricingSummary,
-  SubscriptionSummary,
+  SubscriptionPlanSummary,
 } from 'components';
 import { mapEnumObject } from 'common/helpers';
 import { roles } from 'common/lookup-data';
@@ -19,7 +19,7 @@ const SubscriptionPlanDetails = ({ subscription, handleProceedPayment }) => {
         className={`mb-6 font-normal ${txtColor}`}
       />
       <div className='grid sm:grid-cols-2'>
-        <SubscriptionSummary list={list} />
+        <SubscriptionPlanSummary list={list} />
         <div className='my-5 sm:mr-5 '>
           <PricingSummary pricingPlan={plan} />
           <div className='flex justify-start items-center font-extralight mt-3'>

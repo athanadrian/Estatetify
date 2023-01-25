@@ -8,6 +8,7 @@ import {
   RealEstaterRoute,
   LoggedInRoute,
   AgentRoute,
+  OwnerRoute,
 } from './components';
 import {
   Profile,
@@ -20,33 +21,34 @@ import {
   EditListing,
   Listings,
   Listing,
-  OwnerProfile,
+  UserProfile,
   LandingPage,
   Favorites,
   SearchResults,
   NotFound,
-  AdminDashboard,
-  RealEstaterDashboard,
-  RealEstaterListings,
-  RealEstaterAddListing,
-  RealEstaterEditListing,
-  RealEstaterManage,
-  RealEstaterSubscriptions,
   SubscriptionPlan,
   CheckoutDetails,
   Checkout,
   CheckoutSuccess,
   SubscriptionPlans,
+  AdminDashboard,
+  AdminSubscriptionsDetails,
+  AdminUsers,
+  AdminSubscriptions,
   AgentDashboard,
-  RealEstaterPurchases,
-  AgentPurchases,
-  AgentSubscriptions,
   AgentManage,
   AgentEditListing,
   AgentAddListing,
   AgentListings,
-  AdminUsers,
-  AdminSubscriptions,
+  RealEstaterDashboard,
+  RealEstaterListings,
+  RealEstaterAddListing,
+  RealEstaterEditListing,
+  RealEstaterManage,
+  DashboardPurchaseDetails,
+  DashboardPurchases,
+  DashboardSubscriptionDetails,
+  DashboardSubscriptions,
 } from './pages';
 
 const App = () => {
@@ -57,11 +59,10 @@ const App = () => {
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/home' element={<Home />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/owner-profile/:ownerId' element={<OwnerProfile />} />
+          <Route path='/owner-profile/:ownerId' element={<UserProfile />} />
           <Route path='/offers' element={<Offers />} />
-          <Route path='/subscription-plans' element={<SubscriptionPlans />} />
-          <Route path='/subscription/:plan' element={<SubscriptionPlan />} />
+          <Route path='/subscriptions/plans' element={<SubscriptionPlans />} />
+          <Route path='/subscriptions/:plan' element={<SubscriptionPlan />} />
           <Route path='/favorites' element={<Favorites />} />
           <Route path='/search-results' element={<SearchResults />} />
           <Route path='/listings/:type' element={<Listings />} />
@@ -70,10 +71,26 @@ const App = () => {
             <Route path='/listings/add' element={<AddListing />} />
           </Route>
           <Route element={<LoggedInRoute />}>
+            <Route path='/profile' element={<Profile />} />
             <Route path='/listings/edit/:listingId' element={<EditListing />} />
             <Route path='/checkout-details' element={<CheckoutDetails />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/checkout-success' element={<CheckoutSuccess />} />
+          </Route>
+          <Route element={<OwnerRoute />}>
+            <Route
+              path='/owner/subscriptions'
+              element={<DashboardSubscriptions />}
+            />
+            <Route
+              path='/owner/subscriptions/:subscriptionId'
+              element={<DashboardSubscriptionDetails />}
+            />
+            <Route path='/owner/purchases' element={<DashboardPurchases />} />
+            <Route
+              path='/owner/purchases/:purchaseId'
+              element={<DashboardPurchaseDetails />}
+            />
           </Route>
           <Route element={<RealEstaterRoute />}>
             <Route
@@ -85,11 +102,11 @@ const App = () => {
               element={<RealEstaterListings />}
             />
             <Route
-              path='/real-estater/add-listing'
+              path='/real-estater/listings/add'
               element={<RealEstaterAddListing />}
             />
             <Route
-              path='/real-estater/edit-listing/:listingId'
+              path='/real-estater/listings/edit/:listingId'
               element={<RealEstaterEditListing />}
             />
             <Route
@@ -98,27 +115,43 @@ const App = () => {
             />
             <Route
               path='/real-estater/subscriptions'
-              element={<RealEstaterSubscriptions />}
+              element={<DashboardSubscriptions />}
+            />
+            <Route
+              path='/real-estater/subscriptions/:subscriptionId'
+              element={<DashboardSubscriptionDetails />}
             />
             <Route
               path='/real-estater/purchases'
-              element={<RealEstaterPurchases />}
+              element={<DashboardPurchases />}
+            />
+            <Route
+              path='/real-estater/purchases/:purchaseId'
+              element={<DashboardPurchaseDetails />}
             />
           </Route>
           <Route element={<AgentRoute />}>
             <Route path='/agent/dashboard' element={<AgentDashboard />} />
             <Route path='/agent/listings' element={<AgentListings />} />
-            <Route path='/agent/add-listing' element={<AgentAddListing />} />
+            <Route path='/agent/listings/add' element={<AgentAddListing />} />
             <Route
-              path='/agent/edit-listing/:listingId'
+              path='/agent/listings/edit/:listingId'
               element={<AgentEditListing />}
             />
             <Route path='/agent/manage' element={<AgentManage />} />
             <Route
               path='/agent/subscriptions'
-              element={<AgentSubscriptions />}
+              element={<DashboardSubscriptions />}
             />
-            <Route path='/agent/purchases' element={<AgentPurchases />} />
+            <Route
+              path='/agent/subscriptions/:subscriptionId'
+              element={<DashboardSubscriptionDetails />}
+            />
+            <Route path='/agent/purchases' element={<DashboardPurchases />} />
+            <Route
+              path='/agent/purchases/:purchaseId'
+              element={<DashboardPurchaseDetails />}
+            />
           </Route>
           <Route element={<AdminRoute />}>
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
@@ -126,6 +159,10 @@ const App = () => {
             <Route
               path='/admin/subscriptions'
               element={<AdminSubscriptions />}
+            />
+            <Route
+              path='/admin/subscriptions/:subscriptionId'
+              element={<AdminSubscriptionsDetails />}
             />
           </Route>
           <Route path='/sign-in' element={<SignIn />} />

@@ -1,13 +1,9 @@
-import React, { Fragment } from 'react';
-import { Transition, Menu } from '@headlessui/react';
+import React from 'react';
+
 import { AppIcon } from 'components';
 import defaultStyles from 'common/config';
-import { Link } from 'react-router-dom';
-import { useProfileContext } from 'store/contexts';
-import NotificationButton from './NotificationButton';
 
 const TopBar = ({ showNav, setShowNav }) => {
-  const { profileUser } = useProfileContext();
   return (
     <div
       className={`fixed w-full h-16 flex justify-between items-center transition-all duration-[400ms] ${
@@ -25,13 +21,10 @@ const TopBar = ({ showNav, setShowNav }) => {
           size={24}
           onClick={() => setShowNav(!showNav)}
         />
-        <p className='text-primary text-3xl mt-0 ml-3 mb-0 font-semibold'>
-          Dashboard
-        </p>
       </div>
-      <div className='flex items-center pr-4 md:pr-16'>
+      {/* <div className='flex items-center pr-4 md:pr-16'>
         <NotificationButton />
-        <Menu as='div' className='relative inline-block text-left'>
+         <Menu as='div' className='relative inline-block text-left'>
           <div>
             <Menu.Button className='inline-flex w-full justify-center items-center'>
               <span className='hidden md:block font-medium text-gray-700'>
@@ -81,8 +74,8 @@ const TopBar = ({ showNav, setShowNav }) => {
               </div>
             </Menu.Items>
           </Transition>
-        </Menu>
-      </div>
+        </Menu> 
+      </div> */}
     </div>
   );
 };

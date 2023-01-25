@@ -12,7 +12,7 @@ import {
   getDoc,
 } from 'firebase.config';
 
-import { useContext, createContext, useReducer } from 'react';
+import { useContext, createContext, useReducer, useEffect } from 'react';
 
 import {
   GET_ALL_PROFILES_BEGIN,
@@ -45,7 +45,12 @@ const ProfileContext = createContext();
 
 const ProfileProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { user } = useAuthContext();
+  const { user, loggedIn } = useAuthContext();
+
+  useEffect(() => {
+    getMyProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn]);
 
   const getAllProfiles = async (lim) => {
     dispatch({ type: GET_ALL_PROFILES_BEGIN });
@@ -76,7 +81,7 @@ const ProfileProvider = ({ children }) => {
   const getMyProfile = async () => {
     dispatch({ type: GET_MY_PROFILE_BEGIN });
     try {
-      if (user) {
+      if (loggedIn) {
         const userRef = doc(db, 'users', user?.uid);
         onSnapshot(userRef, (userDoc) => {
           if (userDoc.exists()) {
@@ -85,6 +90,11 @@ const ProfileProvider = ({ children }) => {
               payload: { myProfile: { ...userDoc.data(), uid: user?.uid } },
             });
           }
+        });
+      } else {
+        dispatch({
+          type: GET_MY_PROFILE_SUCCESS,
+          payload: { myProfile: null },
         });
       }
     } catch (error) {
