@@ -77,14 +77,14 @@ const NavButton = ({ link, name }) => {
         <NavLink
           to={link}
           className={({ isActive }) =>
-            `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
+            `capitalize cursor-pointer py-[25px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
               isActive && 'text-darker border-b-primary'
             }`
           }
         >
           {name}
         </NavLink>
-        <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
+        <div className='absolute group-hover:flex -bottom-[25px] hidden h-1 w-full bg-primary' />
       </li>
     </div>
   );
@@ -119,7 +119,7 @@ const NavBarAuthSection = ({
       {loggedIn ? (
         <NavProfileButton showMenu={showMenu} toggleMenu={toggleMenu} />
       ) : (
-        <div className='text-gray-400 items-center flex'>
+        <div className='text-gray-400 items-center flex py-2 min-h-[56px]'>
           <Link to='/sign-in'>Log in</Link>
           <div className=' text-white rounded-full px-4 py-1.5 bg-primary ml-6'>
             <Link to='/sign-up'> Sign up</Link>
