@@ -10,7 +10,7 @@ import {
   useProfileContext,
 } from 'store/contexts';
 import NavProfileButton from './NavProfileButton';
-import { navBarLinks } from 'common/lookup-data';
+import { mainMenuLinks } from 'common/lookup-data';
 
 const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
   const { loggedIn } = useAuthContext();
@@ -22,7 +22,7 @@ const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
   //   openModal();
   //   if (showMenu) toggleMenu();
   // };
-
+  const navBarLinks = mainMenuLinks(myProfile?.role);
   return (
     <>
       <div className='hidden laptop:flex mx-auto'>
@@ -30,7 +30,7 @@ const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
           {navBarLinks.map(({ name, link }) => (
             <NavButton key={name} name={name} link={link} />
           ))}
-          <li className='relative group'>
+          {/* <li className='relative group'>
             <NavLink
               to={`/${myProfile?.role}/dashboard`}
               className={({ isActive }) =>
@@ -42,7 +42,7 @@ const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
               dashboard
             </NavLink>
             <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
-          </li>
+          </li> */}
           {/* //TODO 
             //Check if Contact us link should be on the BigMenu
             */}

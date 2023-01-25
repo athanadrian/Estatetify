@@ -10,13 +10,14 @@ import {
   useProfileContext,
 } from 'store/contexts';
 import NavProfileButton from './NavProfileButton';
-import { navBarLinks } from 'common/lookup-data';
+import { mainMenuLinks } from 'common/lookup-data';
 
 const NavBarCenterMenu = ({ toggleMenu, showMenu }) => {
   const { loggedIn } = useAuthContext();
   const { userFavorites } = useListingContext();
   const { myProfile } = useProfileContext();
   const { openModal } = useCommonContext();
+  const navBarLinks = mainMenuLinks(myProfile?.role);
 
   const handleContactUs = () => {
     openModal();
@@ -43,7 +44,7 @@ const NavBarCenterMenu = ({ toggleMenu, showMenu }) => {
               onClick={toggleMenu}
             />
           ))}
-          <li className='relative group w-48'>
+          {/* <li className='relative group w-48'>
             <NavLink
               to={`/${myProfile?.role}/dashboard`}
               onClick={toggleMenu}
@@ -65,7 +66,7 @@ const NavBarCenterMenu = ({ toggleMenu, showMenu }) => {
                 dashboard
               </div>
             </NavLink>
-          </li>
+          </li> */}
           <li className='relative group'>
             <button
               onClick={handleContactUs}

@@ -1,4 +1,4 @@
-const navBarLinks = [
+const mainMenuLinks = (role) => [
   {
     name: 'home',
     link: '/home',
@@ -29,6 +29,11 @@ const navBarLinks = [
     link: '/subscriptions/plans',
     auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
   },
+  {
+    name: 'dashboard',
+    link: `/${role}/dashboard`,
+    auth: ['real-estater', 'agent', 'admin'],
+  },
 ];
 
-export default navBarLinks;
+export default mainMenuLinks;
