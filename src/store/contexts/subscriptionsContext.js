@@ -91,7 +91,9 @@ const SubscriptionProvider = ({ children }) => {
     let interval;
     if (profileUser?.role === 'admin') {
       console.log('Admin Action');
+      console.log('started', new Date());
       interval = setInterval(async () => {
+        console.log('repeated', new Date());
         await cancelSubscription();
       }, DAY_MINUTES);
     }
