@@ -125,6 +125,15 @@ const SubscriptionsTable = ({ subscriptions }) => {
             );
           }
         )}
+        <tr className='h-20'>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
   );
