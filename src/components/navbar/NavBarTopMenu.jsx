@@ -30,19 +30,6 @@ const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
           {navBarLinks.map(({ name, link }) => (
             <NavButton key={name} name={name} link={link} />
           ))}
-          {/* <li className='relative group'>
-            <NavLink
-              to={`/${myProfile?.role}/dashboard`}
-              className={({ isActive }) =>
-                `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
-                  isActive && 'text-darker border-b-primary'
-                }`
-              }
-            >
-              dashboard
-            </NavLink>
-            <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
-          </li> */}
           {/* //TODO 
             //Check if Contact us link should be on the BigMenu
             */}

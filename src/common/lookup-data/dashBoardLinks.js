@@ -31,7 +31,7 @@ const dashBoardLinks = (role) => [
   },
   {
     name: 'add listing',
-    link: `/${role}/listings/add`,
+    link: `/${role}/listings-add`,
     icon: 'add_property',
     auth: ['real-estater', 'agent', 'admin'],
   },
@@ -41,12 +41,6 @@ const dashBoardLinks = (role) => [
     icon: 'subscriptions',
     auth: ['owner', 'real-estater', 'agent', 'admin'],
   },
-  // {
-  //   name: 'profile',
-  //   link: `/profile`,
-  //   icon: 'profile',
-  //   auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
-  // },
 ];
 
 export default dashBoardLinks;

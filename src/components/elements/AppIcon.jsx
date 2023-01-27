@@ -26,7 +26,7 @@ const AppIcon = ({
           onClick={onClick}
           className={`${link ? 'cursor-pointer' : ''} ${className}`}
         >
-          <Icon style={{ color: iconColor }} {...otherProps} />
+          <Icon style={{ color: iconColor, fontSize: size }} {...otherProps} />
         </span>
       ) : (
         <div

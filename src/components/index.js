@@ -39,8 +39,10 @@ export { default as SubscriptionPlanDetails } from './subscription-plans/Subscri
 export { default as SubscriptionPlanSummary } from './subscription-plans/SubscriptionPlanSummary';
 export { default as Footer } from './Footer';
 export { default as Slider } from './home/Slider';
-export { default as Layout } from './dashboard-layout/Layout';
-export { default as LayoutHeading } from './dashboard-layout/LayoutHeading';
+export { default as Layout } from './dashboard/layout/Layout';
+export { default as LayoutHeading } from './dashboard/layout/LayoutHeading';
 export { default as PricingSummary } from './subscription-checkout/PricingSummary';
 export { default as CheckoutForm } from './subscription-checkout/CheckoutForm';
-export { default as SubscriptionsTable } from './subscription-checkout/SubscriptionsTable';
+export { default as SubscriptionsTable } from './dashboard/SubscriptionsTable';
+export { default as ListingsTable } from './dashboard/ListingsTable';
+export { default as TableActionsMenu } from './dashboard/TableActionsMenu';

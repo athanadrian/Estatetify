@@ -23,7 +23,7 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
   const { getAllProfiles, profiles } = useProfileContext();
 
   const handleEditListing = (id) => {
-    navigate(`/listings/edit/${id}`);
+    navigate(`/listings-edit/${id}`);
   };
 
   const handleDeleteListing = async (listing) => {

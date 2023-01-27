@@ -37,18 +37,15 @@ import {
   AdminSubscriptions,
   AgentDashboard,
   AgentManage,
-  AgentEditListing,
-  AgentAddListing,
-  AgentListings,
   RealEstaterDashboard,
-  RealEstaterListings,
-  RealEstaterAddListing,
-  RealEstaterEditListing,
   RealEstaterManage,
   DashboardPurchaseDetails,
   DashboardPurchases,
   DashboardSubscriptionDetails,
   DashboardSubscriptions,
+  DashboardListings,
+  DashboardAddListing,
+  DashboardEditListing,
 } from './pages';
 
 const App = () => {
@@ -68,11 +65,11 @@ const App = () => {
           <Route path='/listings/:type' element={<Listings />} />
           <Route path='/listings/:type/:listingId' element={<Listing />} />
           <Route element={<SubscribedRoute />}>
-            <Route path='/listings/add' element={<AddListing />} />
+            <Route path='/listings-add' element={<AddListing />} />
           </Route>
           <Route element={<LoggedInRoute />}>
             <Route path='/profile' element={<Profile />} />
-            <Route path='/listings/edit/:listingId' element={<EditListing />} />
+            <Route path='/listings-edit/:listingId' element={<EditListing />} />
             <Route path='/checkout-details' element={<CheckoutDetails />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/checkout-success' element={<CheckoutSuccess />} />
@@ -99,15 +96,15 @@ const App = () => {
             />
             <Route
               path='/real-estater/listings'
-              element={<RealEstaterListings />}
+              element={<DashboardListings />}
             />
             <Route
-              path='/real-estater/listings/add'
-              element={<RealEstaterAddListing />}
+              path='/real-estater/listings-add'
+              element={<DashboardAddListing />}
             />
             <Route
-              path='/real-estater/listings/edit/:listingId'
-              element={<RealEstaterEditListing />}
+              path='/real-estater/listings-edit/:listingId'
+              element={<DashboardEditListing />}
             />
             <Route
               path='/real-estater/manage'
@@ -132,11 +129,14 @@ const App = () => {
           </Route>
           <Route element={<AgentRoute />}>
             <Route path='/agent/dashboard' element={<AgentDashboard />} />
-            <Route path='/agent/listings' element={<AgentListings />} />
-            <Route path='/agent/listings/add' element={<AgentAddListing />} />
+            <Route path='/agent/listings' element={<DashboardListings />} />
             <Route
-              path='/agent/listings/edit/:listingId'
-              element={<AgentEditListing />}
+              path='/agent/listings-add'
+              element={<DashboardAddListing />}
+            />
+            <Route
+              path='/agent/listings-edit/:listingId'
+              element={<DashboardEditListing />}
             />
             <Route path='/agent/manage' element={<AgentManage />} />
             <Route

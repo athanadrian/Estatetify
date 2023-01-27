@@ -16,9 +16,14 @@ const Subscriptions = () => {
 
   return (
     <Layout>
-      <div className='bg-white pl-4 desktop:px-4 py-5 min-h-[50vh]'>
-        <div className='overflow-x-auto w-full'>
-          <LayoutHeading title='Subscriptions' />
+      <LayoutHeading
+        icon='subscriptions'
+        quantity={subscriptions.length}
+        title='Subscriptions'
+        className='mb-2'
+      />
+      <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
+        <div className='inline-block min-w-full shadow-md rounded-lg overflow-hidden'>
           <SubscriptionsTable subscriptions={subscriptions} />
         </div>
       </div>

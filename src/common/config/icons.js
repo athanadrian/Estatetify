@@ -125,7 +125,7 @@ const icons = {
   support: MdOutlineSupportAgent,
   business: MdOutlineBusinessCenter,
   star: AiFillStar,
-  offers: MdOutlineLocalOffer, //BsTags
+  offers: MdOutlineLocalOffer,
   buy: MdOutlineLibraryAdd,
   sell: MdOutlineLibraryAddCheck,
   rent: MdOutlineLibraryBooks,

@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
+
 import {
   AppButton,
   FormImageInput,
@@ -7,12 +11,8 @@ import {
   Loader,
   PageHeader,
 } from 'components';
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-
-import { useNavigate } from 'react-router';
-import { categories, floors } from 'common/lookup-data';
 import { useListingContext } from 'store/contexts';
+import { categories, floors } from 'common/lookup-data';
 import { getGeoData } from 'common/helpers';
 
 const initialValues = {
@@ -223,7 +223,7 @@ const AddListing = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <main className='max-w-md mx-auto px-2'>
+    <main className='max-w-lg mx-auto px-2'>
       <PageHeader title='Add your Property' />
       <form onSubmit={handleSubmit}>
         <Label text='Sell / Rent' />

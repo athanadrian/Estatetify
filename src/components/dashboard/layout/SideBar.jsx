@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 import { AppIcon } from 'components';
-import SideBarButton from './SideBarButton';
 import defaultStyles from 'common/config';
 import { NavLink } from 'react-router-dom';
 import { useProfileContext } from 'store/contexts';
-import { dashBoardLinks } from 'common/lookup-data';
+import { dashBoardLinks, roles } from 'common/lookup-data';
+import { mapEnumObject } from 'common/helpers';
 
 const SideBar = forwardRef(({ showNav }, ref) => {
   const { myProfile } = useProfileContext();
@@ -13,7 +13,7 @@ const SideBar = forwardRef(({ showNav }, ref) => {
 
   return (
     <>
-      <div ref={ref} className='fixed w-56 h-full bg-gray-100 shadow-sm'>
+      <div ref={ref} className='fixed z-30 w-56 h-full bg-gray-100 shadow-sm'>
         <NavLink
           to={`/${myProfile?.role}/dashboard`}
           className={({ isActive }) =>
@@ -50,3 +50,29 @@ const SideBar = forwardRef(({ showNav }, ref) => {
 SideBar.displayName = 'SideBar';
 
 export default SideBar;
+
+const SideBarButton = ({ link, name, icon, role }) => {
+  const { bgColorLight, txtColor } = mapEnumObject(role, roles);
+  return (
+    <li className='relative'>
+      <NavLink
+        to={link}
+        className={({
+          isActive,
+        }) => `pl-6 py-3 mx-5 capitalize rounded text-center cursor-pointer mb-3 flex items-center transition-colors
+          ${
+            isActive
+              ? `${bgColorLight} ${txtColor}`
+              : `text-gray-500 hover:${bgColorLight} hover:${txtColor}`
+          }`}
+      >
+        <div className='mr-2'>
+          <AppIcon Icon={defaultStyles.icons[icon]} className='text-xl' />
+        </div>
+        <div>
+          <p> {name}</p>
+        </div>
+      </NavLink>
+    </li>
+  );
+};

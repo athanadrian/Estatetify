@@ -44,29 +44,6 @@ const NavBarCenterMenu = ({ toggleMenu, showMenu }) => {
               onClick={toggleMenu}
             />
           ))}
-          {/* <li className='relative group w-48'>
-            <NavLink
-              to={`/${myProfile?.role}/dashboard`}
-              onClick={toggleMenu}
-              className={({ isActive }) =>
-                `pl-4 py-2 mx-5 capitalize rounded-lg text-center cursor-pointer flex items-center transition-colors
-            ${
-              isActive
-                ? `bg-${myProfile?.role}-100 text-${myProfile?.role}-500`
-                : `text-gray-500 hover:bg-${myProfile?.role}-100 hover:text-${myProfile?.role}-500`
-            }`
-              }
-            >
-              <div className='flex justify-start items-center text-lg'>
-                <AppIcon
-                  Icon={defaultStyles.icons.dashboard}
-                  className='mr-4'
-                  size={24}
-                />
-                dashboard
-              </div>
-            </NavLink>
-          </li> */}
           <li className='relative group'>
             <button
               onClick={handleContactUs}

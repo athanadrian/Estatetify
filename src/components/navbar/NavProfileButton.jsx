@@ -48,7 +48,7 @@ const NavProfileButton = ({ center, showMenu, toggleMenu }) => {
           leaveFrom='transform scale-100'
           leaveTo='transform scale-95'
         >
-          <Menu.Items className='absolute right-0 w-56 z-50 mt-2 origin-top-right bg-gray-200 rounded shadow-sm'>
+          <Menu.Items className='absolute right-0 w-56 z-50 mt-2 origin-top-right bg-gray-200 rounded shadow-sm focus:outline-none'>
             <div className='p-1'>
               {profileButtonLinks.map(({ link, name, icon, auth }) => {
                 if (auth.some((a) => a === myProfile?.role)) {
@@ -100,16 +100,20 @@ const TopΒarMenuItem = ({
   const { bgColor } = mapEnumObject(role, roles);
   return (
     <Menu.Item>
-      <Link
-        to={link}
-        className={`capitalize flex hover:${bgColor} hover:text-white text-gray-700 rounded p-2 text-sm group transition-colors items-center`}
-        onClick={() => {
-          if (!showMenu && center) toggleMenu();
-        }}
-      >
-        <AppIcon Icon={defaultStyles.icons[icon]} className='mr-2' />
-        {name}
-      </Link>
+      {({ active }) => (
+        <Link
+          to={link}
+          className={`capitalize flex ${
+            active ? `${bgColor} text-white` : 'text-gray-700'
+          } rounded p-2 text-sm group transition-colors items-center`}
+          onClick={() => {
+            if (!showMenu && center) toggleMenu();
+          }}
+        >
+          <AppIcon Icon={defaultStyles.icons[icon]} className='mr-2' />
+          {name}
+        </Link>
+      )}
     </Menu.Item>
   );
 };
