@@ -10,7 +10,7 @@ import { useProfileContext } from 'store/contexts';
 const SubscriptionsTable = ({ subscriptions }) => {
   const { myProfile } = useProfileContext();
   return (
-    <table className='mr-auto max-w-full w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden'>
+    <table className='mr-auto max-w-full w-full whitespace-nowrap rounded-lg  bg-white divide-y divide-gray-300'>
       <thead className='bg-gray-200'>
         <tr className='text-dark text-left'>
           <th className='font-semibold text-sm uppercase px-6 py-4'>
@@ -25,7 +25,9 @@ const SubscriptionsTable = ({ subscriptions }) => {
           <th className='font-semibold text-sm uppercase px-6 py-4 text-center'>
             Payment ID
           </th>
-          <th className='font-semibold text-sm uppercase px-6 py-4'> </th>
+          <th className='font-semibold text-sm uppercase px-6 py-4'>
+            actions{' '}
+          </th>
         </tr>
       </thead>
       <tbody className='divide-y divide-gray-200'>
@@ -125,9 +127,7 @@ const SubscriptionsTable = ({ subscriptions }) => {
             );
           }
         )}
-        <tr className='h-20'>
-          <td></td>
-          <td></td>
+        <tr className='h-24'>
           <td></td>
           <td></td>
           <td></td>

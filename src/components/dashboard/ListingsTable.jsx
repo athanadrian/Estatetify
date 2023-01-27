@@ -30,9 +30,7 @@ const ListingsTable = ({ listings }) => {
           <th className='font-semibold text-sm uppercase px-6 py-4 text-center'>
             price
           </th>
-          <th className='font-semibold text-sm uppercase px-6 py-4'>
-            actions{' '}
-          </th>
+          <th className='font-semibold text-sm uppercase px-6 py-4'>actions</th>
         </tr>
       </thead>
       <tbody className='divide-y divide-gray-200'>

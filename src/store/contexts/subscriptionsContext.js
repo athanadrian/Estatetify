@@ -72,7 +72,7 @@ const initialState = {
 };
 
 const SubscriptionContext = createContext();
-const DAY_MINUTES = 1000 * 60 * 60 * 24;
+const DAY_MINUTES = 1000 * 60 * 30; //1/2 hour
 const SubscriptionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { loggedIn, user } = useAuthContext();
