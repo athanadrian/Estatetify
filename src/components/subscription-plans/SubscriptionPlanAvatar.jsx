@@ -4,7 +4,7 @@ import defaultStyles from 'common/config';
 import { mapEnumObject } from 'common/helpers';
 import { roles } from 'common/lookup-data';
 
-const SubscriptionPlanAvatar = ({ role }) => {
+const SubscriptionPlanAvatar = ({ role, size = 24 }) => {
   const { txtColor, brdColor } = mapEnumObject(role, roles);
   return (
     <div
@@ -16,7 +16,11 @@ const SubscriptionPlanAvatar = ({ role }) => {
       <div
         className={`bg-light w-full h-full ${txtColor} flex justify-center items-center rounded-full`}
       >
-        <AppIcon size={24} Icon={defaultStyles.icons.profile} tooltip={role} />
+        <AppIcon
+          size={size}
+          Icon={defaultStyles.icons.profile}
+          tooltip={role}
+        />
       </div>
     </div>
   );

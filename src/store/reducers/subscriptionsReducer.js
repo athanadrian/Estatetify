@@ -10,6 +10,8 @@ import {
   GET_PLAN_SUBSCRIPTIONS_SUCCESS,
   GET_SUBSCRIPTION_BEGIN,
   GET_SUBSCRIPTION_SUCCESS,
+  GET_PURCHASE_BEGIN,
+  GET_PURCHASE_SUCCESS,
   CREATE_SUBSCRIPTION_BEGIN,
   CREATE_SUBSCRIPTION_SUCCESS,
   CREATE_SUBSCRIPTION_ERROR,
@@ -109,6 +111,22 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       subscription,
+    };
+  }
+
+  if (action.type === GET_PURCHASE_BEGIN) {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  }
+
+  if (action.type === GET_PURCHASE_SUCCESS) {
+    const purchase = action.payload.purchase;
+    return {
+      ...state,
+      isLoading: false,
+      purchase,
     };
   }
 

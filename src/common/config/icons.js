@@ -34,6 +34,8 @@ import {
   FaViber,
   FaWhatsapp,
   FaListAlt,
+  FaRegCalendarTimes,
+  FaRegCalendarCheck,
 } from 'react-icons/fa';
 import { RiImageEditFill, RiBuilding2Line } from 'react-icons/ri';
 import {
@@ -44,6 +46,7 @@ import {
   BsFillTagsFill,
   BsPeople,
   BsThreeDotsVertical,
+  BsReceipt,
 } from 'react-icons/bs';
 import {
   MdMenu,
@@ -63,6 +66,7 @@ import {
   MdOutlineLibraryAdd,
   MdOutlineLibraryAddCheck,
   MdOutlineLibraryBooks,
+  MdOutlineUpdate,
 } from 'react-icons/md';
 import { LogoIcon } from './svgIcons';
 
@@ -132,6 +136,10 @@ const icons = {
   pricing: BsFillTagsFill,
   actions: BsThreeDotsVertical,
   logout: AiOutlineLogout,
+  created_date: FaRegCalendarCheck,
+  expiring_date: FaRegCalendarTimes,
+  elapsed_days: MdOutlineUpdate,
+  payment_receipt: BsReceipt,
 };
 
 export default icons;

@@ -29,6 +29,8 @@ import {
   GET_PLAN_SUBSCRIPTIONS_SUCCESS,
   GET_SUBSCRIPTION_BEGIN,
   GET_SUBSCRIPTION_SUCCESS,
+  GET_PURCHASE_BEGIN,
+  GET_PURCHASE_SUCCESS,
   CREATE_SUBSCRIPTION_BEGIN,
   CREATE_SUBSCRIPTION_SUCCESS,
   CREATE_SUBSCRIPTION_ERROR,
@@ -90,10 +92,7 @@ const SubscriptionProvider = ({ children }) => {
   useEffect(() => {
     let interval;
     if (profileUser?.role === 'admin') {
-      console.log('Admin Action');
-      console.log('started', new Date());
       interval = setInterval(async () => {
-        console.log('repeated', new Date());
         await cancelSubscription();
       }, DAY_MINUTES);
     }
@@ -220,6 +219,25 @@ const SubscriptionProvider = ({ children }) => {
       }
     } catch (error) {
       console.log('😱 Error get My subscriptions: ', error.message);
+    }
+  };
+
+  const getPurchase = async (purchaseId) => {
+    if (purchaseId) {
+      dispatch({ type: GET_PURCHASE_BEGIN });
+      if (purchaseId) {
+        try {
+          const purchaseRef = doc(db, 'purchases', purchaseId);
+          const purchaseDoc = await getDoc(purchaseRef);
+          if (purchaseDoc.exists())
+            return dispatch({
+              type: GET_PURCHASE_SUCCESS,
+              payload: { purchase: purchaseDoc.data() },
+            });
+        } catch (error) {
+          console.log('😱 Error get purchase: ', error.message);
+        }
+      }
     }
   };
 
@@ -394,19 +412,15 @@ const SubscriptionProvider = ({ children }) => {
 
   const cancelSubscription = async () => {
     const subscriptions = await fetchSubscriptions();
-    // .filter(
-    //   (sub) => sub?.isActive
-    // );
     const activeSubs = subscriptions.filter((sub) => sub?.isActive);
-    console.log('cancel subs', activeSubs);
     let cancelledSubscriptions = 0;
+    let cancelledId;
     activeSubs.forEach(async (aSub) => {
       // check if aSub expiration date is today
       const isCancellingDate = checkCancellingDate(aSub.expiringDate);
       if (isCancellingDate) {
         try {
-          console.log('sub expired', aSub.id);
-          console.log('deleted', new Date());
+          cancelledId = aSub.id;
           const subRef = doc(db, 'subscriptions', aSub.id);
           await updateDoc(subRef, {
             isActive: false,
@@ -418,7 +432,7 @@ const SubscriptionProvider = ({ children }) => {
           console.log('😱 Error cancelling subscriptions: ', error.message);
         }
       }
-      console.log('cancelled: ', cancelledSubscriptions);
+      console.log('cancelled: ', cancelledSubscriptions, cancelledId);
       // update aSub change isActive to false
     });
   };
@@ -435,6 +449,7 @@ const SubscriptionProvider = ({ children }) => {
         getSubscription,
         createSubscription,
         createPurchase,
+        getPurchase,
         editSubscription,
         deleteSubscription,
         saveShippingAddressToState,

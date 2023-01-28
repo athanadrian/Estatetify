@@ -39,8 +39,6 @@ import {
   AgentManage,
   RealEstaterDashboard,
   RealEstaterManage,
-  DashboardPurchaseDetails,
-  DashboardPurchases,
   DashboardSubscriptionDetails,
   DashboardSubscriptions,
   DashboardListings,
@@ -83,11 +81,6 @@ const App = () => {
               path='/owner/subscriptions/:subscriptionId'
               element={<DashboardSubscriptionDetails />}
             />
-            <Route path='/owner/purchases' element={<DashboardPurchases />} />
-            <Route
-              path='/owner/purchases/:purchaseId'
-              element={<DashboardPurchaseDetails />}
-            />
           </Route>
           <Route element={<RealEstaterRoute />}>
             <Route
@@ -118,14 +111,6 @@ const App = () => {
               path='/real-estater/subscriptions/:subscriptionId'
               element={<DashboardSubscriptionDetails />}
             />
-            <Route
-              path='/real-estater/purchases'
-              element={<DashboardPurchases />}
-            />
-            <Route
-              path='/real-estater/purchases/:purchaseId'
-              element={<DashboardPurchaseDetails />}
-            />
           </Route>
           <Route element={<AgentRoute />}>
             <Route path='/agent/dashboard' element={<AgentDashboard />} />
@@ -146,11 +131,6 @@ const App = () => {
             <Route
               path='/agent/subscriptions/:subscriptionId'
               element={<DashboardSubscriptionDetails />}
-            />
-            <Route path='/agent/purchases' element={<DashboardPurchases />} />
-            <Route
-              path='/agent/purchases/:purchaseId'
-              element={<DashboardPurchaseDetails />}
             />
           </Route>
           <Route element={<AdminRoute />}>
