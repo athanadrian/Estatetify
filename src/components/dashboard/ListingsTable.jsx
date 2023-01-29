@@ -181,7 +181,7 @@ const ListingsTable = ({ listings }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <Link
-                            to={`/${myProfile?.role}/listings-edit/${id}`}
+                            to={`/${myProfile?.role}/listings/edit/${id}`}
                             className={`capitalize flex ${
                               active
                                 ? `bg-${myProfile?.role}-500 text-white`

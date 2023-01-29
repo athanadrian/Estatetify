@@ -41,6 +41,13 @@ const SubscriptionDetails = () => {
       <div className='container mx-auto'>
         <div>
           <div className='bg-white relative shadow rounded-lg w-5/6 md:w-5/6  lg:w-4/6 xl:w-3/6 mx-auto'>
+            <div
+              className={`rounded-md w-24 h-8 flex items-center justify-center uppercase font-semibold ${
+                subscription?.isActive ? 'bg-green-800' : 'bg-red-500'
+              } text-white tracking-wider absolute -right-3 -top-3`}
+            >
+              {subscription?.isActive ? 'Active' : 'Expired'}
+            </div>
             <div className='relative flex justify-center'>
               <div className='absolute -top-10'>
                 <div

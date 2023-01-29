@@ -31,7 +31,7 @@ const dashBoardLinks = (role) => [
   },
   {
     name: 'add listing',
-    link: `/${role}/listings-add`,
+    link: `/${role}/listings/add`,
     icon: 'add_property',
     auth: ['real-estater', 'agent', 'admin'],
   },

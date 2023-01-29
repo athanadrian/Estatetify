@@ -63,11 +63,11 @@ const App = () => {
           <Route path='/listings/:type' element={<Listings />} />
           <Route path='/listings/:type/:listingId' element={<Listing />} />
           <Route element={<SubscribedRoute />}>
-            <Route path='/listings-add' element={<AddListing />} />
+            <Route path='/listings/add' element={<AddListing />} />
           </Route>
           <Route element={<LoggedInRoute />}>
             <Route path='/profile' element={<Profile />} />
-            <Route path='/listings-edit/:listingId' element={<EditListing />} />
+            <Route path='/listings/edit/:listingId' element={<EditListing />} />
             <Route path='/checkout-details' element={<CheckoutDetails />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/checkout-success' element={<CheckoutSuccess />} />
@@ -92,11 +92,11 @@ const App = () => {
               element={<DashboardListings />}
             />
             <Route
-              path='/real-estater/listings-add'
+              path='/real-estater/listings/add'
               element={<DashboardAddListing />}
             />
             <Route
-              path='/real-estater/listings-edit/:listingId'
+              path='/real-estater/listings/edit/:listingId'
               element={<DashboardEditListing />}
             />
             <Route
@@ -116,11 +116,11 @@ const App = () => {
             <Route path='/agent/dashboard' element={<AgentDashboard />} />
             <Route path='/agent/listings' element={<DashboardListings />} />
             <Route
-              path='/agent/listings-add'
+              path='/agent/listings/add'
               element={<DashboardAddListing />}
             />
             <Route
-              path='/agent/listings-edit/:listingId'
+              path='/agent/listings/edit/:listingId'
               element={<DashboardEditListing />}
             />
             <Route path='/agent/manage' element={<AgentManage />} />

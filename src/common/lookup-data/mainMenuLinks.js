@@ -21,7 +21,7 @@ const mainMenuLinks = (role) => [
   },
   {
     name: 'sell',
-    link: '/listings-add',
+    link: '/listings/add',
     auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
   },
   {

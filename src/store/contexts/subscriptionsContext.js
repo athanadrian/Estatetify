@@ -74,7 +74,7 @@ const initialState = {
 };
 
 const SubscriptionContext = createContext();
-const DAY_MINUTES = 1000 * 60 * 30; //1/2 hour
+const DAY_MINUTES = 1000 * 60 * 10; //10 min
 const SubscriptionProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { loggedIn, user } = useAuthContext();
@@ -424,6 +424,10 @@ const SubscriptionProvider = ({ children }) => {
           const subRef = doc(db, 'subscriptions', aSub.id);
           await updateDoc(subRef, {
             isActive: false,
+          });
+          const userRef = doc(db, 'users', aSub.userRef);
+          await updateDoc(userRef, {
+            role: 'user',
           });
           cancelledSubscriptions++;
           //TODO

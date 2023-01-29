@@ -2,6 +2,8 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   safelist: [
+    'bg-user-100',
+    'bg-user-500',
     'bg-owner-100',
     'bg-owner-500',
     'bg-real-estater-100',
@@ -10,6 +12,8 @@ module.exports = {
     'bg-agent-500',
     'bg-admin-100',
     'bg-admin-500',
+    'hover:bg-user-100',
+    'hover:bg-user-500',
     'hover:bg-owner-100',
     'hover:bg-owner-500',
     'hover:bg-real-estater-100',
@@ -27,6 +31,10 @@ module.exports = {
         dark: '#31515E',
         darker: '#1A3D4B',
         light: '#B9D5DE',
+        user: {
+          100: '#d6d1d1',
+          500: '#9b9696',
+        },
         owner: {
           100: '#d6d6d6',
           500: '#5E8EA2',

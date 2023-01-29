@@ -29,7 +29,7 @@ const GoogleButton = () => {
         await setDoc(userRef, {
           fullName: user.displayName,
           email: user.email,
-          role: 'user',
+          role: 'owner',
           mobile: '',
           avatar: '',
           call: false,

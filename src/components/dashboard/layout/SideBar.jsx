@@ -57,6 +57,7 @@ const SideBarButton = ({ link, name, icon, role }) => {
     <li className='relative'>
       <NavLink
         to={link}
+        end
         className={({
           isActive,
         }) => `pl-6 py-3 mx-5 capitalize rounded text-center cursor-pointer mb-3 flex items-center transition-colors

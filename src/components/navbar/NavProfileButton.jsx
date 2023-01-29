@@ -27,7 +27,9 @@ const NavProfileButton = ({ center, showMenu, toggleMenu }) => {
               <ProfileAvatar
                 profile={myProfile}
                 className='relative w-[50px] h-[50px] text-white flex justify-center items-center rounded-full md:mr-4'
-                onClick={toggleMenu}
+                onClick={() => {
+                  if (!showMenu && center) toggleMenu();
+                }}
               />
             </Link>
             <span className='hidden md:block font-medium text-gray-700 capitalize truncate'>

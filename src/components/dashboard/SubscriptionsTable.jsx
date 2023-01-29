@@ -72,10 +72,8 @@ const SubscriptionsTable = ({ subscriptions }) => {
                     Due in {remainingDays} days
                   </p>
                 </td>
-                <td className='px-6 py-4 text-center text-dark hover:text-darker hover:underline '>
-                  <Link to={`/${myProfile?.role}/purchases/${purchaseRef}`}>
-                    {purchaseRef}
-                  </Link>
+                <td className='px-6 py-4 text-center text-dark'>
+                  {purchaseRef}
                 </td>
                 <td className='px-6 py-4 text-center'>
                   <TableActionsMenu>
@@ -91,7 +89,7 @@ const SubscriptionsTable = ({ subscriptions }) => {
                             }  py-2 px-4 text-sm group transition-colors items-center`}
                           >
                             <AppIcon
-                              Icon={defaultStyles.icons.showPassword}
+                              Icon={defaultStyles.icons.info}
                               className='mr-2'
                               size={18}
                             />
@@ -100,7 +98,7 @@ const SubscriptionsTable = ({ subscriptions }) => {
                         )}
                       </Menu.Item>
                     </div>
-                    <div className='px-1 py-1'>
+                    {/* <div className='px-1 py-1'>
                       <Menu.Item>
                         {({ active }) => (
                           <Link
@@ -120,7 +118,7 @@ const SubscriptionsTable = ({ subscriptions }) => {
                           </Link>
                         )}
                       </Menu.Item>
-                    </div>
+                    </div> */}
                   </TableActionsMenu>
                 </td>
               </tr>
