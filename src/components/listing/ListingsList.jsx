@@ -3,6 +3,7 @@ import {
   useCommonContext,
   useListingContext,
   useProfileContext,
+  useSubscriptionContext,
 } from 'store/contexts';
 import { useNavigate } from 'react-router';
 import ListingGridItem from './ListingGridItem';
@@ -19,6 +20,11 @@ Confirm.init({
 const ListingsList = ({ link, title, subtitle, listings }) => {
   const navigate = useNavigate();
   const { deleteListing } = useListingContext();
+  const {
+    checkForMyActiveSubscriptions,
+    updateCurrentSubscriptionListings,
+    currentTopActiveSubscription,
+  } = useSubscriptionContext();
   const { showGrid } = useCommonContext();
   const { getAllProfiles, profiles } = useProfileContext();
 
@@ -34,6 +40,11 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
       'Cancel',
       async () => {
         await deleteListing(listing);
+        await updateCurrentSubscriptionListings(
+          'delete',
+          currentTopActiveSubscription?.subscriptionId,
+          listing.id
+        );
       }
     );
   };
@@ -42,6 +53,7 @@ const ListingsList = ({ link, title, subtitle, listings }) => {
 
   useEffect(() => {
     getAllProfiles();
+    checkForMyActiveSubscriptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

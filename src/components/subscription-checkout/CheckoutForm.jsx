@@ -70,6 +70,7 @@ const CheckoutForm = ({ price, plan, role }) => {
       purchaseRef: newPurchase.id,
       role,
       plan,
+      listingsAdded: [],
       isActive: true,
       createdDate: purchasedDate,
       expiringDate: nextYearDate,

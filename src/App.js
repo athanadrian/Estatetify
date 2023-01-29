@@ -64,10 +64,10 @@ const App = () => {
           <Route path='/listings/:type/:listingId' element={<Listing />} />
           <Route element={<SubscribedRoute />}>
             <Route path='/listings/add' element={<AddListing />} />
+            <Route path='/listings/edit/:listingId' element={<EditListing />} />
           </Route>
           <Route element={<LoggedInRoute />}>
             <Route path='/profile' element={<Profile />} />
-            <Route path='/listings/edit/:listingId' element={<EditListing />} />
             <Route path='/checkout-details' element={<CheckoutDetails />} />
             <Route path='/checkout' element={<Checkout />} />
             <Route path='/checkout-success' element={<CheckoutSuccess />} />

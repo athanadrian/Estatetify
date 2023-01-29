@@ -4,6 +4,7 @@ const subscriptionPlans = [
   {
     id: 1,
     plan: 'Free',
+    enum: 'free',
     role: 'owner',
     price: '0',
     tax: '24',
@@ -78,6 +79,7 @@ const subscriptionPlans = [
     id: 2,
     best: 'Best Value',
     plan: 'Basic',
+    enum: 'basic',
     role: 'real-estater',
     price: '49',
     tax: '24',
@@ -145,6 +147,7 @@ const subscriptionPlans = [
   {
     id: 3,
     plan: 'Premium',
+    enum: 'premium',
     role: 'agent',
     price: '79',
     tax: '24',

@@ -3,11 +3,7 @@ import { Outlet } from 'react-router';
 
 import { SubscriptionPlans } from 'pages';
 import { Loader } from 'components';
-import {
-  useAuthContext,
-  useListingContext,
-  useSubscriptionContext,
-} from 'store/contexts';
+import { useAuthContext, useSubscriptionContext } from 'store/contexts';
 import { subscriptionPlans } from 'common/lookup-data';
 import { getDatesLeft } from 'common/helpers';
 
@@ -15,7 +11,6 @@ const SubscribedRoute = () => {
   const { loggedIn, isLoading, user } = useAuthContext();
   const { getMySubscriptions, subscriptions: mySubscriptions } =
     useSubscriptionContext();
-  const { getMyListings, listings } = useListingContext();
   const [activeStatus, setActiveStatus] = useState(null);
 
   const getSubscriptionStatus = useCallback(() => {
@@ -29,19 +24,18 @@ const SubscribedRoute = () => {
           sPlanId: sPlan.id,
           plan: sPlan.plan,
           expiringDate: sub.expiringDate,
-          listingsLeft: sPlan.listings - listings.length,
+          listingsLeft: sPlan.listings - sub.listingsAdded.length,
           daysLeft: getDatesLeft(sub.expiringDate, sub.createdDate),
         };
       });
     return aSubs.find(
       (as) => as.sPlanId === Math.max(...aSubs.map((as) => as.sPlanId))
     );
-  }, [mySubscriptions, listings]);
+  }, [mySubscriptions]);
 
   useEffect(() => {
     if (loggedIn && user) {
       getMySubscriptions();
-      getMyListings();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loggedIn]);
@@ -49,7 +43,6 @@ const SubscribedRoute = () => {
   useEffect(() => {
     setActiveStatus(getSubscriptionStatus());
   }, [getSubscriptionStatus]);
-
   const isSubscripted =
     loggedIn && activeStatus && activeStatus?.listingsLeft > 0;
   if (isLoading) return <Loader />;

@@ -368,6 +368,7 @@ const SubscriptionProvider = ({ children }) => {
             (subPlan) => subPlan.plan.toLowerCase() === sub?.plan.toLowerCase()
           );
           return {
+            subscriptionId: sub?.id,
             subscriptionPlanId: subscriptionPlan.id,
             plan: subscriptionPlan.plan,
             expiringDate: sub?.expiringDate,
@@ -441,6 +442,32 @@ const SubscriptionProvider = ({ children }) => {
     });
   };
 
+  const updateCurrentSubscriptionListings = async (type, subId, listingId) => {
+    const subRef = doc(db, 'subscriptions', subId);
+    const subSnap = await getDoc(subRef);
+
+    if (subSnap.exists()) {
+      const { listingsAdded } = subSnap.data();
+      let updatedListingsAdded = listingsAdded;
+      try {
+        if (type === 'add') {
+          updatedListingsAdded = [listingId, ...updatedListingsAdded];
+        } else {
+          updatedListingsAdded = updatedListingsAdded.filter(
+            (l) => l === subId
+          );
+        }
+        await updateDoc(subRef, {
+          listingsAdded: updatedListingsAdded,
+        });
+      } catch (error) {
+        console.log('😱 Error updating current subscription: ', error.message);
+      }
+    } else {
+      console.log('😱  Error No such document!');
+    }
+  };
+
   return (
     <SubscriptionContext.Provider
       value={{
@@ -459,6 +486,7 @@ const SubscriptionProvider = ({ children }) => {
         saveShippingAddressToState,
         saveBillingAddressToState,
         checkForMyActiveSubscriptions,
+        updateCurrentSubscriptionListings,
       }}
     >
       {children}

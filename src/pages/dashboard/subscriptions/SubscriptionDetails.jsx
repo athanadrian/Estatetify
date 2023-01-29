@@ -134,7 +134,11 @@ const SubscriptionDetails = () => {
                       Started
                     </div>
                     <span className='text-gray-500 ml-2 text-xs'>
-                      {elapsedDays} days ago
+                      {elapsedDays === 0
+                        ? ' today'
+                        : elapsedDays === 1
+                        ? ' day ago'
+                        : ' days ago'}
                     </span>
                   </div>
                   <div className='border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full flex items-center justify-between hover:bg-gray-100 transition duration-150'>

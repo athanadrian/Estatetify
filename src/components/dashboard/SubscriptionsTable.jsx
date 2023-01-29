@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { AppIcon, SubscriptionPlanAvatar, TableActionsMenu } from 'components';
 import defaultStyles from 'common/config';
-import { getDatesLeft } from 'common/helpers';
+import { getDatesLeft, mapEnumObject } from 'common/helpers';
 import { useProfileContext } from 'store/contexts';
+import { subscriptionPlans } from 'common/lookup-data';
 
 const SubscriptionsTable = ({ subscriptions }) => {
   const { myProfile } = useProfileContext();
@@ -21,6 +22,9 @@ const SubscriptionsTable = ({ subscriptions }) => {
           </th>
           <th className='font-semibold text-sm uppercase px-6 py-4 text-left'>
             issued / due
+          </th>
+          <th className='font-semibold text-sm uppercase px-6 py-4 text-left'>
+            listings / left
           </th>
           <th className='font-semibold text-sm uppercase px-6 py-4 text-center'>
             Payment ID
@@ -39,9 +43,11 @@ const SubscriptionsTable = ({ subscriptions }) => {
             purchaseRef,
             createdDate,
             expiringDate,
+            listingsAdded,
             plan,
           }) => {
             const { remainingDays } = getDatesLeft(expiringDate, createdDate);
+            const { listings } = mapEnumObject(plan, subscriptionPlans);
             return (
               <tr key={id}>
                 <td className='px-6 py-4'>
@@ -70,6 +76,13 @@ const SubscriptionsTable = ({ subscriptions }) => {
                   <p> {createdDate} </p>
                   <p className='text-gray-500 text-sm font-semibold tracking-wide'>
                     Due in {remainingDays} days
+                  </p>
+                </td>
+                <td className='px-6 py-4'>
+                  <p> {listings} listings total</p>
+                  <p className='text-gray-500 text-sm font-semibold tracking-wide'>
+                    {listingsAdded.length} listed,{' '}
+                    {listings - listingsAdded.length} left
                   </p>
                 </td>
                 <td className='px-6 py-4 text-center text-dark'>

@@ -11,7 +11,7 @@ import {
   Loader,
   PageHeader,
 } from 'components';
-import { useListingContext } from 'store/contexts';
+import { useListingContext, useSubscriptionContext } from 'store/contexts';
 import { categories, floors } from 'common/lookup-data';
 import { getGeoData } from 'common/helpers';
 
@@ -48,6 +48,8 @@ const AddListing = () => {
     setLoading,
     setUploadProgress,
   } = useListingContext();
+  const { updateCurrentSubscriptionListings, currentTopActiveSubscription } =
+    useSubscriptionContext();
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [values, setValues] = useState(initialValues);
   const {
@@ -215,7 +217,11 @@ const AddListing = () => {
     delete listingData.imagesLength;
     !listingData.offer && delete listingData.offerPrice;
     const listingDoc = await createListing(listingData);
-
+    await updateCurrentSubscriptionListings(
+      'add',
+      currentTopActiveSubscription?.subscriptionId,
+      listingDoc.id
+    );
     navigate(`/listings/${type}/${listingDoc.id}`);
     setLoading(false);
     toast.success('Listing created successfully!');
