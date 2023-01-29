@@ -12,7 +12,6 @@ import {
   TempImageUrl,
   ListingsList,
   ProfileModal,
-  Loader,
 } from 'components';
 import defaultStyles from 'common/config';
 import {
@@ -38,7 +37,7 @@ const initialValues = {
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { logOut, loggedIn } = useAuthContext();
+  const { logOut } = useAuthContext();
   const {
     updateUser,
     myProfile,

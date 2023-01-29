@@ -46,3 +46,4 @@ export { default as CheckoutForm } from './subscription-checkout/CheckoutForm';
 export { default as SubscriptionsTable } from './dashboard/SubscriptionsTable';
 export { default as ListingsTable } from './dashboard/ListingsTable';
 export { default as TableActionsMenu } from './dashboard/TableActionsMenu';
+export { default as Pagination } from './dashboard/Pagination';

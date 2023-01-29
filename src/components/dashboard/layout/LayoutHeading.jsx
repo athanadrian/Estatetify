@@ -7,7 +7,7 @@ const LayoutHeading = ({ icon, title, quantity, className }) => {
   const { myProfile } = useProfileContext();
   return (
     <h2
-      className={`flex items-center text-darker text-3xl font-light ${className}`}
+      className={`ml-8 backdrop: flex items-center text-darker text-3xl font-light ${className}`}
     >
       {icon && (
         <AppIcon
