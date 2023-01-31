@@ -35,15 +35,14 @@ import {
   AdminSubscriptionsDetails,
   AdminUsers,
   AdminSubscriptions,
-  AgentDashboard,
   AgentManage,
-  RealEstaterDashboard,
   RealEstaterManage,
   DashboardSubscriptionDetails,
   DashboardSubscriptions,
   DashboardListings,
   DashboardAddListing,
   DashboardEditListing,
+  DashboardDashboard,
 } from './pages';
 
 const App = () => {
@@ -85,7 +84,7 @@ const App = () => {
           <Route element={<RealEstaterRoute />}>
             <Route
               path='/real-estater/dashboard'
-              element={<RealEstaterDashboard />}
+              element={<DashboardDashboard />}
             />
             <Route
               path='/real-estater/listings'
@@ -113,7 +112,7 @@ const App = () => {
             />
           </Route>
           <Route element={<AgentRoute />}>
-            <Route path='/agent/dashboard' element={<AgentDashboard />} />
+            <Route path='/agent/dashboard' element={<DashboardDashboard />} />
             <Route path='/agent/listings' element={<DashboardListings />} />
             <Route
               path='/agent/listings/add'

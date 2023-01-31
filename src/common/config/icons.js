@@ -131,7 +131,7 @@ const icons = {
   star: AiFillStar,
   offers: MdOutlineLocalOffer,
   buy: MdOutlineLibraryAdd,
-  sell: MdOutlineLibraryAddCheck,
+  sale: MdOutlineLibraryAddCheck,
   rent: MdOutlineLibraryBooks,
   pricing: BsFillTagsFill,
   actions: BsThreeDotsVertical,

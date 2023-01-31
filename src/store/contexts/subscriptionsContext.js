@@ -371,8 +371,11 @@ const SubscriptionProvider = ({ children }) => {
             subscriptionId: sub?.id,
             subscriptionPlanId: subscriptionPlan.id,
             plan: subscriptionPlan.plan,
+            createdDate: sub?.createdDate,
             expiringDate: sub?.expiringDate,
-            listingsLeft: subscriptionPlan.listings - myListings.length,
+            planListings: subscriptionPlan.listings,
+            listingsLeft: subscriptionPlan.listings - sub?.listingsAdded.length,
+            subscriptionListings: sub?.listingsAdded.length,
             relativeDays: getDatesLeft(sub?.expiringDate, sub?.createdDate),
           };
         });

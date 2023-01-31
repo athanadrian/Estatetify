@@ -29,19 +29,17 @@ const UserProfile = () => {
   if (isListingsLoading) return <Loader />;
   return (
     <>
-      <section className='max-w-6xl flex flex-col justify-center items-center mx-auto'>
+      <section className='w-full max-w-xl tablet:px-0 tablet:py-8 px-2 py-4 flex flex-col justify-center items-center mx-auto'>
         <PageHeader title='Owner Profile' />
-        <ProfileCard profileUser={profileUser} className='w-2/3' />
+        <ProfileCard profileUser={profileUser} className='w-full' />
       </section>
       <div className='mx-auto xl:mx-20 px-3 pt-6'>
-        <>
-          <PageHeader
-            title={`Listings by ${profileUser?.fullName}`}
-            view
-            total={listings.length}
-          />
-          <ListingsList listings={listings} />
-        </>
+        <PageHeader
+          title={`Listings by ${profileUser?.fullName}`}
+          view
+          total={listings.length}
+        />
+        <ListingsList listings={listings} />
       </div>
       <ContactModal
         listing={{ title: 'in your listings' }}

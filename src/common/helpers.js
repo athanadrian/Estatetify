@@ -86,3 +86,28 @@ export const getDatesLeft = (expiringDate, createdDate) => {
 export const checkCancellingDate = (expiringDate) => {
   return moment() >= moment(expiringDate);
 };
+
+// group a LIST by a key
+// const groupByKey1 = groupBy('key1');
+// const result = groupByKey(LIST)
+export const groupByKey = (key) => (array) =>
+  array.reduce((objectsByKeyValue, obj) => {
+    const value = obj[key];
+    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+    return objectsByKeyValue;
+  }, {});
+
+export const groupedListingsByKey = (key, listings) => {
+  const groupPaymentsByKey = groupByKey(key);
+  let groupedPayments = [];
+  for (let [groupName, values] of Object.entries(
+    groupPaymentsByKey(listings)
+  )) {
+    groupedPayments.push({
+      key: groupName,
+      listings: values,
+      count: values.length,
+    });
+  }
+  return groupedPayments;
+};

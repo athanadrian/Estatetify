@@ -1,35 +1,71 @@
 import React from 'react';
-import logo from 'images/estatetify-app.svg';
 import Moment from 'react-moment';
 import defaultStyles from 'common/config';
 
-import { normalizeMobile } from 'common/helpers';
+import { mapEnumObject, normalizeMobile } from 'common/helpers';
 import { useCommonContext } from 'store/contexts';
 import { AppIcon } from 'components';
+import { roles } from 'common/lookup-data';
+
 const ProfileCard = ({ className, profileUser, owner }) => {
   const { openModal } = useCommonContext();
+  const { txtColor, brdColor } = mapEnumObject(profileUser?.role, roles);
+  console.log('profileUser', profileUser);
   return (
     <>
       <div className={`mx-auto  ${className} px-4`}>
         <div className='rounded-lg shadow-lg bg-dark w-full flex flex-row flex-wrap p-3 antialiased'>
-          <div className='md:w-1/3 w-full flex items-center justify-center'>
-            <img
-              alt='my avatar'
-              className='rounded-full shadow-lg antialiased'
-              src={profileUser?.avatar || logo}
-            />
+          <div className={`sm:w-1/2 w-full flex items-center justify-center `}>
+            <div className='container w-fit rounded-full flex justify-center relative'>
+              {profileUser?.avatar ? (
+                <>
+                  <img
+                    alt='my avatar'
+                    className={`border  p-1.5  ${brdColor} rounded-full sm:w-full w-2/3 shadow-lg antialiased`}
+                    src={profileUser?.avatar}
+                  />
+                  <span
+                    className={`absolute ${txtColor} top-2 md:right-[45px] right-[110px]`}
+                  >
+                    <AppIcon Icon={defaultStyles.icons.star} size={24} />
+                  </span>
+                </>
+              ) : (
+                <div
+                  className={`relative bg-transparent w-64 h-64 p-1 rounded-full flex justify-center items-center border ${brdColor}`}
+                >
+                  <div
+                    className={`bg-light w-full h-full ${txtColor} flex justify-center items-center rounded-full`}
+                  >
+                    <AppIcon
+                      size={100}
+                      Icon={defaultStyles.icons.profile}
+                      tooltip={profileUser?.fullName ?? 'owner'}
+                    />
+                  </div>
+                  <span
+                    className={`absolute ${txtColor} top-0 md:right-[45px] right-[50px]`}
+                  >
+                    <AppIcon Icon={defaultStyles.icons.star} size={24} />
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-          <div className='md:w-2/3 w-full px-3 flex flex-row flex-wrap'>
-            <div className='w-full text-right text-gray-700 font-semibold relative pt-3 md:pt-0'>
+          <div className='md:w-1/2 w-full px-3 flex flex-row flex-wrap'>
+            <div className='w-full text-center text-gray-700 font-semibold relative pt-3 md:pt-0'>
               <div className='text-2xl text-white leading-tight'>
                 {profileUser?.fullName}
               </div>
-              <p className='mt-1 text-normal text-gray-300 hover:text-gray-400 cursor-pointer'>
+              <div className={`capitalize text-2xl ${txtColor} leading-tight`}>
+                {profileUser?.role}
+              </div>
+              <p className='mt-1 text-base text-gray-300 hover:text-gray-400 cursor-pointer'>
                 <span className='border-b border-dashed border-gray-500 pb-1'>
                   {profileUser?.email}
                 </span>
               </p>
-              <p className='mt-1 text-normal text-gray-300 hover:text-gray-400 cursor-pointer'>
+              <p className='mt-1 text-base text-gray-300 hover:text-gray-400 cursor-pointer'>
                 <span className='border-b border-dashed border-gray-500 pb-1'>
                   {profileUser?.mobile}
                 </span>
@@ -48,7 +84,7 @@ const ProfileCard = ({ className, profileUser, owner }) => {
                 )}
               </div>
               <div className='text-sm text-gray-300 md:absolute pt-3 md:pt-0 bottom-0 right-0'>
-                Member since:
+                Joined:
                 <Moment
                   fromNow
                   className='ml-1 text-sm font-bold text-light hover:text-gray-400 border-b border-dashed border-gray-500 pb-1'
@@ -68,7 +104,7 @@ export default ProfileCard;
 
 const SocialUserButtons = ({ openModal, profileUser }) => {
   return (
-    <ul className='flex justify-end gap-3.5 my-3 text-gray-300 tablet:pb-4'>
+    <ul className='flex justify-center gap-3.5 my-3 text-gray-300 tablet:pb-4'>
       <li className='w-7 h-7 p-4 rounded bg-primary text-light flex items-center justify-center text-2xl'>
         <AppIcon
           tooltip='Email ©'
@@ -127,7 +163,7 @@ const SocialUserButtons = ({ openModal, profileUser }) => {
 };
 const SocialOwnerButtons = ({ profileUser }) => {
   return (
-    <ul className='flex justify-end gap-3.5 my-3 text-gray-300 tablet:pb-4'>
+    <ul className='flex justify-center gap-3.5 my-3 text-gray-300 tablet:pb-4'>
       <li className='w-7 h-7 p-4 rounded bg-primary text-light flex items-center justify-center text-2xl'>
         <AppIcon tooltip='Email ©' Icon={defaultStyles.icons.email} />
       </li>

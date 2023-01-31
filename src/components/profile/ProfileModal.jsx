@@ -8,7 +8,8 @@ const ProfileModal = ({ profileUser, owner }) => {
   return (
     <>
       <Modal open={showProfileModal} close={closeProfileModal}>
-        <div className='relative w-full max-w-2xl tablet:px-0 tablet:py-8 px-2 py-4 mx-auto bg-white rounded-md'>
+        <div className='relative w-full max-w-xl tablet:px-0 tablet:py-8 px-2 py-4 mx-auto bg-white rounded-md'>
+          {/* className='w-full max-w-xl tablet:px-0 tablet:py-8 px-2 py-4 flex flex-col justify-center items-center mx-auto' */}
           <div className='m-3'>
             <ProfileCard
               owner={owner}

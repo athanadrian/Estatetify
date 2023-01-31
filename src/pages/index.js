@@ -27,7 +27,6 @@ export { default as DashboardEditListing } from './dashboard/listings/EditListin
 export { default as DashboardListings } from './dashboard/listings/Listings';
 export { default as DashboardSubscriptions } from './dashboard/subscriptions/Subscriptions';
 export { default as DashboardSubscriptionDetails } from './dashboard/subscriptions/SubscriptionDetails';
-export { default as RealEstaterDashboard } from './real-estater/Dashboard';
+export { default as DashboardDashboard } from './dashboard/Dashboard';
 export { default as RealEstaterManage } from './real-estater/Manage';
-export { default as AgentDashboard } from './agent/Dashboard';
 export { default as AgentManage } from './agent/Manage';

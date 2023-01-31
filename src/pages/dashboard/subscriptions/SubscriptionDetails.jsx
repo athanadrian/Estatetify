@@ -17,6 +17,7 @@ const SubscriptionDetails = () => {
     getSubscription(subscriptionId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscriptionId]);
+
   const { txtColor, brdColor, bgColor } = mapEnumObject(
     subscription?.role,
     roles
@@ -137,7 +138,7 @@ const SubscriptionDetails = () => {
                       {elapsedDays === 0
                         ? ' today'
                         : elapsedDays === 1
-                        ? ' day ago'
+                        ? ' a day ago'
                         : ' days ago'}
                     </span>
                   </div>
