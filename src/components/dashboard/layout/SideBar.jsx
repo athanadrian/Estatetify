@@ -10,12 +10,14 @@ const SideBar = forwardRef(({ showNav }, ref) => {
   const { myProfile } = useProfileContext();
 
   const sideBarLinks = dashBoardLinks(myProfile?.role);
-
+  const link = `/${myProfile?.role}/${
+    myProfile?.role !== 'owner' ? 'dashboard' : 'subscriptions'
+  }`;
   return (
     <>
       <div ref={ref} className='fixed z-30 w-56 h-full bg-gray-100 shadow-sm'>
         <NavLink
-          to={`/${myProfile?.role}/dashboard`}
+          to={link}
           className={({ isActive }) =>
             `flex flex-col items-center hover:text-${
               myProfile?.role

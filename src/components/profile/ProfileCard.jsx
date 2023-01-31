@@ -10,7 +10,7 @@ import { roles } from 'common/lookup-data';
 const ProfileCard = ({ className, profileUser, owner }) => {
   const { openModal } = useCommonContext();
   const { txtColor, brdColor } = mapEnumObject(profileUser?.role, roles);
-  console.log('profileUser', profileUser);
+
   return (
     <>
       <div className={`mx-auto  ${className} px-4`}>

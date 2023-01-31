@@ -5,6 +5,7 @@ import {
   CLOSE_PROFILE_MODAL,
   SHOW_GRID_VIEW,
   SAVE_URL,
+  FILTER_BY_SEARCH,
 } from '../actions/commonActions';
 
 const reducer = (state, action) => {
@@ -44,6 +45,14 @@ const reducer = (state, action) => {
     return {
       ...state,
       previousURL,
+    };
+  }
+
+  if (action.type === FILTER_BY_SEARCH) {
+    const filteredItems = action.payload.filteredItems;
+    return {
+      ...state,
+      filteredItems,
     };
   }
 

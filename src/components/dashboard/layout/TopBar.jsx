@@ -10,7 +10,7 @@ const TopBar = ({ showNav, setShowNav }) => {
         showNav ? 'pl-56' : ''
       }`}
     >
-      <div className='pl-4 md:pl-16 flex items-center'>
+      <div className='pl-4 md:pl-8 flex items-center'>
         <AppIcon
           className='text-primary cursor-pointer'
           Icon={

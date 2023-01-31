@@ -29,11 +29,11 @@ const mainMenuLinks = (role) => [
     link: '/subscriptions/plans',
     auth: ['user', 'owner', 'real-estater', 'agent', 'admin'],
   },
-  {
-    name: 'dashboard',
-    link: `/${role}/dashboard`,
-    auth: ['real-estater', 'agent', 'admin'],
-  },
+  // {
+  //   name: 'dashboard',
+  //   link: `/${role}/dashboard`,
+  //   auth: ['real-estater', 'agent', 'admin'],
+  // },
 ];
 
 export default mainMenuLinks;

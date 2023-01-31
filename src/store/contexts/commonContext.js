@@ -7,6 +7,7 @@ import {
   CLOSE_PROFILE_MODAL,
   SHOW_GRID_VIEW,
   SAVE_URL,
+  FILTER_BY_SEARCH,
 } from '../actions/commonActions';
 import reducer from '../reducers/commonReducer';
 
@@ -16,6 +17,7 @@ const initialState = {
   showGrid: true,
   previousURL: undefined,
   logo: 'https://firebasestorage.googleapis.com/v0/b/estatetify-db.appspot.com/o/logo512.png?alt=media&token=008a2f5b-86b5-4334-95c4-bf48071260b8',
+  filteredItems: [],
 };
 
 const CommonContext = createContext();
@@ -46,6 +48,16 @@ const CommonProvider = ({ children }) => {
     dispatch({ type: SAVE_URL, payload: { url } });
   };
 
+  const getItemsBySearch = ({ items, search }) => {
+    const filteredItems = items.filter(
+      (item) =>
+        item.title.toLowerCase().includes(search.toLowerCase()) ||
+        item.category.toLowerCase().includes(search.toLowerCase()) ||
+        item.type.toLowerCase().includes(search.toLowerCase())
+    );
+    dispatch({ type: FILTER_BY_SEARCH, payload: { filteredItems } });
+  };
+
   return (
     <CommonContext.Provider
       value={{
@@ -56,6 +68,7 @@ const CommonProvider = ({ children }) => {
         closeProfileModal,
         showGridView,
         saveURL,
+        getItemsBySearch,
       }}
     >
       {children}

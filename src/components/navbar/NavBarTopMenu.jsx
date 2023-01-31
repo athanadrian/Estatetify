@@ -23,20 +23,42 @@ const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
   //   if (showMenu) toggleMenu();
   // };
   const navBarLinks = mainMenuLinks(myProfile?.role);
+  const showDashboardLink =
+    (myProfile?.role === 'real-estater' ||
+      myProfile?.role === 'agent' ||
+      myProfile?.role === 'admin') &&
+    loggedIn;
   return (
     <>
       <div className='hidden laptop:flex mx-auto'>
         <ul className='flex items-center justify-around space-x-10'>
-          {navBarLinks.map(({ name, link, auth }) => {
-            if (auth.some((a) => a === myProfile?.role)) {
-              return <NavButton key={name} name={name} link={link} />;
-            } else return null;
-          })}
-        </ul>
-        {/* //TODO 
+          {navBarLinks.map(({ name, link }) => (
+            <NavButton key={name} name={name} link={link} />
+          ))}
+          {showDashboardLink && (
+            <NavButton
+              key='dashboard'
+              name='dashboard'
+              link={`/${myProfile?.role}/dashboard`}
+            />
+          )}
+          {/* <li className='relative group'>
+            <NavLink
+              to={`/${myProfile?.role}/dashboard`}
+              className={({ isActive }) =>
+                `capitalize cursor-pointer py-[22px] text-[15px] font-semibold text-dark border-b-[3px] border-b-transparent ${
+                  isActive && 'text-darker border-b-primary'
+                }`
+              }
+            >
+              dashboard
+            </NavLink>
+            <div className='absolute group-hover:flex -bottom-[22px] hidden h-1 w-full bg-primary' />
+          </li> */}
+          {/* //TODO 
             //Check if Contact us link should be on the BigMenu
             */}
-        {/* <li className='relative group'>
+          {/* <li className='relative group'>
               <button
                 onClick={handleContactUs}
                 className='bg-gray-100 text-orange-700 text-lg font-md py-0.5 px-2 border-[1px] border-solid border-gray-300 rounded-[3px] cursor-pointer flex items-center justify-center transition-all duration-300 ease-in-out truncate'
@@ -44,8 +66,8 @@ const NavBarTopMenu = ({ showMenu, toggleMenu }) => {
                 Contact us
               </button>
               <div className='absolute group-hover:flex -bottom-[17px] hidden h-1 w-full bg-primary' />
-            </li> 
-        </ul>*/}
+            </li> */}
+        </ul>
       </div>
       <div className='flex items-center justify-center space-x-5'>
         <NavBarAuthSection
