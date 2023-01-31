@@ -17,12 +17,12 @@ const dashBoardLinks = (role) => [
     icon: 'users',
     auth: ['admin'],
   },
-  {
-    name: 'manage',
-    link: `/${role}/manage`,
-    icon: 'manage',
-    auth: ['agent', 'admin'],
-  },
+  // {
+  //   name: 'manage',
+  //   link: `/${role}/manage`,
+  //   icon: 'manage',
+  //   auth: ['agent', 'admin'],
+  // },
   {
     name: 'listings',
     link: `/${role}/listings`,

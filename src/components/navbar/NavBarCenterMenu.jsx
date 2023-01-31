@@ -34,16 +34,20 @@ const NavBarCenterMenu = ({ toggleMenu, showMenu }) => {
         }`}
       >
         <ul className='relative py-24 px-8 w-[90%] h-[95vh] rounded-xl bg-white z-[9999] flex items-center flex-col space-y-8'>
-          {navBarLinks.map(({ name, link }) => (
-            <NavButton
-              myProfile={myProfile}
-              sidebar
-              key={name}
-              name={name}
-              link={link}
-              onClick={toggleMenu}
-            />
-          ))}
+          {navBarLinks.map(({ name, link, auth }) => {
+            if (auth.some((a) => a === myProfile?.role)) {
+              return (
+                <NavButton
+                  myProfile={myProfile}
+                  sidebar
+                  key={name}
+                  name={name}
+                  link={link}
+                  onClick={toggleMenu}
+                />
+              );
+            } else return null;
+          })}
           <li className='relative group'>
             <button
               onClick={handleContactUs}
