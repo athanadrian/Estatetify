@@ -124,9 +124,9 @@ const ListingRowItem = ({
                 <p className='capitalize pt-1 text-xs'>{listing?.category}</p>
               </div>
               <div className='flex flex-col items-center justify-center text-lg font-medium'>
-                <AppIcon Icon={defaultStyles.icons.squareFeet} />
+                <AppIcon Icon={defaultStyles.icons.squareMeters} />
                 <p className='mx-6 pt-1 text-xs'>
-                  {listing?.squareFeet} m<sup>2</sup>
+                  {listing?.squareMeters} m<sup>2</sup>
                 </p>
               </div>
               {showFloor && (

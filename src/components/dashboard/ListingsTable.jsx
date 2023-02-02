@@ -50,7 +50,7 @@ const ListingsTable = ({ listings }) => {
               geolocation,
               offerPrice,
               regularPrice,
-              squareFeet,
+              squareMeters,
               imgUrls,
               parking,
               furnished,
@@ -111,7 +111,7 @@ const ListingsTable = ({ listings }) => {
                       <span className='text-dark'>
                         Size m<sup>2</sup>:
                       </span>
-                      <span className='text-darker'>{squareFeet}</span>
+                      <span className='text-darker'>{squareMeters}</span>
                     </p>
                     <p className='flex justify-between text-sm font-semibold tracking-wide'>
                       <span className='text-dark'>Rooms:</span>

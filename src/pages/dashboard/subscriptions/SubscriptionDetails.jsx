@@ -139,7 +139,7 @@ const SubscriptionDetails = () => {
                         ? ' today'
                         : elapsedDays === 1
                         ? ' a day ago'
-                        : ' days ago'}
+                        : ` ${elapsedDays} days ago`}
                     </span>
                   </div>
                   <div className='border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full flex items-center justify-between hover:bg-gray-100 transition duration-150'>

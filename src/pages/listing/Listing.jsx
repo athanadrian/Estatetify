@@ -155,11 +155,11 @@ const Listing = () => {
               </li>
               <li className='flex items-center justify-center font-medium whitespace-nowrap'>
                 <AppIcon
-                  Icon={defaultStyles.icons.squareFeet}
+                  Icon={defaultStyles.icons.squareMeters}
                   className='text-lg'
                 />
                 <p className='ml-1 '>
-                  <span className='capitalize'> {listing?.squareFeet} </span>m
+                  <span className='capitalize'> {listing?.squareMeters} </span>m
                   <sup>2</sup>
                 </p>
               </li>

@@ -364,7 +364,8 @@ const ListingsCategoryCard = ({ category, quantity, txtColor }) => {
         {category}
       </h4>
       <label>
-        <span className={`${txtColor} font-semibold`}>{quantity}</span> listings
+        <span className={`${txtColor} font-semibold`}>{quantity}</span> listing
+        {quantity > 1 ? 's' : ''}
       </label>
     </div>
   );

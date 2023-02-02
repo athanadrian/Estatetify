@@ -20,7 +20,7 @@ const initialValues = {
   type: 'rent',
   title: '',
   category: null,
-  squareFeet: 20,
+  squareMeters: 20,
   floor: '',
   rooms: 1,
   beds: 0,
@@ -55,7 +55,7 @@ const AddListing = () => {
     type,
     title,
     category,
-    squareFeet,
+    squareMeters,
     floor,
     rooms,
     beds,
@@ -206,7 +206,7 @@ const AddListing = () => {
     const listingData = {
       ...values,
       geolocation,
-      squareFeet: Number(values.squareFeet),
+      squareMeters: Number(values.squareMeters),
       regularPrice: Number(values.regularPrice),
       offerPrice: Number(values.offerPrice),
     };
@@ -281,8 +281,8 @@ const AddListing = () => {
             <div className='flex flex-col space-y-0.5 w-full'>
               <Label text='square Feet' />
               <FormInput
-                name='squareFeet'
-                value={squareFeet}
+                name='squareMeters'
+                value={squareMeters}
                 min={20}
                 max={500}
                 type='number'

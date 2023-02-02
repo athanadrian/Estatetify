@@ -198,12 +198,12 @@ const ListingProvider = ({ children }) => {
       let whereConditions = [];
       if (filters) {
         Object.keys(filters).forEach((key) => {
-          if (key === 'squareFeet' && filters['squareFeet']) {
+          if (key === 'squareMeters' && filters['squareMeters']) {
             const sq = sizes.find(
-              (size) => size.enum === filters['squareFeet']
+              (size) => size.enum === filters['squareMeters']
             );
-            whereConditions.push(where('squareFeet', '>=', sq.min ?? 0));
-            whereConditions.push(where('squareFeet', '<=', sq.max ?? 10000));
+            whereConditions.push(where('squareMeters', '>=', sq.min ?? 0));
+            whereConditions.push(where('squareMeters', '<=', sq.max ?? 10000));
           } else if (key === 'city' && filters['city']) {
             whereConditions.push(
               where('geolocation.city', '==', filters['city'])
