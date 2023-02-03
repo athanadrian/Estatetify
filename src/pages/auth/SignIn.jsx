@@ -12,8 +12,8 @@ import defaultStyles from 'common/config';
 import { useAuthContext, useCommonContext } from 'store/contexts';
 
 const initialState = {
-  email: '@gmail.com',
-  password: '123456',
+  email: '',
+  password: '',
 };
 
 const singImage =
